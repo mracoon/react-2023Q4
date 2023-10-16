@@ -8,7 +8,7 @@ export default class App extends Component {
     return (
       <>
         <SearchBar></SearchBar>
-        <ResultsContainer></ResultsContainer>
+        <ResultsContainer value=""></ResultsContainer>
       </>
     );
   }
