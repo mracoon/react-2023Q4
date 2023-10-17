@@ -1,14 +1,12 @@
 import { Component, ReactNode } from 'react';
 import './App.css';
-import SearchBar from './components/SearchBar';
-import ResultsContainer from './components/ResultsContainer';
+import SearchPage from './components/SearchPage';
 
 export default class App extends Component {
   render(): ReactNode {
     return (
       <>
-        <SearchBar></SearchBar>
-        <ResultsContainer value=""></ResultsContainer>
+        <SearchPage></SearchPage>
       </>
     );
   }
