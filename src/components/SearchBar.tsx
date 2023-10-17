@@ -1,7 +1,54 @@
-import { Component, ReactNode } from 'react';
+import { ChangeEvent, Component, KeyboardEvent, ReactNode } from 'react';
 import searchIcon from '../assets/search.svg';
+import { DataType, RequestItem } from '../types/apiDataTypes';
 
-export default class SearchBar extends Component {
+type ISearchProps = {
+  change: (data: RequestItem[]) => void;
+  loading: (isLoading: boolean) => void;
+};
+
+type ISearchState = {
+  val: string;
+  data: RequestItem[];
+};
+
+export default class SearchBar extends Component<ISearchProps, ISearchState> {
+  constructor(props: ISearchProps) {
+    super(props);
+    this.state = {
+      val: 'totoro',
+      data: [],
+    };
+    this.handlerChange = this.handlerChange.bind(this);
+    this.handlerEnter = this.handlerEnter.bind(this);
+    this.submitHandler = this.submitHandler.bind(this);
+  }
+
+  handlerChange(e: ChangeEvent<HTMLInputElement>) {
+    this.setState({ val: e.target.value });
+  }
+
+  submitHandler() {
+    this.props.loading(true);
+    fetch(`https://api.jikan.moe/v4/anime?page=1&q='${this.state.val}'&sfw`)
+      .then((res) => res.json())
+      .then((data: DataType) => {
+        this.props.change(data.data);
+        this.props.loading(false);
+      });
+  }
+
+  componentDidMount(): void {
+    this.submitHandler();
+  }
+
+  handlerEnter(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter' && e.target instanceof HTMLInputElement) {
+      this.setState({ val: e.target.value });
+      this.submitHandler.call(this);
+    }
+  }
+
   render(): ReactNode {
     return (
       <>
@@ -15,8 +62,13 @@ export default class SearchBar extends Component {
             className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-primary"
             type="search"
             placeholder="What are you looking for?"
+            onChange={this.handlerChange}
+            onKeyUp={this.handlerEnter}
           />
-          <button className="btn-primary text-white absolute right-2.5 bottom-2.5 font-medium rounded-lg text-sm px-4 py-2">
+          <button
+            className="btn-primary text-white absolute right-2.5 bottom-2.5 font-medium rounded-lg text-sm px-4 py-2"
+            onClick={this.submitHandler}
+          >
             Search
           </button>
         </div>

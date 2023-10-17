@@ -1,20 +1,14 @@
 import { Component, ReactNode } from 'react';
 import Card from './Card';
-import { data } from '../data/data';
+import { RequestItem } from '../types/apiDataTypes';
 
-export default class ResultsContainer extends Component<{ value: string }, { status: boolean }> {
-  constructor(props = { value: '' }) {
-    super(props);
-    this.state = {
-      status: false,
-    };
-  }
+type IResultsContainerProps = { cardsData: RequestItem[] };
 
+export default class ResultsContainer extends Component<IResultsContainerProps> {
   render(): ReactNode {
     return (
       <div className="result-container flex flex-col gap-y-2 ">
-        {this.state.status && <p>loading...</p>}
-        {data.data.map((data) => (
+        {this.props.cardsData.map((data) => (
           <Card
             key={data.mal_id}
             src={data.images.webp.image_url}
