@@ -16,7 +16,7 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
   constructor(props: ISearchProps) {
     super(props);
     this.state = {
-      val: 'totoro',
+      val: localStorage.getItem('maracoon-serch-query') ?? '',
       data: [],
     };
     this.handlerChange = this.handlerChange.bind(this);
@@ -29,8 +29,11 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
   }
 
   submitHandler() {
+    localStorage.setItem('maracoon-serch-query', this.state.val.trim());
     this.props.loading(true);
-    fetch(`https://api.jikan.moe/v4/anime?page=1&q='${this.state.val}'&sfw`)
+    fetch(
+      `https://api.jikan.moe/v4/anime?page=1&sfw${this.state.val ? '&q=' + this.state.val : ''}`
+    )
       .then((res) => res.json())
       .then((data: DataType) => {
         this.props.change(data.data);
@@ -64,6 +67,7 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
             placeholder="What are you looking for?"
             onChange={this.handlerChange}
             onKeyUp={this.handlerEnter}
+            value={this.state.val}
           />
           <button
             className="btn-primary text-white absolute right-2.5 bottom-2.5 font-medium rounded-lg text-sm px-4 py-2"
