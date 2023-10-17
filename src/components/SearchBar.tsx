@@ -10,6 +10,7 @@ type ISearchProps = {
 type ISearchState = {
   val: string;
   data: RequestItem[];
+  isError: boolean;
 };
 
 export default class SearchBar extends Component<ISearchProps, ISearchState> {
@@ -18,6 +19,7 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
     this.state = {
       val: localStorage.getItem('maracoon-serch-query') ?? '',
       data: [],
+      isError: false,
     };
     this.handlerChange = this.handlerChange.bind(this);
     this.handlerEnter = this.handlerEnter.bind(this);
@@ -28,13 +30,18 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
     this.setState({ val: e.target.value });
   }
 
-  submitHandler() {
+  submitHandler(isError = false) {
     localStorage.setItem('maracoon-serch-query', this.state.val.trim());
     this.props.loading(true);
+    console.log(isError, '!!!!!!!!!!!');
     fetch(
-      `https://api.jikan.moe/v4/anime?page=1&sfw${this.state.val ? '&q=' + this.state.val : ''}`
+      `https://api.jikan.moe/v4/anime${isError ? '1' : ''}?page=1&sfw${
+        this.state.val ? '&q=' + this.state.val : ''
+      }`
     )
-      .then((res) => res.json())
+      .then((res) => {
+        return res.json();
+      })
       .then((data: DataType) => {
         this.props.change(data.data);
         this.props.loading(false);
@@ -55,6 +62,12 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
   render(): ReactNode {
     return (
       <>
+        <button
+          className="btn bg-red-800 text-white  font-medium rounded-lg text-sm px-4 py-2"
+          onClick={this.submitHandler.bind(this, true)}
+        >
+          Error
+        </button>
         <div className="relative w-full">
           <img
             src={searchIcon}
@@ -71,7 +84,7 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
           />
           <button
             className="btn-primary text-white absolute right-2.5 bottom-2.5 font-medium rounded-lg text-sm px-4 py-2"
-            onClick={this.submitHandler}
+            onClick={this.submitHandler.bind(this, false)}
           >
             Search
           </button>
