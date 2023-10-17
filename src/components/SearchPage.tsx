@@ -23,7 +23,10 @@ export default class SearchPage extends Component<Record<string, never>, ISearch
     return (
       <div className="search-page-content">
         <SearchBar change={this.change.bind(this)} loading={this.loading.bind(this)}></SearchBar>
-        <ResultsContainer cardsData={this.state.data}></ResultsContainer>
+        {this.state.isLoading && (
+          <span className="loading loading-infinity w-40  text-primary"></span>
+        )}
+        {!this.state.isLoading && <ResultsContainer cardsData={this.state.data}></ResultsContainer>}
       </div>
     );
   }
