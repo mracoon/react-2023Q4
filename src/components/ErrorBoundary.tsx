@@ -1,4 +1,5 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
+import { MdError } from 'react-icons/md';
 
 interface Props {
   children?: ReactNode;
@@ -16,21 +17,29 @@ class ErrorBoundary extends Component<Props, State> {
   };
 
   static getDerivedStateFromError(err: Error): State {
-    // Update state so the next render will show the fallback UI.
-    return { hasError: true, message: err.message };
+    console.log(err.stack);
+    return { hasError: true, message: `${err.name}: ${err.message}` };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
+    console.error('ErrorBoundary: ', error, errorInfo.componentStack);
   }
 
   render() {
     if (this.state.hasError) {
       return (
-        <>
+        <div className="flex flex-col justify-center items-center gap-4">
           <h1>Sorry.. there was an error</h1>
-          <p>Try refreshing the page</p>
-        </>
+          <p>{this.state.message}</p>{' '}
+          <p>
+            Try{' '}
+            <a className="link link-error" onClick={() => location.reload()}>
+              refreshing
+            </a>{' '}
+            the page
+          </p>
+          <MdError className="w-40 h-40 fill-red-600" />
+        </div>
       );
     }
 
