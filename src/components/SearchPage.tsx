@@ -23,7 +23,7 @@ export default class SearchPage extends Component<Record<string, never>, ISearch
 
   render(): ReactNode {
     return (
-      <div className="search-page-content">
+      <div className="search-page-content flex flex-col items-center gap-4">
         <ErrorBoundary>
           <ErrorBtn></ErrorBtn>
 

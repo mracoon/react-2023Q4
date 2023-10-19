@@ -1,13 +1,46 @@
 import { Component, ReactNode } from 'react';
+import './Card.css';
+import { BiTimeFive } from 'react-icons/bi';
+import { BsFillStarFill } from 'react-icons/bs';
+import { RequestItem } from '../types/apiDataTypes';
 
-export default class Card extends Component<{ src: string; title: string; description: string }> {
+export default class Card extends Component<{
+  data: RequestItem;
+}> {
   render(): ReactNode {
+    const { data } = this.props;
+    const src = data.images.webp.image_url;
+    const title = data.title_english || data.title;
+    const description = data.synopsis || 'no description';
+    const duration = data.duration;
+    const score = data.score;
     return (
-      <div className="flex border-solid border-2 border-indigo-600">
-        <img src={this.props.src} alt="12"></img>
-        <div className="flex flex-col">
-          <h3>{this.props.title}</h3>
-          <p>{this.props.description}</p>
+      <div className="card bg-base-100 shadow-xl max-w-xs w-full py-2">
+        <figure className="h-52 items-center ">
+          <img src={src} alt={title} />
+        </figure>
+        <div className="card-body py-2">
+          <h2 className="card-title">{title} </h2>
+          <div className="flex justify-between items-center">
+            <p className=" self-start grow-0 flex items-center gap-1">
+              <BiTimeFive className="inline-block fill-blue-800 w-5 h-5" />
+              {duration}
+            </p>
+            {score && (
+              <p className="grow-0 self-end flex items-center gap-1">
+                <BsFillStarFill className="inline-block fill-blue-800 w-5 h-5 " />
+                {score}
+              </p>
+            )}
+          </div>
+          <p className="card-description">{description}</p>
+          <div className="flex flex-wrap gap-1 h-11 overflow-hidden items-center">
+            {data.genres.map((genre) => (
+              <div key={`genres-${genre.mal_id}`} className="badge badge-primary flex-auto">
+                {genre.name}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
