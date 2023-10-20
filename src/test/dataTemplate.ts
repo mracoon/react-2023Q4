@@ -1,0 +1,77 @@
+import { AiringStatus, AnimeRating, AnimeType, RequestItem, Season } from '../types/apiDataTypes';
+
+const dataTemplate: RequestItem = {
+  mal_id: 0,
+  url: '',
+  images: {
+    jpg: { image_url: null, small_image_url: null, large_image_url: null },
+    webp: { image_url: null, small_image_url: null, large_image_url: null },
+  },
+  trailer: {
+    youtube_id: null,
+    url: null,
+    embed_url: null,
+    images: {
+      image_url: null,
+      small_image_url: null,
+      large_image_url: null,
+      medium_image_url: null,
+      maximum_image_url: null,
+    },
+  },
+  approved: false,
+  titles: [],
+  title: '',
+  title_english: null,
+  title_japanese: null,
+  title_synonyms: [],
+  type: AnimeType.movie,
+  source: null,
+  episodes: null,
+  status: AiringStatus.currently,
+  airing: false,
+  aired: {
+    from: null,
+    to: null,
+    prop: {
+      from: {
+        day: null,
+        month: null,
+        year: null,
+      },
+      to: {
+        day: null,
+        month: null,
+        year: null,
+      },
+    },
+    string: null,
+  },
+  duration: null,
+  rating: AnimeRating.G,
+  score: null,
+  scored_by: null,
+  rank: null,
+  popularity: null,
+  members: null,
+  favorites: null,
+  synopsis: null,
+  background: null,
+  season: Season.fall,
+  year: null,
+  broadcast: {
+    day: null,
+    time: null,
+    timezone: null,
+    string: null,
+  },
+  producers: [],
+  licensors: [],
+  studios: [],
+  genres: [],
+  explicit_genres: [],
+  themes: [],
+  demographics: [],
+};
+
+export default dataTemplate;
