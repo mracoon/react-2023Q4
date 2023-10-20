@@ -3,6 +3,68 @@ export type DataType = {
   data: RequestItem[];
 };
 
+export type RequestItem = {
+  mal_id: number;
+  url: string;
+  images: {
+    jpg: ImgType;
+    webp: ImgType;
+  };
+  trailer: {
+    youtube_id: Nullable;
+    url: Nullable;
+    embed_url: Nullable;
+    images: TrailerImagesType;
+  };
+  approved: boolean;
+  titles: TitlesType[];
+  title: string;
+  title_english: Nullable;
+  title_japanese: Nullable;
+  title_synonyms: string[];
+  type: Nullable<AnimeType>;
+  source: Nullable;
+  episodes: Nullable<number>;
+  status: Nullable<AiringStatus>;
+  airing: boolean;
+  aired: {
+    from: Nullable;
+    to: Nullable;
+    prop: {
+      from: DateType;
+      to: DateType;
+    };
+    string: Nullable;
+  };
+  duration: Nullable;
+  rating: Nullable<AnimeRating>;
+  score: Nullable<number>;
+  scored_by: Nullable<number>;
+  rank: Nullable<number>;
+  popularity: Nullable<number>;
+  members: Nullable<number>;
+  favorites: Nullable<number>;
+  synopsis: Nullable;
+  background: Nullable;
+  season: Nullable<Season>;
+  year: Nullable<number>;
+  broadcast: {
+    day: Nullable;
+    time: Nullable;
+    timezone: Nullable;
+    string: Nullable;
+  };
+  producers: CreatorsInfo[];
+  licensors: CreatorsInfo[];
+  studios: CreatorsInfo[];
+  genres: CreatorsInfo[];
+  explicit_genres: CreatorsInfo[];
+  themes: CreatorsInfo[];
+  demographics: CreatorsInfo[];
+};
+
+type Nullable<T = string> = T | null;
+
 type ReqPagination = {
   last_visible_page: number;
   has_next_page: boolean;
@@ -15,14 +77,14 @@ type ReqPagination = {
 };
 
 type ImgType = {
-  image_url: string;
-  small_image_url: string;
-  large_image_url: string;
+  image_url: Nullable;
+  small_image_url: Nullable;
+  large_image_url: Nullable;
 };
 
 interface TrailerImagesType extends ImgType {
-  medium_image_url: string;
-  maximum_image_url: string;
+  medium_image_url: Nullable;
+  maximum_image_url: Nullable;
 }
 
 type TitlesType = {
@@ -31,9 +93,9 @@ type TitlesType = {
 };
 
 type DateType = {
-  day: number | null;
-  month: number | null;
-  year: number | null;
+  day: Nullable<number>;
+  month: Nullable<number>;
+  year: Nullable<number>;
 };
 
 type CreatorsInfo = {
@@ -43,62 +105,33 @@ type CreatorsInfo = {
   url: string;
 };
 
-export type RequestItem = {
-  mal_id: number;
-  url: string;
-  images: {
-    jpg: ImgType;
-    webp: ImgType;
-  };
-  trailer: {
-    youtube_id: string;
-    url: string;
-    embed_url: string;
-    images: TrailerImagesType;
-  };
-  approved: boolean;
-  titles: TitlesType[];
-  title: string;
-  title_english: string;
-  title_japanese: string;
-  title_synonyms: string[];
-  type: string;
-  source: string;
-  episodes: number;
-  status: string;
-  airing: boolean;
-  aired: {
-    from: string;
-    to: null;
-    prop: {
-      from: DateType;
-      to: DateType;
-    };
-    string: string;
-  };
-  duration: string;
-  rating: string;
-  score: number;
-  scored_by: number;
-  rank: number;
-  popularity: number;
-  members: number;
-  favorites: number;
-  synopsis: string;
-  background: string;
-  season: null;
-  year: null;
-  broadcast: {
-    day: null;
-    time: null;
-    timezone: null;
-    string: null;
-  };
-  producers: CreatorsInfo[];
-  licensors: CreatorsInfo[];
-  studios: CreatorsInfo[];
-  genres: CreatorsInfo[];
-  explicit_genres: [];
-  themes: [];
-  demographics: [];
-};
+export enum AnimeType {
+  tv = 'TV',
+  ova = 'OVA',
+  movie = 'Movie',
+  special = 'Special',
+  ona = 'ONA',
+  music = 'Music',
+}
+
+export enum AiringStatus {
+  finished = 'Finished Airing',
+  currently = 'Currently Airing',
+  notYet = 'Not yet aired',
+}
+
+export enum AnimeRating {
+  G = 'G - All Ages',
+  PG = 'PG - Children',
+  PG13 = 'PG-13 - Teens 13 or older',
+  R = 'R - 17+ (violence & profanity)',
+  Rp = 'R+ - Mild Nudity',
+  Rx = 'Rx - Hentai',
+}
+
+export enum Season {
+  summer = 'summer',
+  winter = 'winter',
+  spring = 'spring',
+  fall = 'fall',
+}

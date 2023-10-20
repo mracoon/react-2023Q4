@@ -17,7 +17,7 @@ export default class Card extends Component<{
     return (
       <div className="card bg-base-100 shadow-xl max-w-xs w-full py-2">
         <figure className="h-52 items-center ">
-          <img src={src} alt={title} />
+          <img src={src ?? '../../2150693917.jpg'} alt={title} />
         </figure>
         <div className="card-body py-2">
           <h2 className="card-title">{title} </h2>
