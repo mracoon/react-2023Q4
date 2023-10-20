@@ -10,7 +10,8 @@
     "fix": "prettier --write ./src",
     "preview": "vite preview",
     "prepare": "husky install",
-    "test": "vitest run --coverage"
+    "test": "vitest run",
+    "cover": "vitest run --coverage"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -20,8 +21,10 @@
   "devDependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "@testing-library/dom": "^9.3.3",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.5.1",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
