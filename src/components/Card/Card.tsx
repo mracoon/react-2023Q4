@@ -1,23 +1,29 @@
-import { Component, ReactNode } from 'react';
+import { Component } from 'react';
 import './Card.css';
 import { BiTimeFive } from 'react-icons/bi';
 import { BsFillStarFill } from 'react-icons/bs';
 import { RequestItem } from '../../types/apiDataTypes';
+import { CardImg } from './CardImg';
 
 interface ICardProps {
   data: RequestItem;
 }
+
+interface ICardState {
+  loading: boolean;
+}
 export default class Card extends Component<ICardProps> {
-  render(): ReactNode {
+  state: ICardState = {
+    loading: true,
+  };
+
+  render() {
     const { data } = this.props;
-    const src = data.images.webp.image_url;
     const title = data.title_english || data.title;
     const { score, duration, synopsis } = data;
     return (
       <div className="card bg-base-100 shadow-xl max-w-xs w-full py-2">
-        <figure className="h-52 items-center ">
-          <img src={src ?? '../../2150693917.jpg'} alt={title} />
-        </figure>
+        <CardImg src={data.images.webp.image_url} title={title}></CardImg>
         <div className="card-body py-2">
           <h2 className="card-title">{title} </h2>
           <div className="flex justify-between items-center">
