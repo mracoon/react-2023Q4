@@ -32,7 +32,9 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
     localStorage.setItem('maracoon-serch-query', this.state.val.trim());
     this.props.loading(true);
     fetch(
-      `https://api.jikan.moe/v4/anime?page=1&sfw${this.state.val ? '&q=' + this.state.val : ''}`
+      `https://api.jikan.moe/v4/anime?page=1&sfw${
+        this.state.val ? '&q=' + this.state.val : ''
+      }`
     )
       .then((res) => {
         return res.json();

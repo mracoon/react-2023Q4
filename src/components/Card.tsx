@@ -36,7 +36,10 @@ export default class Card extends Component<{
           <p className="card-description">{description}</p>
           <div className="flex flex-wrap gap-1 h-11 overflow-hidden items-center">
             {data.genres.map((genre) => (
-              <div key={`genres-${genre.mal_id}`} className="badge badge-primary flex-auto">
+              <div
+                key={`genres-${genre.mal_id}`}
+                className="badge badge-primary flex-auto"
+              >
                 {genre.name}
               </div>
             ))}

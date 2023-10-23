@@ -24,4 +24,7 @@ const data: Partial<RequestItem>[] = [
     score: 8.78,
   },
 ];
-export const mockData: RequestItem[] = data.map((item) => ({ ...dataTemplate, ...item }));
+export const mockData: RequestItem[] = data.map((item) => ({
+  ...dataTemplate,
+  ...item,
+}));

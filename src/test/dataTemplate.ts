@@ -1,4 +1,10 @@
-import { AiringStatus, AnimeRating, AnimeType, RequestItem, Season } from '../types/apiDataTypes';
+import {
+  AiringStatus,
+  AnimeRating,
+  AnimeType,
+  RequestItem,
+  Season,
+} from '../types/apiDataTypes';
 
 const dataTemplate: RequestItem = {
   mal_id: 0,
