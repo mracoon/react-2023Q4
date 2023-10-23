@@ -1,16 +1,19 @@
 import { ChangeEvent, Component, KeyboardEvent, ReactNode } from 'react';
 import searchIcon from '../../assets/search.svg';
 import { DataType, RequestItem } from '../../types/apiDataTypes';
+import { ApiErrorMessage } from '../Error/ApiErrorMessage';
 
-type ISearchProps = {
+interface ISearchProps {
   change: (data: RequestItem[]) => void;
   loading: (isLoading: boolean) => void;
-};
+}
 
-type ISearchState = {
+interface ISearchState {
   val: string;
   data: RequestItem[];
-};
+  hasApiErr: boolean;
+  errMessage?: string;
+}
 
 export default class SearchBar extends Component<ISearchProps, ISearchState> {
   constructor(props: ISearchProps) {
@@ -18,6 +21,7 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
     this.state = {
       val: localStorage.getItem('maracoon-serch-query') ?? '',
       data: [],
+      hasApiErr: false,
     };
     this.handlerChange = this.handlerChange.bind(this);
     this.handlerEnter = this.handlerEnter.bind(this);
@@ -30,6 +34,7 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
 
   submitHandler() {
     localStorage.setItem('maracoon-serch-query', this.state.val.trim());
+    this.setState({ hasApiErr: false });
     this.props.loading(true);
     fetch(
       `https://api.jikan.moe/v4/anime?page=1&sfw${
@@ -41,6 +46,15 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
       })
       .then((data: DataType) => {
         this.props.change(data.data);
+      })
+      .catch((err: Error) => {
+        this.setState({
+          hasApiErr: true,
+          errMessage: `${err.name}: ${err.message}`,
+        });
+        this.props.change([]);
+      })
+      .finally(() => {
         this.props.loading(false);
       });
   }
@@ -68,7 +82,7 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
           <input
             className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-primary"
             type="search"
-            placeholder="What are you looking for?"
+            placeholder="Search anime"
             onChange={this.handlerChange}
             onKeyUp={this.handlerEnter}
             value={this.state.val}
@@ -80,6 +94,9 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
             Search
           </button>
         </div>
+        {this.state.hasApiErr && (
+          <ApiErrorMessage message={this.state.errMessage ?? ''} />
+        )}
       </>
     );
   }
