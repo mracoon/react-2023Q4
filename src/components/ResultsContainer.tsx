@@ -2,7 +2,9 @@ import { Component, ReactNode } from 'react';
 import Card from './Card/Card';
 import { RequestItem } from '../types/apiDataTypes';
 
-type IResultsContainerProps = { cardsData: RequestItem[] };
+interface IResultsContainerProps {
+  cardsData: RequestItem[];
+}
 
 export default class ResultsContainer extends Component<IResultsContainerProps> {
   render(): ReactNode {

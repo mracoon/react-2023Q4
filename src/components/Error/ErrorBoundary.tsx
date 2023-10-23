@@ -30,10 +30,10 @@ class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="flex flex-col justify-center items-center gap-4">
           <h1>Sorry.. there was an error</h1>
-          <p>{this.state.message}</p>{' '}
+          <p>{this.state.message}</p>
           <p>
             Try{' '}
-            <a className="link link-error" onClick={() => location.reload()}>
+            <a className="link link-primary" onClick={() => location.reload()}>
               refreshing
             </a>{' '}
             the page

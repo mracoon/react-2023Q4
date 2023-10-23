@@ -8,10 +8,7 @@ export default class ErrorBtn extends Component<
   Record<string, never>,
   IErrBtnState
 > {
-  constructor(props: Record<string, never>) {
-    super(props);
-    this.state = { hasError: false };
-  }
+  state: IErrBtnState = { hasError: false };
 
   makeErr() {
     this.setState({ hasError: true });

@@ -5,16 +5,16 @@ import ResultsContainer from './ResultsContainer';
 import ErrorBoundary from './Error/ErrorBoundary';
 import ErrorBtn from './Error/ErrorBtn';
 
-type ISearchPageState = { data: RequestItem[]; isLoading: boolean };
+interface ISearchPageState {
+  data: RequestItem[];
+  isLoading: boolean;
+}
 
 export default class SearchPage extends Component<
   Record<string, never>,
   ISearchPageState
 > {
-  constructor(props = {}) {
-    super(props);
-    this.state = { data: [], isLoading: false };
-  }
+  state: ISearchPageState = { data: [], isLoading: false };
 
   change(data: RequestItem[]) {
     this.setState({ data });

@@ -4,16 +4,15 @@ import { BiTimeFive } from 'react-icons/bi';
 import { BsFillStarFill } from 'react-icons/bs';
 import { RequestItem } from '../../types/apiDataTypes';
 
-export default class Card extends Component<{
+interface ICardProps {
   data: RequestItem;
-}> {
+}
+export default class Card extends Component<ICardProps> {
   render(): ReactNode {
     const { data } = this.props;
     const src = data.images.webp.image_url;
     const title = data.title_english || data.title;
-    const description = data.synopsis || 'no description';
-    const duration = data.duration;
-    const score = data.score;
+    const { score, duration, synopsis } = data;
     return (
       <div className="card bg-base-100 shadow-xl max-w-xs w-full py-2">
         <figure className="h-52 items-center ">
@@ -33,7 +32,7 @@ export default class Card extends Component<{
               </p>
             )}
           </div>
-          <p className="card-description">{description}</p>
+          <p className="card-description">{synopsis ?? 'no description'}</p>
           <div className="flex flex-wrap gap-1 h-11 overflow-hidden items-center">
             {data.genres.map((genre) => (
               <div
