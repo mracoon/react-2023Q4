@@ -1,6 +1,6 @@
 import { ChangeEvent, Component, KeyboardEvent, ReactNode } from 'react';
-import searchIcon from '../assets/search.svg';
-import { DataType, RequestItem } from '../types/apiDataTypes';
+import searchIcon from '../../assets/search.svg';
+import { DataType, RequestItem } from '../../types/apiDataTypes';
 
 type ISearchProps = {
   change: (data: RequestItem[]) => void;

@@ -1,9 +1,9 @@
 import { Component, ReactNode } from 'react';
-import SearchBar from './SearchBar';
+import SearchBar from './SearchBar/SearchBar';
 import { RequestItem } from '../types/apiDataTypes';
 import ResultsContainer from './ResultsContainer';
-import ErrorBoundary from './ErrorBoundary';
-import ErrorBtn from './ErrorBtn';
+import ErrorBoundary from './Error/ErrorBoundary';
+import ErrorBtn from './Error/ErrorBtn';
 
 type ISearchPageState = { data: RequestItem[]; isLoading: boolean };
 

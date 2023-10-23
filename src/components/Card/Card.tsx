@@ -2,7 +2,7 @@ import { Component, ReactNode } from 'react';
 import './Card.css';
 import { BiTimeFive } from 'react-icons/bi';
 import { BsFillStarFill } from 'react-icons/bs';
-import { RequestItem } from '../types/apiDataTypes';
+import { RequestItem } from '../../types/apiDataTypes';
 
 export default class Card extends Component<{
   data: RequestItem;
