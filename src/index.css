@@ -41,17 +41,18 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+  border: 1px solid rgb(242, 242, 242);
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: 0.25s;
+  height: 2.8rem;
+  text-transform: uppercase;
 }
 button:hover {
-  border-color: #646cff;
+  background-color: #522a64;
 }
 button:focus,
 button:focus-visible {
@@ -68,5 +69,22 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+.loader {
+  width: 65px;
+  height: 65px;
+  border: 8px solid #630df8;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: 1s linear loading infinite;
+}
+
+@keyframes loading {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }

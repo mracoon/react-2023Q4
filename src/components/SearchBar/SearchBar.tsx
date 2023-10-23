@@ -88,7 +88,7 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
             value={this.state.val}
           />
           <button
-            className="btn-primary text-white absolute right-2.5 bottom-2.5 font-medium rounded-lg text-sm px-4 py-2"
+            className="text-white absolute right-2.5 bottom-1 font-medium rounded-lg text-sm px-4 py-2 bg-indigo-600"
             onClick={this.submitHandler.bind(this)}
           >
             Search

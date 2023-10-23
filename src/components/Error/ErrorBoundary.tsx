@@ -33,7 +33,10 @@ class ErrorBoundary extends Component<Props, State> {
           <p>{this.state.message}</p>
           <p>
             Try{' '}
-            <a className="link link-primary" onClick={() => location.reload()}>
+            <a
+              className="cursor-pointer underline text-indigo-600"
+              onClick={() => location.reload()}
+            >
               refreshing
             </a>{' '}
             the page

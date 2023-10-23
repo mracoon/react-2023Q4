@@ -21,10 +21,8 @@ export class CardImg extends Component<ICardImgProps, ICardImgState> {
 
   render() {
     return (
-      <figure className="h-52 items-center ">
-        {this.state.isLoading && (
-          <span className="loading loading-dots loading-lg"></span>
-        )}
+      <figure className="flex justify-center h-52 items-center overflow-hidden">
+        {this.state.isLoading && <div className="loader"></div>}
         <img
           style={{ display: this.state.isLoading ? 'none' : 'block' }}
           src={this.props.src ?? '../../2150693917.jpg'}

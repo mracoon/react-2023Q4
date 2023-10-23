@@ -1,0 +1,13 @@
+.api-warn {
+  width: 100%;
+  padding: 16px;
+  background: #f4c620;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+.api-warn svg {
+  font-size: 1.5rem;
+}

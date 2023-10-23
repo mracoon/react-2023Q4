@@ -1,3 +1,11 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  background-color: white;
+  opacity: 1;
+}
+
 .card-description {
   color: #afadb5;
   text-align: justify;
@@ -17,4 +25,16 @@
 }
 .card-body .card-title {
   -webkit-line-clamp: 2;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+
+.genre {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  width: fit-content;
+  padding: 0 0.5rem;
+  border-radius: 2rem;
+  color: rgb(234, 234, 234);
 }

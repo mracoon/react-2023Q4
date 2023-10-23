@@ -35,9 +35,7 @@ export default class SearchPage extends Component<
             loading={this.loading.bind(this)}
           ></SearchBar>
 
-          {this.state.isLoading && (
-            <span className="loading loading-infinity w-40  text-primary"></span>
-          )}
+          {this.state.isLoading && <p className="loader"></p>}
           {!this.state.isLoading && (
             <ResultsContainer cardsData={this.state.data}></ResultsContainer>
           )}

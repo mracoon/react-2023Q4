@@ -21,7 +21,7 @@ export default class ErrorBtn extends Component<
     return (
       <>
         <button
-          className="btn bg-red-800 text-white  font-medium rounded-lg text-sm px-4 py-2"
+          className="bg-red-800 text-white font-medium rounded-lg text-sm px-4 py-2"
           onClick={this.makeErr.bind(this)}
         >
           Error
