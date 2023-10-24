@@ -36,5 +36,22 @@
   width: fit-content;
   padding: 0 0.5rem;
   border-radius: 2rem;
-  color: rgb(234, 234, 234);
+  color: #eaeaea;
+  background-color: #4f46e5;
+  flex: 1 1 auto;
+}
+
+.card-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  flex-grow: 0;
+}
+
+.card-info .icon {
+  display: inline-block;
+  fill: #1e40af;
+  width: 20px;
+  height: 20px;
 }

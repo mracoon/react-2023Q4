@@ -21,7 +21,7 @@ export class CardImg extends Component<ICardImgProps, ICardImgState> {
 
   render() {
     return (
-      <figure className="flex justify-center h-52 items-center overflow-hidden">
+      <div className="flex-center h-52 overflow-hidden">
         {this.state.isLoading && <div className="loader"></div>}
         <img
           style={{ display: this.state.isLoading ? 'none' : 'block' }}
@@ -31,7 +31,7 @@ export class CardImg extends Component<ICardImgProps, ICardImgState> {
             this.loadHandler.call(this);
           }}
         />
-      </figure>
+      </div>
     );
   }
 }

@@ -28,7 +28,7 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex flex-col justify-center items-center gap-4">
+        <div className="flex-center flex-col gap-4">
           <h1>Sorry.. there was an error</h1>
           <p>{this.state.message}</p>
           <p>

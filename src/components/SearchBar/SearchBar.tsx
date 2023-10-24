@@ -1,7 +1,7 @@
-import { ChangeEvent, Component, KeyboardEvent, ReactNode } from 'react';
-import searchIcon from '../../assets/search.svg';
+import { ChangeEvent, Component, KeyboardEvent } from 'react';
 import { DataType, RequestItem } from '../../types/apiDataTypes';
 import { ApiErrorMessage } from '../Error/ApiErrorMessage';
+import { AiOutlineSearch } from 'react-icons/ai';
 
 interface ISearchProps {
   change: (data: RequestItem[]) => void;
@@ -13,6 +13,7 @@ interface ISearchState {
   data: RequestItem[];
   hasApiErr: boolean;
   errMessage?: string;
+  isLoading: boolean;
 }
 
 export default class SearchBar extends Component<ISearchProps, ISearchState> {
@@ -22,6 +23,7 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
       val: localStorage.getItem('maracoon-serch-query') ?? '',
       data: [],
       hasApiErr: false,
+      isLoading: false,
     };
     this.handlerChange = this.handlerChange.bind(this);
     this.handlerEnter = this.handlerEnter.bind(this);
@@ -34,10 +36,10 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
 
   submitHandler() {
     localStorage.setItem('maracoon-serch-query', this.state.val.trim());
-    this.setState({ hasApiErr: false });
+    this.setState({ hasApiErr: false, isLoading: true });
     this.props.loading(true);
     fetch(
-      `https://api.jikan.moe/v4/anime?page=1&sfw${
+      `https://api.jikan.moe/v4/anime?page=1&sfw&limit=6&${
         this.state.val ? '&q=' + this.state.val : ''
       }`
     )
@@ -56,6 +58,7 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
       })
       .finally(() => {
         this.props.loading(false);
+        this.setState({ isLoading: false });
       });
   }
 
@@ -70,28 +73,26 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
     }
   }
 
-  render(): ReactNode {
+  render() {
     return (
       <>
-        <div className="relative w-full">
-          <img
-            src={searchIcon}
-            alt="serchIcon"
-            className="absolute inset-4 pointer-events-none w-4 h-4 text-gray-500 dark:text-gray-400"
-          />
+        <div className=" w-full flex gap-2 justify-between items-center">
           <input
-            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-primary"
+            className="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 disabled:cursor-wait"
             type="search"
             placeholder="Search anime"
             onChange={this.handlerChange}
             onKeyUp={this.handlerEnter}
             value={this.state.val}
+            disabled={this.state.isLoading}
           />
           <button
-            className="text-white absolute right-2.5 bottom-1 font-medium rounded-lg text-sm px-4 py-2 bg-indigo-600"
+            className="btn bg-indigo-600 disabled:cursor-wait"
+            disabled={this.state.isLoading}
             onClick={this.submitHandler.bind(this)}
           >
-            Search
+            <AiOutlineSearch className="block sm:hidden" />
+            <span className="hidden sm:block">Search</span>
           </button>
         </div>
         {this.state.hasApiErr && (
