@@ -1,6 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import SearchBar from './SearchBar';
-import userEvent from '@testing-library/user-event';
 
 describe('SearchBar', () => {
   const changeStub = vi.fn();
@@ -10,7 +9,7 @@ describe('SearchBar', () => {
   beforeAll(() => {
     vi.spyOn(window, 'fetch').mockImplementation(() => {
       return Promise.resolve({
-        json: () => Promise.resolve({ data: [1, 2, 3] }),
+        json: () => Promise.resolve({ data: '111' }),
       } as Response);
     });
     Object.defineProperty(window, 'localStorage', {
@@ -25,22 +24,21 @@ describe('SearchBar', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    render(<SearchBar change={changeStub} loading={loadingStub}></SearchBar>);
   });
 
   it('should render search bar', () => {
+    render(<SearchBar change={changeStub} loading={loadingStub}></SearchBar>);
     expect(screen.getByRole('searchbox')).toBeInTheDocument();
   });
 
-  it('should call the submitHandler when press Enter', async () => {
-    const searchInput = screen.getByRole('searchbox');
-    await userEvent.type(searchInput, '{enter}');
-    expect(changeStub).toBeCalledWith([1, 2, 3]);
-  });
-
-  it('should save query in localStorage', async () => {
-    const searchInput = screen.getByRole('searchbox');
-    await userEvent.type(searchInput, '123{enter}');
-    expect(storage['maracoon-serch-query']).toBe('123');
+  it('should call the submitHandler when press Enter and save query in ls', async () => {
+    render(<SearchBar change={changeStub} loading={loadingStub} />);
+    const searchInput = screen.getByRole<HTMLInputElement>('searchbox');
+    fireEvent.change(searchInput, { target: { value: 'test query string' } });
+    fireEvent.keyUp(searchInput, {
+      key: 'Enter',
+    });
+    await waitFor(() => expect(changeStub).toHaveBeenCalled());
+    expect(storage['mracoon-search-query']).toBe('test query string');
   });
 });

@@ -20,7 +20,7 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
   constructor(props: ISearchProps) {
     super(props);
     this.state = {
-      val: localStorage.getItem('maracoon-serch-query') ?? '',
+      val: localStorage.getItem('mracoon-search-query') ?? '',
       data: [],
       hasApiErr: false,
       isLoading: false,
@@ -35,7 +35,7 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
   }
 
   submitHandler() {
-    localStorage.setItem('maracoon-serch-query', this.state.val.trim());
+    localStorage.setItem('mracoon-search-query', this.state.val.trim());
     this.setState({ hasApiErr: false, isLoading: true });
     this.props.loading(true);
     fetch(
