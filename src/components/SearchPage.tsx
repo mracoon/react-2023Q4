@@ -3,7 +3,7 @@ import SearchBar from './SearchBar/SearchBar';
 import { RequestItem } from '../types/apiDataTypes';
 import ResultsContainer from './ResultsContainer';
 import ErrorBoundary from './Error/ErrorBoundary';
-import ErrorBtn from './Error/ErrorBtn';
+import ErrorBtn from './buttons/ErrorBtn';
 
 interface ISearchPageState {
   data: RequestItem[];

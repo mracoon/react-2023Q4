@@ -1,5 +1,6 @@
 import { Component, ReactNode } from 'react';
 import { BiErrorCircle } from 'react-icons/bi';
+import ResponsiveBtn from './ResponsiveBtn';
 
 interface IErrBtnState {
   hasError: boolean;
@@ -20,10 +21,12 @@ export default class ErrorBtn extends Component<
       throw new Error('test error');
     }
     return (
-      <button className="btn bg-red-800" onClick={this.makeErr.bind(this)}>
-        <BiErrorCircle className="block sm:hidden " />
-        <span className="hidden sm:block">ERROR</span>
-      </button>
+      <ResponsiveBtn
+        classes="bg-red-800"
+        text="ERROR"
+        icon={BiErrorCircle}
+        onClickHandler={this.makeErr.bind(this)}
+      />
     );
   }
 }

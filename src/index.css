@@ -39,28 +39,6 @@ h1 {
   line-height: 1.1;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid #f2f2f2;
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: 0.25s;
-  height: 2.8rem;
-
-  color: white;
-  line-height: 1.25rem;
-}
-button:hover {
-  background-color: #522a64;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -68,9 +46,6 @@ button:focus-visible {
   }
   a:hover {
     color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
   }
 }
 
@@ -101,9 +76,5 @@ button:focus-visible {
 @media (max-width: 640px) {
   #root {
     padding: 0.8rem;
-  }
-  .btn {
-    padding: 0.5rem;
-    font-size: 24px;
   }
 }
