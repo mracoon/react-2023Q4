@@ -15,7 +15,7 @@ export default class ResponsiveBtn extends Component<IRespBtnProps> {
         className={`btn ${this.props.classes ?? ''}`}
         onClick={this.props.onClickHandler}
       >
-        {<this.props.icon className="block sm:hidden " />}
+        {<this.props.icon className="block sm:hidden" />}
         <span className="hidden sm:block">{this.props.text}</span>
       </button>
     );

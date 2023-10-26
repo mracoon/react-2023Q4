@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { Component } from 'react';
 import Card from './Card/Card';
 import { RequestItem } from '../types/apiDataTypes';
 
@@ -7,7 +7,7 @@ interface IResultsContainerProps {
 }
 
 export default class ResultsContainer extends Component<IResultsContainerProps> {
-  render(): ReactNode {
+  render() {
     return (
       <div className="flex flex-wrap gap-2 justify-center">
         {this.props.cardsData.length ? (

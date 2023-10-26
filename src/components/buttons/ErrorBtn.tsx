@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { Component } from 'react';
 import { BiErrorCircle } from 'react-icons/bi';
 import ResponsiveBtn from './ResponsiveBtn';
 
@@ -16,7 +16,7 @@ export default class ErrorBtn extends Component<
     this.setState({ hasError: true });
   }
 
-  render(): ReactNode {
+  render() {
     if (this.state.hasError) {
       throw new Error('test error');
     }

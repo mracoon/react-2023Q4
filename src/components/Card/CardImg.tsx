@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Nullable } from 'vitest';
+import { Nullable } from '../../types/apiDataTypes';
 
 interface ICardImgProps {
   src: Nullable<string>;

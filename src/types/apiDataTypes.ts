@@ -63,7 +63,7 @@ export type RequestItem = {
   demographics: CreatorsInfo[];
 };
 
-type Nullable<T = string> = T | null;
+export type Nullable<T = string> = T | null;
 
 type ReqPagination = {
   last_visible_page: number;
