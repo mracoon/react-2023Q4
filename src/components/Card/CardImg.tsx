@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { Nullable } from '../../types/apiDataTypes';
 
 interface ICardImgProps {
@@ -6,32 +6,22 @@ interface ICardImgProps {
   title: string;
 }
 
-interface ICardImgState {
-  isLoading: boolean;
-}
+export const CardImg = ({ src, title }: ICardImgProps) => {
+  const [isLoading, setIsLoading] = useState(true);
 
-export class CardImg extends Component<ICardImgProps, ICardImgState> {
-  state: ICardImgState = {
-    isLoading: true,
+  const loadHandler = () => {
+    setIsLoading(false);
   };
 
-  loadHandler() {
-    this.setState({ isLoading: false });
-  }
-
-  render() {
-    return (
-      <div className="flex-center h-52 overflow-hidden">
-        {this.state.isLoading && <div className="loader"></div>}
-        <img
-          style={{ display: this.state.isLoading ? 'none' : 'block' }}
-          src={this.props.src ?? '../../2150693917.jpg'}
-          alt={this.props.title}
-          onLoad={() => {
-            this.loadHandler.call(this);
-          }}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div className="flex-center h-52 overflow-hidden">
+      {isLoading && <div className="loader"></div>}
+      <img
+        style={{ display: isLoading ? 'none' : 'block' }}
+        src={src ?? '../../2150693917.jpg'}
+        alt={title}
+        onLoad={loadHandler}
+      />
+    </div>
+  );
+};
