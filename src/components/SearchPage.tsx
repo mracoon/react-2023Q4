@@ -1,44 +1,26 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import SearchBar from './SearchBar/SearchBar';
-import { RequestItem } from '../types/apiDataTypes';
 import ResultsContainer from './ResultsContainer';
 import { ErrorBtn } from './buttons/ErrorBtn';
 
-interface ISearchPageState {
-  data: RequestItem[];
-  isLoading: boolean;
-}
+const SearchPage = () => {
+  const [searchVal, setSearchVal] = useState(
+    localStorage.getItem('mracoon-search-query') ?? ''
+  );
 
-export default class SearchPage extends Component<
-  Record<string, never>,
-  ISearchPageState
-> {
-  state: ISearchPageState = { data: [], isLoading: false };
+  const valChange = (newVal: string) => {
+    setSearchVal(newVal);
+  };
 
-  change(data: RequestItem[]) {
-    this.setState({ data });
-  }
-
-  loading(isLoading: boolean) {
-    this.setState({ isLoading });
-  }
-
-  render() {
-    return (
-      <div className="search-page-content flex flex-col items-center gap-4">
-        <div className="w-full flex justify-between items-center gap-2 relative">
-          <SearchBar
-            change={this.change.bind(this)}
-            loading={this.loading.bind(this)}
-          ></SearchBar>
-          <ErrorBtn></ErrorBtn>
-        </div>
-
-        {this.state.isLoading && <p className="loader"></p>}
-        {!this.state.isLoading && (
-          <ResultsContainer cardsData={this.state.data}></ResultsContainer>
-        )}
+  return (
+    <div className="search-page-content flex flex-col items-center gap-4">
+      <div className="w-full flex justify-between items-center gap-2 relative">
+        <SearchBar valChange={valChange}></SearchBar>
+        <ErrorBtn></ErrorBtn>
       </div>
-    );
-  }
-}
+      <ResultsContainer searchVal={searchVal}></ResultsContainer>
+    </div>
+  );
+};
+
+export default SearchPage;
