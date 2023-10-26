@@ -3,7 +3,6 @@ import SearchBar from './SearchBar';
 
 describe('SearchBar', () => {
   const changeStub = vi.fn();
-  const loadingStub = vi.fn();
   const storage: Record<string, string> = {};
 
   beforeAll(() => {
@@ -27,12 +26,12 @@ describe('SearchBar', () => {
   });
 
   it('should render search bar', () => {
-    render(<SearchBar change={changeStub} loading={loadingStub}></SearchBar>);
+    render(<SearchBar valChange={changeStub}></SearchBar>);
     expect(screen.getByRole('searchbox')).toBeInTheDocument();
   });
 
   it('should call the submitHandler when press Enter and save query in ls', async () => {
-    render(<SearchBar change={changeStub} loading={loadingStub} />);
+    render(<SearchBar valChange={changeStub} />);
     const searchInput = screen.getByRole<HTMLInputElement>('searchbox');
     fireEvent.change(searchInput, { target: { value: 'test query string' } });
     fireEvent.keyUp(searchInput, {
