@@ -2,7 +2,7 @@ import { Component } from 'react';
 import SearchBar from './SearchBar/SearchBar';
 import { RequestItem } from '../types/apiDataTypes';
 import ResultsContainer from './ResultsContainer';
-import ErrorBtn from './buttons/ErrorBtn';
+import { ErrorBtn } from './buttons/ErrorBtn';
 
 interface ISearchPageState {
   data: RequestItem[];
