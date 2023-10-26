@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import { IconType } from 'react-icons/lib';
 
 interface IRespBtnProps {
@@ -8,16 +7,16 @@ interface IRespBtnProps {
   onClickHandler: () => void;
 }
 
-export default class ResponsiveBtn extends Component<IRespBtnProps> {
-  render() {
-    return (
-      <button
-        className={`btn ${this.props.classes ?? ''}`}
-        onClick={this.props.onClickHandler}
-      >
-        {<this.props.icon className="block sm:hidden" />}
-        <span className="hidden sm:block">{this.props.text}</span>
-      </button>
-    );
-  }
-}
+const ResponsiveBtn = (props: IRespBtnProps) => {
+  return (
+    <button
+      className={`btn ${props.classes ?? ''}`}
+      onClick={props.onClickHandler}
+    >
+      {<props.icon className="block sm:hidden" />}
+      <span className="hidden sm:block">{props.text}</span>
+    </button>
+  );
+};
+
+export default ResponsiveBtn;
