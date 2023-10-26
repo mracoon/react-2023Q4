@@ -9,14 +9,7 @@ interface ICardProps {
   data: RequestItem;
 }
 
-interface ICardState {
-  loading: boolean;
-}
 export default class Card extends Component<ICardProps> {
-  state: ICardState = {
-    loading: true,
-  };
-
   render() {
     const { data } = this.props;
     const title = data.title_english || data.title;
