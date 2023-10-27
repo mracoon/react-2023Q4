@@ -1,22 +1,23 @@
-import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 export const Pagination = ({
   pageChange,
 }: {
   pageChange: (page: number) => void;
 }) => {
-  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = +(searchParams.get('page') ?? '1');
 
   const increment = () => {
     const newPage = page + 1;
-    setPage(page + 1);
     pageChange(newPage);
+    setSearchParams({ page: `${newPage}` });
   };
 
   const decrement = () => {
     const newPage = page - 1;
-    setPage(newPage);
     pageChange(newPage);
+    setSearchParams({ page: `${newPage}` });
   };
 
   return (

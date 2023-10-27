@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { DataType, RequestItem } from '../types/apiDataTypes';
 import { ApiErrorMessage } from './Error/ApiErrorMessage';
 import { CardsContainer } from './Card/CardsContainer';
+import { useOutletContext, Outlet } from 'react-router-dom';
 
 interface IApiErr {
   hasApiErr: boolean;
@@ -11,10 +12,12 @@ interface IResultsContainerProps {
   searchVal: string;
   page: number;
 }
-const ResultsContainer = ({ searchVal, page }: IResultsContainerProps) => {
+const ResultsContainer = () => {
   const [cardsData, setCardsData] = useState<RequestItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apierr, setApiErr] = useState<IApiErr>({ hasApiErr: false });
+
+  const { searchVal, page } = useOutletContext<IResultsContainerProps>();
 
   useEffect(() => {
     setIsLoading(true);
@@ -60,7 +63,10 @@ const ResultsContainer = ({ searchVal, page }: IResultsContainerProps) => {
       )}
 
       {!isLoading && !apierr.hasApiErr && (
-        <CardsContainer cardsData={cardsData}></CardsContainer>
+        <>
+          <CardsContainer cardsData={cardsData}></CardsContainer>
+          <Outlet></Outlet>
+        </>
       )}
     </div>
   );
