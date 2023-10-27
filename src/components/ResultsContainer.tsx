@@ -9,8 +9,9 @@ interface IApiErr {
 }
 interface IResultsContainerProps {
   searchVal: string;
+  page: number;
 }
-const ResultsContainer = ({ searchVal }: IResultsContainerProps) => {
+const ResultsContainer = ({ searchVal, page }: IResultsContainerProps) => {
   const [cardsData, setCardsData] = useState<RequestItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apierr, setApiErr] = useState<IApiErr>({ hasApiErr: false });
@@ -20,7 +21,9 @@ const ResultsContainer = ({ searchVal }: IResultsContainerProps) => {
     setApiErr({ hasApiErr: false });
     const ctrl = new AbortController();
     fetch(
-      `https://api.jikan.moe/v4/anime?page=1&sfw&limit=6${'&q=' + searchVal}`,
+      `https://api.jikan.moe/v4/anime?page=${page}&sfw&limit=6${
+        '&q=' + searchVal
+      }`,
       {
         signal: ctrl.signal,
       }
@@ -47,7 +50,7 @@ const ResultsContainer = ({ searchVal }: IResultsContainerProps) => {
     return () => {
       ctrl.abort();
     };
-  }, [searchVal]);
+  }, [searchVal, page]);
 
   return (
     <div className="flex flex-wrap flex-col gap-2 items-center w-full">
