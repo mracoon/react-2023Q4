@@ -1,12 +1,20 @@
 import './App.css';
-import SearchPage from './components/SearchPage';
 import ErrorBoundary from './components/Error/ErrorBoundary';
+import { Routes, Route } from 'react-router-dom';
+import { SearchPageLayout } from './components/SearchPageLayout';
+import ResultsContainer from './components/ResultsContainer';
 
 const App = () => {
   return (
     <>
       <ErrorBoundary>
-        <SearchPage></SearchPage>
+        <Routes>
+          <Route path="/" element={<SearchPageLayout />}>
+            <Route path="/" element={<ResultsContainer />}>
+              <Route path="/" element={<h1>detail</h1>}></Route>
+            </Route>
+          </Route>
+        </Routes>
       </ErrorBoundary>
     </>
   );
