@@ -19,6 +19,11 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+button:disabled {
+  pointer-events: none;
+  background-color: gray;
+  user-select: none;
+}
 
 @media (max-width: 640px) {
   .btn {
