@@ -12,7 +12,7 @@ const Card = ({ data }: ICardProps) => {
   const { score, duration, synopsis } = data;
 
   return (
-    <div className="card max-w-xs w-full py-2">
+    <>
       <CardImg src={data.images.webp.image_url} title={title}></CardImg>
       <div className="card-body flex flex-auto flex-col gap-2 py-2 px-8">
         <h2 className="card-title">{title} </h2>
@@ -37,7 +37,7 @@ const Card = ({ data }: ICardProps) => {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

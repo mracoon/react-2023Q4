@@ -14,12 +14,12 @@ export const SearchPageLayout = () => {
 
   type ContextType = { searchVal: string };
   return (
-    <div className="search-page-content flex flex-col items-center gap-4">
+    <>
       <div className="w-full flex justify-between items-center gap-2 relative">
         <SearchBar valChange={valChange}></SearchBar>
         <ErrorBtn></ErrorBtn>
       </div>
       <Outlet context={{ searchVal } satisfies ContextType} />
-    </div>
+    </>
   );
 };
