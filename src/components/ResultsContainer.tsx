@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { DataType, ReqPagination, RequestItem } from '../types/apiDataTypes';
+import {
+  DataType,
+  Nullable,
+  ReqPagination,
+  RequestItem,
+} from '../types/apiDataTypes';
 import { ApiErrorMessage } from './Error/ApiErrorMessage';
 import { CardsContainer } from './Card/CardsContainer';
 import { useOutletContext, Outlet, useSearchParams } from 'react-router-dom';
@@ -30,7 +35,7 @@ const ResultsContainer = () => {
     },
   });
   const { searchVal } = useOutletContext<IResultsContainerProps>();
-
+  const [detailCardId, setDetailCardId] = useState<Nullable<number>>(null);
   useEffect(() => {
     const pageQueryParameter = searchParams.get('page');
     if (!pageQueryParameter) {
@@ -80,20 +85,32 @@ const ResultsContainer = () => {
     };
   }, [searchVal, searchParams]);
 
-  return (
-    <div className="flex flex-wrap flex-col gap-2 items-center w-full">
-      {isLoading && <p className="loader"></p>}
-      {apierr.hasApiErr && (
-        <ApiErrorMessage message={apierr.errMessage ?? ''} />
-      )}
-      {!isLoading && !apierr.hasApiErr && (
-        <>
-          <CardsContainer cardsData={cardsData}></CardsContainer>
-        </>
-      )}
+  const cardClickHandler = (id: Nullable<number>) => {
+    setDetailCardId(id);
+  };
 
-      <Pagination pagInfo={pagInfo}></Pagination>
-      <Outlet></Outlet>
+  return (
+    <div className="flex gap-2 items-center w-full flex-grow">
+      <div
+        className="flex flex-wrap flex-col gap-2 items-center w-full h-responsive flex-grow"
+        onClick={() => {
+          cardClickHandler(null);
+        }}
+      >
+        {isLoading && <p className="loader"></p>}
+        {apierr.hasApiErr && (
+          <ApiErrorMessage message={apierr.errMessage ?? ''} />
+        )}
+        {!isLoading && !apierr.hasApiErr && (
+          <CardsContainer
+            cardsData={cardsData}
+            cardClickHandler={cardClickHandler}
+          ></CardsContainer>
+        )}
+
+        <Pagination pagInfo={pagInfo}></Pagination>
+      </div>
+      <Outlet context={detailCardId}></Outlet>
     </div>
   );
 };
