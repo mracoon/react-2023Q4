@@ -1,6 +1,7 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import ResponsiveBtn from '../buttons/ResponsiveBtn';
+import { useSearchParams } from 'react-router-dom';
 
 interface ISearchProps {
   valChange: (val: string) => void;
@@ -14,11 +15,13 @@ const SearchBar = ({ valChange }: ISearchProps) => {
   const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
     setVal(e.target.value);
   };
-
+  const [, setSearchParams] = useSearchParams();
   const submitHandler = () => {
     const searchVal = val.trim();
     localStorage.setItem('mracoon-search-query', searchVal);
+    localStorage.setItem('mracoon-pag-page', '1');
     valChange(searchVal);
+    setSearchParams({ page: '1' });
   };
 
   const handlerEnter = (e: KeyboardEvent<HTMLInputElement>) => {

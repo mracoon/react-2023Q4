@@ -65,7 +65,7 @@ export type RequestItem = {
 
 export type Nullable<T = string> = T | null;
 
-type ReqPagination = {
+export type ReqPagination = {
   last_visible_page: number;
   has_next_page: boolean;
   current_page: number;
