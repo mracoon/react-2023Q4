@@ -20,7 +20,7 @@ interface IResultsContainerProps {
 }
 const ResultsContainer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const [isNewQuery, setIsNewQuery] = useState(false);
   const [cardsData, setCardsData] = useState<RequestItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apierr, setApiErr] = useState<IApiErr>({ hasApiErr: false });
@@ -73,6 +73,7 @@ const ResultsContainer = () => {
         setCardsData(data.data);
         setIsLoading(false);
         setPagInfo(data.pagination);
+        setIsNewQuery(false);
       })
       .catch((err: Error) => {
         const isAbortErr = err.name === 'AbortError';
@@ -85,6 +86,7 @@ const ResultsContainer = () => {
           hasApiErr: true,
           errMessage: `${err.name}: ${err.message}`,
         });
+        setIsNewQuery(false);
       });
     return () => {
       ctrl.abort();
@@ -95,10 +97,14 @@ const ResultsContainer = () => {
     setDetailCardId(id);
   };
 
+  useEffect(() => {
+    setIsNewQuery(true);
+  }, [searchVal]);
+
   return (
     <div className="flex gap-2 items-center w-full flex-grow">
       <div
-        className="flex flex-wrap flex-col gap-2 items-center w-full h-responsive flex-grow"
+        className="flex flex-wrap flex-col gap-2 items-center w-full h-responsive flex-grow justify-between"
         onClick={() => {
           cardClickHandler(null);
         }}
@@ -108,13 +114,15 @@ const ResultsContainer = () => {
           <ApiErrorMessage message={apierr.errMessage ?? ''} />
         )}
         {!isLoading && !apierr.hasApiErr && (
-          <CardsContainer
-            cardsData={cardsData}
-            cardClickHandler={cardClickHandler}
-          ></CardsContainer>
+          <>
+            {' '}
+            <CardsContainer
+              cardsData={cardsData}
+              cardClickHandler={cardClickHandler}
+            ></CardsContainer>
+          </>
         )}
-
-        <Pagination pagInfo={pagInfo}></Pagination>
+        {!isNewQuery && <Pagination pagInfo={pagInfo}></Pagination>}
       </div>
       <Outlet context={detailCardId}></Outlet>
     </div>
