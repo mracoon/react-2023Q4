@@ -36,6 +36,15 @@ const ResultsContainer = () => {
   });
   const { searchVal } = useOutletContext<IResultsContainerProps>();
   const [detailCardId, setDetailCardId] = useState<Nullable<number>>(null);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    const newPage = +(searchParams.get('page') ?? 1);
+    if (page !== newPage) {
+      setPage(+(searchParams.get('page') ?? 1));
+    }
+  }, [searchParams, page]);
+
   useEffect(() => {
     const pageQueryParameter = searchParams.get('page');
     if (!pageQueryParameter) {
@@ -46,14 +55,11 @@ const ResultsContainer = () => {
   }, [searchParams, setSearchParams]);
 
   useEffect(() => {
-    const pageQueryParameter = searchParams.get('page');
-
-    const page1 = +(pageQueryParameter ?? 1);
     setIsLoading(true);
     setApiErr({ hasApiErr: false });
     const ctrl = new AbortController();
     fetch(
-      `https://api.jikan.moe/v4/anime?page=${page1}&sfw&limit=3${
+      `https://api.jikan.moe/v4/anime?page=${page}&sfw&limit=3${
         '&q=' + searchVal
       }`,
       {
@@ -83,7 +89,7 @@ const ResultsContainer = () => {
     return () => {
       ctrl.abort();
     };
-  }, [searchVal, searchParams]);
+  }, [searchVal, page]);
 
   const cardClickHandler = (id: Nullable<number>) => {
     setDetailCardId(id);
