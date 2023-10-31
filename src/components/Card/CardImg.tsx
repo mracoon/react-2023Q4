@@ -14,11 +14,12 @@ export const CardImg = ({ src, title }: ICardImgProps) => {
   };
 
   return (
-    <div className="flex-center h-52 overflow-hidden">
+    <div className="img-container flex-center h-52 overflow-hidden">
       {isLoading && <div className="loader"></div>}
+
       <img
         style={{ display: isLoading ? 'none' : 'block' }}
-        src={src ?? '../../2150693917.jpg'}
+        src={src ?? ''}
         alt={title}
         onLoad={loadHandler}
       />

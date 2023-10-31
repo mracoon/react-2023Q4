@@ -1,10 +1,4 @@
-import {
-  AiringStatus,
-  AnimeRating,
-  AnimeType,
-  RequestItem,
-  Season,
-} from '../types/apiDataTypes';
+import { AnimeRating, RequestItem, Season } from '../types/apiDataTypes';
 
 const dataTemplate: RequestItem = {
   mal_id: 0,
@@ -31,10 +25,10 @@ const dataTemplate: RequestItem = {
   title_english: null,
   title_japanese: null,
   title_synonyms: [],
-  type: AnimeType.movie,
+  type: null,
   source: null,
   episodes: null,
-  status: AiringStatus.currently,
+  status: null,
   airing: false,
   aired: {
     from: null,
