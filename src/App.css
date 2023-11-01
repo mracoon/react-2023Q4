@@ -28,5 +28,13 @@ body::before {
 }
 
 .h-responsive {
+  height: calc(-5rem + 100vh + -54px);
+}
+.h-r {
   min-height: calc(-5rem + 100vh + -54px);
+}
+
+.sticky-0 {
+  position: sticky;
+  top: 0;
 }

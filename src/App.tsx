@@ -2,8 +2,8 @@ import './App.css';
 import ErrorBoundary from './components/Error/ErrorBoundary';
 import { Routes, Route } from 'react-router-dom';
 import { SearchPageLayout } from './components/SearchPageLayout';
-import ResultsContainer from './components/ResultsContainer';
-import { Details } from './components/Details';
+import ResultsContainer from './components/ResultsContainer/ResultsContainer';
+import { Details } from './components/Details/Details';
 
 const App = () => {
   return (

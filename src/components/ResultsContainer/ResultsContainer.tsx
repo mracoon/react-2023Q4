@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
+import './resultsContainer.css';
 import {
   DataType,
   Nullable,
   ReqPagination,
   RequestItem,
-} from '../types/apiDataTypes';
-import { ApiErrorMessage } from './Error/ApiErrorMessage';
-import { CardsContainer } from './Card/CardsContainer';
+} from '../../types/apiDataTypes';
+import { ApiErrorMessage } from '../Error/ApiErrorMessage';
+import { CardsContainer } from '../Card/CardsContainer';
 import { useOutletContext, Outlet, useSearchParams } from 'react-router-dom';
-import { Pagination } from './pagination/Pagination';
+import { Pagination } from '../pagination/Pagination';
 
 interface IApiErr {
   hasApiErr: boolean;
@@ -59,7 +60,7 @@ const ResultsContainer = () => {
     setApiErr({ hasApiErr: false });
     const ctrl = new AbortController();
     fetch(
-      `https://api.jikan.moe/v4/anime?page=${page}&sfw&limit=3${
+      `https://api.jikan.moe/v4/anime?page=${page}&sfw&limit=13${
         '&q=' + searchVal
       }`,
       {
@@ -99,12 +100,13 @@ const ResultsContainer = () => {
 
   useEffect(() => {
     setIsNewQuery(true);
+    setDetailCardId(null);
   }, [searchVal]);
 
   return (
-    <div className="flex gap-2 items-center w-full flex-grow">
+    <div className="results-container flex gap-2 items-start w-full flex-grow overflow-y-auto h-responsive pr-4">
       <div
-        className="flex flex-wrap flex-col gap-2 items-center w-full h-responsive flex-grow justify-between"
+        className="flex  flex-col gap-2 items-center w-full flex-grow justify-between sticky top-0 h-r"
         onClick={() => {
           cardClickHandler(null);
         }}
@@ -124,7 +126,7 @@ const ResultsContainer = () => {
         )}
         {!isNewQuery && <Pagination pagInfo={pagInfo}></Pagination>}
       </div>
-      <Outlet context={detailCardId}></Outlet>
+      <Outlet context={{ detailCardId, cardClickHandler }}></Outlet>
     </div>
   );
 };

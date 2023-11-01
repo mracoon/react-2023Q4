@@ -23,13 +23,17 @@
   overflow: hidden;
   height: 56px;
 }
-.card-body .card-title {
+.card-title {
   -webkit-line-clamp: 2;
   font-size: 1.25rem;
   line-height: 1.75rem;
   font-weight: 600;
 }
 
+.details .card-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
 .genre {
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -57,5 +61,6 @@
 }
 
 .details .img-container {
-  height: 315px;
+  max-height: 315px;
+  height: fit-content;
 }
