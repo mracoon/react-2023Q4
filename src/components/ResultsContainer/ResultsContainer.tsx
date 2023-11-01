@@ -10,6 +10,7 @@ import { ApiErrorMessage } from '../Error/ApiErrorMessage';
 import { CardsContainer } from '../Card/CardsContainer';
 import { useOutletContext, Outlet, useSearchParams } from 'react-router-dom';
 import { Pagination } from '../pagination/Pagination';
+import { Limit } from '../Limit/Limit';
 
 interface IApiErr {
   hasApiErr: boolean;
@@ -22,6 +23,10 @@ interface IResultsContainerProps {
 const ResultsContainer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isNewQuery, setIsNewQuery] = useState(false);
+  const [limit, setLimit] = useState(
+    +(localStorage.getItem('mracoon-items-limit') ?? 3)
+  );
+
   const [cardsData, setCardsData] = useState<RequestItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apierr, setApiErr] = useState<IApiErr>({ hasApiErr: false });
@@ -60,7 +65,7 @@ const ResultsContainer = () => {
     setApiErr({ hasApiErr: false });
     const ctrl = new AbortController();
     fetch(
-      `https://api.jikan.moe/v4/anime?page=${page}&sfw&limit=13${
+      `https://api.jikan.moe/v4/anime?page=${page}&sfw&limit=${limit}${
         '&q=' + searchVal
       }`,
       {
@@ -92,7 +97,7 @@ const ResultsContainer = () => {
     return () => {
       ctrl.abort();
     };
-  }, [searchVal, page]);
+  }, [searchVal, page, limit]);
 
   const cardClickHandler = (id: Nullable<number>) => {
     setDetailCardId(id);
@@ -103,6 +108,11 @@ const ResultsContainer = () => {
     setDetailCardId(null);
   }, [searchVal]);
 
+  const applyLimit = (newlimit: number) => {
+    setLimit(newlimit);
+    setSearchParams({ page: '1' });
+    localStorage.setItem('mracoon-items-limit', `${newlimit}`);
+  };
   return (
     <div className="results-container flex gap-2 items-start w-full flex-grow overflow-y-auto h-responsive pr-4">
       <div
@@ -111,20 +121,29 @@ const ResultsContainer = () => {
           cardClickHandler(null);
         }}
       >
-        {isLoading && <p className="loader"></p>}
+        {isLoading && (
+          <div className="flex-grow">
+            <p className="loader"></p>
+          </div>
+        )}
         {apierr.hasApiErr && (
           <ApiErrorMessage message={apierr.errMessage ?? ''} />
         )}
+
         {!isLoading && !apierr.hasApiErr && (
           <>
-            {' '}
             <CardsContainer
               cardsData={cardsData}
               cardClickHandler={cardClickHandler}
             ></CardsContainer>
           </>
         )}
-        {!isNewQuery && <Pagination pagInfo={pagInfo}></Pagination>}
+        {!isNewQuery && (
+          <>
+            <Pagination pagInfo={pagInfo}></Pagination>
+            <Limit applyLimit={applyLimit}></Limit>
+          </>
+        )}
       </div>
       <Outlet context={{ detailCardId, cardClickHandler }}></Outlet>
     </div>

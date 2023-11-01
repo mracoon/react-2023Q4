@@ -9,7 +9,7 @@ export const CardsContainer = ({
   cardClickHandler: (id: Nullable<number>) => void;
 }) => {
   return (
-    <div className="flex flex-wrap gap-2 justify-center w-full">
+    <div className="flex flex-wrap gap-2 justify-center w-full flex-grow">
       {cardsData.length ? (
         cardsData.map((data) => (
           <div

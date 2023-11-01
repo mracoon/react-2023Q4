@@ -4,6 +4,7 @@
   border-radius: 1rem;
   background-color: white;
   opacity: 1;
+  height: 445px;
 }
 
 .card-description {
@@ -63,4 +64,5 @@
 .details .img-container {
   max-height: 315px;
   height: fit-content;
+  overflow: visible;
 }
