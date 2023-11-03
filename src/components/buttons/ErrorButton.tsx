@@ -1,16 +1,16 @@
 import { Component } from 'react';
 import { BiErrorCircle } from 'react-icons/bi';
-import ResponsiveBtn from './ResponsiveBtn';
+import ResponsiveButton from './ResponsiveButton';
 
-interface IErrBtnState {
+interface IErrorButtonState {
   hasError: boolean;
 }
 
-export default class ErrorBtn extends Component<
+export default class ErrorButton extends Component<
   Record<string, never>,
-  IErrBtnState
+  IErrorButtonState
 > {
-  state: IErrBtnState = { hasError: false };
+  state: IErrorButtonState = { hasError: false };
 
   makeErr() {
     this.setState({ hasError: true });
@@ -21,7 +21,7 @@ export default class ErrorBtn extends Component<
       throw new Error('test error');
     }
     return (
-      <ResponsiveBtn
+      <ResponsiveButton
         classes="bg-red-800"
         text="ERROR"
         icon={BiErrorCircle}

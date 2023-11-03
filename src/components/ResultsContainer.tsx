@@ -3,91 +3,92 @@ import { DataType, RequestItem } from '../types/apiDataTypes';
 import { CardsContainer } from './Card/CardsContainer';
 import { ApiErrorMessage } from './Error/ApiErrorMessage';
 
-interface IApiErr {
-  hasApiErr: boolean;
-  errMessage?: string;
+interface IApiError {
+  hasApiError: boolean;
+  errorMessage?: string;
 }
 interface IResultsContainerProps {
-  searchVal: string;
+  searchValue: string;
 }
 
 interface IResultsContainerState {
   cardsData: RequestItem[];
   isLoading: boolean;
-  apierr: IApiErr;
+  apiError: IApiError;
 }
 
 export default class ResultsContainer extends Component<
   IResultsContainerProps,
   IResultsContainerState
 > {
-  ctrl: AbortController;
+  controller: AbortController;
   constructor(props: IResultsContainerProps) {
     super(props);
     this.state = {
       cardsData: [],
       isLoading: false,
-      apierr: { hasApiErr: false },
+      apiError: { hasApiError: false },
     };
-    this.ctrl = new AbortController();
+    this.controller = new AbortController();
   }
-  getNewSearchRes() {
-    this.setState({ isLoading: true, apierr: { hasApiErr: false } });
+  getNewSearchResults() {
+    this.setState({ isLoading: true, apiError: { hasApiError: false } });
 
     fetch(
       `https://api.jikan.moe/v4/anime?page=1&sfw&limit=6${
-        '&q=' + this.props.searchVal
+        '&q=' + this.props.searchValue
       }`,
       {
-        signal: this.ctrl.signal,
+        signal: this.controller.signal,
       }
     )
-      .then((res) => {
-        return res.json();
+      .then((response) => {
+        return response.json();
       })
       .then((data: DataType) => {
         this.setState({ cardsData: data.data, isLoading: false });
       })
-      .catch((err: Error) => {
-        const isAbortErr = err.name === 'AbortError';
+      .catch((error: Error) => {
+        const isAbortErr = error.name === 'AbortError';
         this.setState({ cardsData: [], isLoading: isAbortErr });
         if (isAbortErr) {
           return;
         }
         this.setState({
-          apierr: {
-            hasApiErr: true,
-            errMessage: `${err.name}: ${err.message}`,
+          apiError: {
+            hasApiError: true,
+            errorMessage: `${error.name}: ${error.message}`,
           },
         });
       });
   }
 
   componentDidMount() {
-    this.getNewSearchRes();
+    this.getNewSearchResults();
   }
+
   componentDidUpdate(prevProps: Readonly<IResultsContainerProps>): void {
     if (prevProps !== this.props) {
-      this.ctrl.abort();
-      this.ctrl = new AbortController();
-      this.getNewSearchRes.call(this);
+      this.controller.abort();
+      this.controller = new AbortController();
+      this.getNewSearchResults.call(this);
     }
   }
 
   componentWillUnmount() {
-    this.ctrl.abort();
-    this.ctrl = new AbortController();
+    this.controller.abort();
+    this.controller = new AbortController();
   }
 
   render() {
     return (
       <div className="flex flex-wrap flex-col gap-2 items-center w-full">
         {this.state.isLoading && <p className="loader"></p>}
-        {this.state.apierr.hasApiErr && (
-          <ApiErrorMessage message={this.state.apierr.errMessage ?? ''} />
+        {this.state.apiError.hasApiError && (
+          <ApiErrorMessage message={this.state.apiError.errorMessage ?? ''} />
         )}
 
-        {!this.state.isLoading && !this.state.apierr.hasApiErr && (
+        {!this.state.isLoading && !this.state.apiError.hasApiError && (
           <CardsContainer cardsData={this.state.cardsData}></CardsContainer>
         )}
       </div>

@@ -1,5 +1,5 @@
 export type DataType = {
-  pagination: ReqPagination;
+  pagination: RequestPagination;
   data: RequestItem[];
 };
 
@@ -65,7 +65,7 @@ export type RequestItem = {
 
 export type Nullable<T = string> = T | null;
 
-type ReqPagination = {
+export type RequestPagination = {
   last_visible_page: number;
   has_next_page: boolean;
   current_page: number;

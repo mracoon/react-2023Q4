@@ -1,43 +1,43 @@
 import { ChangeEvent, Component, KeyboardEvent } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
-import ResponsiveBtn from '../buttons/ResponsiveBtn';
+import ResponsiveBtn from '../buttons/ResponsiveButton';
 
 interface ISearchProps {
-  valChange: (val: string) => void;
+  valChange: (value: string) => void;
 }
 
 interface ISearchState {
-  val: string;
+  value: string;
 }
 
 export default class SearchBar extends Component<ISearchProps, ISearchState> {
   constructor(props: ISearchProps) {
     super(props);
     this.state = {
-      val: localStorage.getItem('mracoon-search-query') ?? '',
+      value: localStorage.getItem('mracoon-search-query') ?? '',
     };
     this.handlerChange = this.handlerChange.bind(this);
     this.handlerEnter = this.handlerEnter.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
   }
 
-  handlerChange(e: ChangeEvent<HTMLInputElement>) {
-    this.setState({ val: e.target.value });
+  handlerChange(event: ChangeEvent<HTMLInputElement>) {
+    this.setState({ value: event.target.value });
   }
 
   submitHandler() {
-    const searchVal = this.state.val.trim();
-    localStorage.setItem('mracoon-search-query', searchVal);
-    this.props.valChange(searchVal);
+    const searchValue = this.state.value.trim();
+    localStorage.setItem('mracoon-search-query', searchValue);
+    this.props.valChange(searchValue);
   }
 
   componentDidMount(): void {
     this.submitHandler();
   }
 
-  handlerEnter(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Enter' && e.target instanceof HTMLInputElement) {
-      this.setState({ val: e.target.value });
+  handlerEnter(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Enter' && event.target instanceof HTMLInputElement) {
+      this.setState({ value: event.target.value });
       this.submitHandler.call(this);
     }
   }
@@ -51,7 +51,7 @@ export default class SearchBar extends Component<ISearchProps, ISearchState> {
           placeholder="Search anime"
           onChange={this.handlerChange}
           onKeyUp={this.handlerEnter}
-          value={this.state.val}
+          value={this.state.value}
         />
         <ResponsiveBtn
           classes="bg-indigo-600"

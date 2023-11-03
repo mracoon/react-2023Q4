@@ -1,10 +1,10 @@
 import { Component } from 'react';
 import SearchBar from './SearchBar/SearchBar';
 import ResultsContainer from './ResultsContainer';
-import ErrorBtn from './buttons/ErrorBtn';
+import ErrorButton from './buttons/ErrorButton';
 
 interface ISearchPageState {
-  searchVal: string;
+  searchValue: string;
 }
 
 export default class SearchPage extends Component<
@@ -12,11 +12,11 @@ export default class SearchPage extends Component<
   ISearchPageState
 > {
   state: ISearchPageState = {
-    searchVal: localStorage.getItem('mracoon-search-query') ?? '',
+    searchValue: localStorage.getItem('mracoon-search-query') ?? '',
   };
 
-  valChange(newVal: string) {
-    this.setState({ searchVal: newVal });
+  valChange(newValue: string) {
+    this.setState({ searchValue: newValue });
   }
 
   render() {
@@ -24,9 +24,11 @@ export default class SearchPage extends Component<
       <div className="search-page-content flex flex-col items-center gap-4">
         <div className="w-full flex justify-between items-center gap-2 relative">
           <SearchBar valChange={this.valChange.bind(this)}></SearchBar>
-          <ErrorBtn></ErrorBtn>
+          <ErrorButton></ErrorButton>
         </div>
-        <ResultsContainer searchVal={this.state.searchVal}></ResultsContainer>
+        <ResultsContainer
+          searchValue={this.state.searchValue}
+        ></ResultsContainer>
       </div>
     );
   }

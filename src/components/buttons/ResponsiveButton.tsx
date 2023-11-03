@@ -1,14 +1,14 @@
 import { Component } from 'react';
 import { IconType } from 'react-icons/lib';
 
-interface IRespBtnProps {
+interface IResponsiveButtonProps {
   classes?: string;
   text: string;
   icon: IconType;
   onClickHandler: () => void;
 }
 
-export default class ResponsiveBtn extends Component<IRespBtnProps> {
+export default class ResponsiveButton extends Component<IResponsiveButtonProps> {
   render() {
     return (
       <button
