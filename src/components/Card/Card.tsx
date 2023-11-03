@@ -1,12 +1,9 @@
 import './Card.css';
 import { BiTimeFive } from 'react-icons/bi';
 import { BsFillStarFill } from 'react-icons/bs';
-import { RequestItem } from '../../types/apiDataTypes';
 import { CardImg } from './CardImg';
+import { ICardProps } from './CardTypes';
 
-interface ICardProps {
-  data: RequestItem;
-}
 const Card = ({ data }: ICardProps) => {
   const title = data.title_english || data.title;
   const { score, duration, synopsis } = data;

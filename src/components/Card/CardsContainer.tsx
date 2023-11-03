@@ -1,13 +1,10 @@
-import { Nullable, RequestItem } from '../../types/apiDataTypes';
 import Card from './Card';
+import { ICardsContainerProps } from './CardTypes';
 
 export const CardsContainer = ({
   cardsData,
   cardClickHandler,
-}: {
-  cardsData: RequestItem[];
-  cardClickHandler: (id: Nullable<number>) => void;
-}) => {
+}: ICardsContainerProps) => {
   return (
     <div className="flex flex-wrap gap-2 justify-center w-full flex-grow">
       {cardsData.length ? (
@@ -15,8 +12,8 @@ export const CardsContainer = ({
           <div
             className="card max-w-xs w-full py-2"
             key={data.mal_id}
-            onClick={(e: React.MouseEvent) => {
-              e.stopPropagation();
+            onClick={(event: React.MouseEvent) => {
+              event.stopPropagation();
               cardClickHandler(data.mal_id);
             }}
           >

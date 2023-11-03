@@ -1,10 +1,5 @@
 import { useState } from 'react';
-import { Nullable } from '../../types/apiDataTypes';
-
-interface ICardImgProps {
-  src: Nullable<string>;
-  title: string;
-}
+import { ICardImgProps } from './CardTypes';
 
 export const CardImg = ({ src, title }: ICardImgProps) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -16,7 +11,6 @@ export const CardImg = ({ src, title }: ICardImgProps) => {
   return (
     <div className="img-container flex-center h-52 overflow-hidden">
       {isLoading && <div className="loader"></div>}
-
       <img
         style={{ display: isLoading ? 'none' : 'block' }}
         src={src ?? ''}
