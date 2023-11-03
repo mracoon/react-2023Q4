@@ -1,13 +1,6 @@
-import { IconType } from 'react-icons/lib';
+import { IResponsiveButtonProps } from './buttonTypes';
 
-interface IRespBtnProps {
-  classes?: string;
-  text: string;
-  icon: IconType;
-  onClickHandler: () => void;
-}
-
-const ResponsiveBtn = (props: IRespBtnProps) => {
+const ResponsiveBtn = (props: IResponsiveButtonProps) => {
   return (
     <button
       className={`btn ${props.classes ?? ''}`}

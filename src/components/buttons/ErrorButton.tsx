@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { BiErrorCircle } from 'react-icons/bi';
-import ResponsiveBtn from './ResponsiveBtn';
+import ResponsiveButton from './ResponsiveButton';
 
-export const ErrorBtn = () => {
+export const ErrorButton = () => {
   const [hasError, setHasError] = useState(false);
 
-  function makeErr() {
+  function makeError() {
     setHasError(true);
   }
 
@@ -14,11 +14,11 @@ export const ErrorBtn = () => {
   }
 
   return (
-    <ResponsiveBtn
+    <ResponsiveButton
       classes="bg-red-800"
       text="ERROR"
       icon={BiErrorCircle}
-      onClickHandler={makeErr}
+      onClickHandler={makeError}
     />
   );
 };
