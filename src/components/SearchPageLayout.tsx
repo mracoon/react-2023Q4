@@ -1,25 +1,25 @@
 import { useState } from 'react';
 import SearchBar from './SearchBar/SearchBar';
-import { ErrorBtn } from './buttons/ErrorBtn';
+import { ErrorButton } from './buttons/ErrorButton';
 import { Outlet } from 'react-router-dom';
 
 export const SearchPageLayout = () => {
-  const [searchVal, setSearchVal] = useState(
+  const [searchValue, setSearchValue] = useState(
     localStorage.getItem('mracoon-search-query') ?? ''
   );
 
-  const valChange = (newVal: string) => {
-    setSearchVal(newVal);
+  const valueChange = (newValue: string) => {
+    setSearchValue(newValue);
   };
 
-  type ContextType = { searchVal: string };
+  type ContextType = { searchValue: string };
   return (
     <>
       <div className="w-full flex justify-between items-center gap-2 relative">
-        <SearchBar valChange={valChange}></SearchBar>
-        <ErrorBtn></ErrorBtn>
+        <SearchBar valueChange={valueChange}></SearchBar>
+        <ErrorButton />
       </div>
-      <Outlet context={{ searchVal } satisfies ContextType} />
+      <Outlet context={{ searchValue } satisfies ContextType} />
     </>
   );
 };

@@ -3,7 +3,7 @@ import './resultsContainer.css';
 import {
   DataType,
   Nullable,
-  ReqPagination,
+  RequestPagination,
   RequestItem,
 } from '../../types/apiDataTypes';
 import { ApiErrorMessage } from '../Error/ApiErrorMessage';
@@ -11,37 +11,30 @@ import { CardsContainer } from '../Card/CardsContainer';
 import { useOutletContext, Outlet, useSearchParams } from 'react-router-dom';
 import { Pagination } from '../pagination/Pagination';
 import { Limit } from '../Limit/Limit';
-import { BASE_URL } from '../../utils/constants';
+import { getApiData } from '../../utils/API';
+import { paginationTemplate } from '../../test/paginationTemplate';
 
-export interface IApiErr {
-  hasApiErr: boolean;
-  errMessage?: string;
+export interface IApiError {
+  hasApiError: boolean;
+  errorMessage?: string;
 }
 interface IResultsContainerProps {
-  searchVal: string;
+  searchValue: string;
   page: number;
 }
 const ResultsContainer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isNewQuery, setIsNewQuery] = useState(false);
   const [limit, setLimit] = useState(
-    +(localStorage.getItem('mracoon-items-limit') ?? 3)
+    +(localStorage.getItem('mracoon-items-limit') ?? 1)
   );
 
   const [cardsData, setCardsData] = useState<RequestItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [apierr, setApiErr] = useState<IApiErr>({ hasApiErr: false });
-  const [pagInfo, setPagInfo] = useState<ReqPagination>({
-    last_visible_page: 1,
-    has_next_page: false,
-    current_page: 1,
-    items: {
-      count: 0,
-      total: 0,
-      per_page: 0,
-    },
-  });
-  const { searchVal } = useOutletContext<IResultsContainerProps>();
+  const [apiError, setApiError] = useState<IApiError>({ hasApiError: false });
+  const [paginationInfo, setPaginationInfo] =
+    useState<RequestPagination>(paginationTemplate);
+  const { searchValue } = useOutletContext<IResultsContainerProps>();
   const [detailCardId, setDetailCardId] = useState<Nullable<number>>(null);
   const [page, setPage] = useState(
     +(localStorage.getItem('mracoon-pag-page') ?? '1')
@@ -57,55 +50,48 @@ const ResultsContainer = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    setApiErr({ hasApiErr: false });
-    const ctrl = new AbortController();
-    fetch(`${BASE_URL}?page=${page}&sfw&limit=${limit}${'&q=' + searchVal}`, {
-      signal: ctrl.signal,
-    })
-      .then((response) => {
-        if (response.status >= 400 && response.status <= 600) {
-          throw new Error(response.statusText);
-        }
-        return response.json();
-      })
-      .then((data: DataType) => {
-        setCardsData(data.data);
+    setApiError({ hasApiError: false });
+    const controller = new AbortController();
+    getApiData<DataType>(
+      controller,
+      `?page=${page}&sfw&limit=${limit}${'&q=' + searchValue}`,
+      setIsLoading,
+      setApiError
+    )
+      .then((data) => {
+        setCardsData(data?.data ?? []);
         setIsLoading(false);
-        setPagInfo(data.pagination);
+        setPaginationInfo(data?.pagination ?? paginationTemplate);
         setIsNewQuery(false);
       })
-      .catch((err: Error) => {
-        const isAbortErr = err.name === 'AbortError';
+      .catch(() => {
         setCardsData([]);
-        setIsLoading(isAbortErr);
-        if (isAbortErr) {
-          return;
-        }
-        setApiErr({
-          hasApiErr: true,
-          errMessage: `${err.name}: ${err.message}`,
-        });
-        setIsNewQuery(false);
+        setIsNewQuery(true);
       });
+
     return () => {
-      ctrl.abort();
+      controller.abort();
     };
-  }, [searchVal, page, limit]);
+  }, [searchValue, page, limit]);
 
   const cardClickHandler = (id: Nullable<number>) => {
     setDetailCardId(id);
   };
 
   useEffect(() => {
-    setIsNewQuery(true);
     setDetailCardId(null);
-  }, [searchVal]);
+    setIsNewQuery(true);
+  }, [searchValue]);
 
   const applyLimit = (newlimit: number) => {
-    setLimit(newlimit);
-    setSearchParams({ page: '1' });
-    localStorage.setItem('mracoon-items-limit', `${newlimit}`);
+    if (limit !== newlimit) {
+      setLimit(newlimit);
+      setIsNewQuery(true);
+      setSearchParams({ page: '1' });
+      localStorage.setItem('mracoon-items-limit', `${newlimit}`);
+    }
   };
+
   return (
     <div className="results-container flex gap-2 items-start w-full flex-grow overflow-y-auto h-responsive pr-4">
       <div
@@ -119,11 +105,11 @@ const ResultsContainer = () => {
             <p className="loader"></p>
           </div>
         )}
-        {apierr.hasApiErr && (
-          <ApiErrorMessage message={apierr.errMessage ?? ''} />
+        {apiError.hasApiError && (
+          <ApiErrorMessage message={apiError.errorMessage ?? ''} />
         )}
 
-        {!isLoading && !apierr.hasApiErr && (
+        {!isLoading && !apiError.hasApiError && (
           <>
             <CardsContainer
               cardsData={cardsData}
@@ -131,9 +117,9 @@ const ResultsContainer = () => {
             ></CardsContainer>
           </>
         )}
-        {!isNewQuery && !apierr.hasApiErr && (
+        {!isNewQuery && !apiError.hasApiError && (
           <>
-            <Pagination pagInfo={pagInfo}></Pagination>
+            <Pagination paginationInfo={paginationInfo}></Pagination>
             <Limit applyLimit={applyLimit}></Limit>
           </>
         )}

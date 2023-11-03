@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import './limit.css';
+import { MAX_LIMIT } from '../../utils/constants';
 
-export const Limit = ({
-  applyLimit,
-}: {
+interface ILimitProps {
   applyLimit: (limit: number) => void;
-}) => {
+}
+
+export const Limit = ({ applyLimit }: ILimitProps) => {
   const [currentLimitVal, setCurrentLimitVal] = useState(
-    +(localStorage.getItem('mracoon-items-limit') ?? 3)
+    +(localStorage.getItem('mracoon-items-limit') ?? 1)
   );
-  const changeLumitValHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentLimitVal(Math.max(Math.min(+e.target.value, 25), 1));
+  const changeLumitValHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setCurrentLimitVal(Math.max(Math.min(+event.target.value, MAX_LIMIT), 1));
   };
   return (
     <div className="limit-container flex-center gap-4">

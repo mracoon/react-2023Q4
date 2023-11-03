@@ -1,32 +1,32 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
-import ResponsiveBtn from '../buttons/ResponsiveBtn';
+import ResponsiveBtn from '../buttons/ResponsiveButton';
 import { useSearchParams } from 'react-router-dom';
 
 interface ISearchProps {
-  valChange: (val: string) => void;
+  valueChange: (value: string) => void;
 }
 
-const SearchBar = ({ valChange }: ISearchProps) => {
-  const [val, setVal] = useState(
+const SearchBar = ({ valueChange }: ISearchProps) => {
+  const [value, setValue] = useState(
     localStorage.getItem('mracoon-search-query') ?? ''
   );
-
-  const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setVal(e.target.value);
-  };
   const [, setSearchParams] = useSearchParams();
+  const handlerChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
+
   const submitHandler = () => {
-    const searchVal = val.trim();
-    localStorage.setItem('mracoon-search-query', searchVal);
+    const searchValue = value.trim();
+    localStorage.setItem('mracoon-search-query', searchValue);
     localStorage.setItem('mracoon-pag-page', '1');
-    valChange(searchVal);
+    valueChange(searchValue);
     setSearchParams({ page: '1' });
   };
 
-  const handlerEnter = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && e.target instanceof HTMLInputElement) {
-      setVal(e.target.value);
+  const handlerEnter = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && event.target instanceof HTMLInputElement) {
+      setValue(event.target.value);
       submitHandler();
     }
   };
@@ -40,7 +40,7 @@ const SearchBar = ({ valChange }: ISearchProps) => {
           placeholder="Search anime"
           onChange={handlerChange}
           onKeyUp={handlerEnter}
-          value={val}
+          value={value}
         />
         <ResponsiveBtn
           classes="bg-indigo-600"
