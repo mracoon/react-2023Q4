@@ -1,0 +1,33 @@
+button {
+  border-radius: 8px;
+  border: 1px solid #f2f2f2;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: 0.25s;
+  height: 2.8rem;
+  background-color: #4f46e5;
+  color: white;
+  line-height: 1.25rem;
+}
+button:hover {
+  background-color: #522a64;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+button:disabled {
+  pointer-events: none;
+  background-color: gray;
+  user-select: none;
+}
+
+@media (max-width: 640px) {
+  .btn {
+    padding: 0.5rem;
+    font-size: 24px;
+  }
+}

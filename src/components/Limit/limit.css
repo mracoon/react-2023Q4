@@ -1,0 +1,9 @@
+.limit-input::-webkit-outer-spin-button,
+.limit-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.limit-container {
+  font-size: 1.5rem;
+}
