@@ -25,7 +25,7 @@ export class CardImg extends Component<ICardImgProps, ICardImgState> {
         {this.state.isLoading && <div className="loader"></div>}
         <img
           style={{ display: this.state.isLoading ? 'none' : 'block' }}
-          src={this.props.src ?? '../../2150693917.jpg'}
+          src={this.props.src ?? '../../background.jpg'}
           alt={this.props.title}
           onLoad={() => {
             this.loadHandler.call(this);
