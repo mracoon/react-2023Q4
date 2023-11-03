@@ -1,6 +1,5 @@
 import { useSearchParams } from 'react-router-dom';
 import { ReqPagination } from '../../types/apiDataTypes';
-
 export const Pagination = ({ pagInfo }: { pagInfo: ReqPagination }) => {
   const page = pagInfo.current_page;
   const [, setSearchParams] = useSearchParams({

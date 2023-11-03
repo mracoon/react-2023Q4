@@ -11,8 +11,9 @@ import { CardsContainer } from '../Card/CardsContainer';
 import { useOutletContext, Outlet, useSearchParams } from 'react-router-dom';
 import { Pagination } from '../pagination/Pagination';
 import { Limit } from '../Limit/Limit';
+import { BASE_URL } from '../../utils/constants';
 
-interface IApiErr {
+export interface IApiErr {
   hasApiErr: boolean;
   errMessage?: string;
 }
@@ -42,38 +43,30 @@ const ResultsContainer = () => {
   });
   const { searchVal } = useOutletContext<IResultsContainerProps>();
   const [detailCardId, setDetailCardId] = useState<Nullable<number>>(null);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(
+    +(localStorage.getItem('mracoon-pag-page') ?? '1')
+  );
 
   useEffect(() => {
-    const newPage = +(searchParams.get('page') ?? 1);
-    if (page !== newPage) {
-      setPage(+(searchParams.get('page') ?? 1));
+    const newPage = searchParams.get('page');
+    if (`${page}` !== newPage) {
+      setPage(+(newPage ?? page ?? 1));
+      setSearchParams({ page: `${newPage ?? page ?? 1}` });
     }
-  }, [searchParams, page]);
-
-  useEffect(() => {
-    const pageQueryParameter = searchParams.get('page');
-    if (!pageQueryParameter) {
-      setSearchParams({
-        page: localStorage.getItem('mracoon-pag-page') ?? '1',
-      });
-    }
-  }, [searchParams, setSearchParams]);
+  }, [searchParams, page, setSearchParams]);
 
   useEffect(() => {
     setIsLoading(true);
     setApiErr({ hasApiErr: false });
     const ctrl = new AbortController();
-    fetch(
-      `https://api.jikan.moe/v4/anime?page=${page}&sfw&limit=${limit}${
-        '&q=' + searchVal
-      }`,
-      {
-        signal: ctrl.signal,
-      }
-    )
-      .then((res) => {
-        return res.json();
+    fetch(`${BASE_URL}?page=${page}&sfw&limit=${limit}${'&q=' + searchVal}`, {
+      signal: ctrl.signal,
+    })
+      .then((response) => {
+        if (response.status >= 400 && response.status <= 600) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
       })
       .then((data: DataType) => {
         setCardsData(data.data);
@@ -138,7 +131,7 @@ const ResultsContainer = () => {
             ></CardsContainer>
           </>
         )}
-        {!isNewQuery && (
+        {!isNewQuery && !apierr.hasApiErr && (
           <>
             <Pagination pagInfo={pagInfo}></Pagination>
             <Limit applyLimit={applyLimit}></Limit>

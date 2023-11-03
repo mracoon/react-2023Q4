@@ -9,6 +9,9 @@ import { GiFilmProjector } from 'react-icons/gi';
 import { Md18UpRating, MdVideoLibrary } from 'react-icons/md';
 import { BiTimeFive } from 'react-icons/bi';
 import { PiTelevisionSimpleDuotone } from 'react-icons/pi';
+import { BASE_URL } from '../../utils/constants';
+import { ApiErrorMessage } from '../Error/ApiErrorMessage';
+import { IApiErr } from '../ResultsContainer/ResultsContainer';
 
 export const Details = () => {
   const { detailCardId, cardClickHandler } = useOutletContext<{
@@ -18,6 +21,7 @@ export const Details = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [detailData, setDetailData] = useState<RequestItem>(dataTemplate);
+  const [apierr, setApiErr] = useState<IApiErr>({ hasApiErr: false });
 
   useEffect(() => {
     if (detailCardId) {
@@ -30,25 +34,35 @@ export const Details = () => {
 
   useEffect(() => {
     setIsLoading(false);
+    setApiErr({ hasApiErr: false });
     const ctrl = new AbortController();
     setDetailData(dataTemplate);
     if (detailCardId) {
       setIsLoading(true);
-      fetch(`https://api.jikan.moe/v4/anime/${detailCardId}`, {
+      fetch(`${BASE_URL}/${detailCardId}`, {
         signal: ctrl.signal,
       })
-        .then((res) => {
-          return res.json();
+        .then((response) => {
+          if (response.status >= 400 && response.status <= 600) {
+            throw new Error(response.statusText);
+          }
+          return response.json();
         })
         .then((data: { data: RequestItem }) => {
           setDetailData(data.data);
           setIsLoading(false);
         })
         .catch((err: Error) => {
-          console.log(err);
-          //const isAbortErr = err.name === 'AbortError';
+          const isAbortErr = err.name === 'AbortError';
           setDetailData(dataTemplate);
-          setIsLoading(false);
+          setIsLoading(isAbortErr);
+          if (isAbortErr) {
+            return;
+          }
+          setApiErr({
+            hasApiErr: true,
+            errMessage: `${err.name}: ${err.message}`,
+          });
         });
     }
     return () => {
@@ -71,7 +85,10 @@ export const Details = () => {
       {detailCardId && (
         <div className="w-2/4 self-start details card p-4 h-r sticky-0 items-center gap-4 overflow-y-auto">
           {isLoading && <p className="loader"></p>}
-          {!isLoading && (
+          {apierr.hasApiErr && (
+            <ApiErrorMessage message={apierr.errMessage ?? ''} />
+          )}
+          {!isLoading && !apierr.hasApiErr && (
             <>
               <button
                 className="bg-red-800 w-8 h-8 self-end p-1"
@@ -134,7 +151,7 @@ export const Details = () => {
                   </div>
                 ))}
               </div>
-              <p>{detailData.synopsis ?? 'no description'}</p>
+              <p>{detailData.synopsis}</p>
             </>
           )}
         </div>

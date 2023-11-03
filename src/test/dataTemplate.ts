@@ -1,4 +1,4 @@
-import { AnimeRating, RequestItem, Season } from '../types/apiDataTypes';
+import { RequestItem } from '../types/apiDataTypes';
 
 const dataTemplate: RequestItem = {
   mal_id: 0,
@@ -48,7 +48,7 @@ const dataTemplate: RequestItem = {
     string: null,
   },
   duration: null,
-  rating: AnimeRating.G,
+  rating: null,
   score: null,
   scored_by: null,
   rank: null,
@@ -57,7 +57,7 @@ const dataTemplate: RequestItem = {
   favorites: null,
   synopsis: null,
   background: null,
-  season: Season.fall,
+  season: null,
   year: null,
   broadcast: {
     day: null,
