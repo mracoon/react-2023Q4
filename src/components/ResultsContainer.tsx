@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { DataType, RequestItem } from '../types/apiDataTypes';
 import { CardsContainer } from './Card/CardsContainer';
 import { ApiErrorMessage } from './Error/ApiErrorMessage';
+import { BASE_URL } from '../utils/constants';
 
 interface IApiError {
   hasApiError: boolean;
@@ -34,15 +35,13 @@ export default class ResultsContainer extends Component<
   getNewSearchResults() {
     this.setState({ isLoading: true, apiError: { hasApiError: false } });
 
-    fetch(
-      `https://api.jikan.moe/v4/anime?page=1&sfw&limit=6${
-        '&q=' + this.props.searchValue
-      }`,
-      {
-        signal: this.controller.signal,
-      }
-    )
+    fetch(`${BASE_URL}?page=1&sfw&limit=6${'&q=' + this.props.searchValue}`, {
+      signal: this.controller.signal,
+    })
       .then((response) => {
+        if (response.status >= 400 && response.status <= 600) {
+          throw new Error(response.statusText);
+        }
         return response.json();
       })
       .then((data: DataType) => {
