@@ -69,7 +69,7 @@ export const Details = () => {
   return (
     <>
       {detailCardId && (
-        <div className="w-2/4 self-start details card p-4 h-r sticky-0 items-center gap-4">
+        <div className="w-2/4 self-start details card p-4 h-r sticky-0 items-center gap-4 overflow-y-auto">
           {isLoading && <p className="loader"></p>}
           {!isLoading && (
             <>
