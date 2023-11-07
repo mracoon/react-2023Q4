@@ -15,6 +15,7 @@ const App = () => {
               <Route path="/" element={<Details />}></Route>
             </Route>
           </Route>
+          <Route path="/*" element={<h1>Page not found</h1>}></Route>
         </Routes>
       </ErrorBoundary>
     </>
