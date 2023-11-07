@@ -1,10 +1,10 @@
+import { CardsDataContext } from '../ResultsContainer/ResultsContainer';
 import Card from './Card';
 import { ICardsContainerProps } from './CardTypes';
+import { useContext } from 'react';
 
-export const CardsContainer = ({
-  cardsData,
-  cardClickHandler,
-}: ICardsContainerProps) => {
+export const CardsContainer = ({ cardClickHandler }: ICardsContainerProps) => {
+  const cardsData = useContext(CardsDataContext);
   return (
     <div className="flex flex-wrap gap-2 justify-center w-full flex-grow">
       {cardsData.length ? (

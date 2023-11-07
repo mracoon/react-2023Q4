@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, createContext } from 'react';
 import './resultsContainer.css';
 import {
   DataType,
@@ -19,6 +19,7 @@ export interface IApiError {
   hasApiError: boolean;
   errorMessage?: string;
 }
+export const CardsDataContext = createContext<RequestItem[]>([]);
 
 const ResultsContainer = () => {
   const { searchValue } = useContext(SearchValueContext);
@@ -108,12 +109,11 @@ const ResultsContainer = () => {
         )}
 
         {!isLoading && !apiError.hasApiError && (
-          <>
+          <CardsDataContext.Provider value={cardsData}>
             <CardsContainer
-              cardsData={cardsData}
               cardClickHandler={cardClickHandler}
             ></CardsContainer>
-          </>
+          </CardsDataContext.Provider>
         )}
         {!isNewQuery && !apiError.hasApiError && (
           <>
