@@ -4,8 +4,8 @@ const dataTemplate: RequestItem = {
   mal_id: 0,
   url: '',
   images: {
-    jpg: { image_url: null, small_image_url: null, large_image_url: null },
-    webp: { image_url: null, small_image_url: null, large_image_url: null },
+    jpg: { image_url: '', small_image_url: '', large_image_url: '' },
+    webp: { image_url: '', small_image_url: '', large_image_url: '' },
   },
   trailer: {
     youtube_id: null,
