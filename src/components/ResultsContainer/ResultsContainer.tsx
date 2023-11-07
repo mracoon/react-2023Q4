@@ -8,12 +8,13 @@ import {
 } from '../../types/apiDataTypes';
 import { ApiErrorMessage } from '../Error/ApiErrorMessage';
 import { CardsContainer } from '../Card/CardsContainer';
-import { Outlet, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Pagination } from '../pagination/Pagination';
 import { Limit } from '../Limit/Limit';
 import { getApiData } from '../../utils/API';
 import { paginationTemplate } from '../../test/paginationTemplate';
 import { SearchValueContext } from '../SearchPageLayout';
+import { Details } from '../Details/Details';
 
 export interface IApiError {
   hasApiError: boolean;
@@ -122,7 +123,10 @@ const ResultsContainer = () => {
           </>
         )}
       </div>
-      <Outlet context={{ detailCardId, cardClickHandler }}></Outlet>
+      <Details
+        detailCardId={detailCardId}
+        cardClickHandler={cardClickHandler}
+      ></Details>
     </div>
   );
 };

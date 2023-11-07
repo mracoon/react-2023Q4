@@ -1,4 +1,4 @@
-import { useOutletContext, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { RequestItem } from '../../types/apiDataTypes';
 import { useEffect, useState } from 'react';
 import dataTemplate from '../../test/dataTemplate';
@@ -7,13 +7,10 @@ import { ApiErrorMessage } from '../Error/ApiErrorMessage';
 import { IApiError } from '../ResultsContainer/ResultsContainer';
 import { getApiData } from '../../utils/API';
 import { DetailsInfo } from './DetailsInfo';
-import { IDetailsOutletContext } from './DetailsTypes';
+import { IDetailsProps } from './DetailsTypes';
 
-export const Details = () => {
-  const { detailCardId, cardClickHandler } =
-    useOutletContext<IDetailsOutletContext>();
+export const Details = ({ detailCardId, cardClickHandler }: IDetailsProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-
   const [isLoading, setIsLoading] = useState(false);
   const [detailData, setDetailData] = useState<RequestItem>(dataTemplate);
   const [apiError, setApiError] = useState<IApiError>({ hasApiError: false });
@@ -54,12 +51,11 @@ export const Details = () => {
   }, [detailCardId]);
 
   const title = detailData.title_english || detailData.title;
-
   return (
     <>
       {detailCardId && (
         <div className="w-2/4 self-start details card p-4 h-r sticky-0 items-center gap-4 overflow-y-auto">
-          {isLoading && <p className="loader"></p>}
+          {isLoading && <p className="loader" data-testid="loader"></p>}
           {apiError.hasApiError && (
             <ApiErrorMessage message={apiError.errorMessage ?? ''} />
           )}
@@ -71,7 +67,7 @@ export const Details = () => {
                   cardClickHandler(null);
                 }}
               >
-                &#10006;
+                ✖
               </button>
               <h3 className="card-title">{title}</h3>
               <CardImg
