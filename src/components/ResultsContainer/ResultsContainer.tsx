@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import './resultsContainer.css';
 import {
   DataType,
@@ -8,33 +8,31 @@ import {
 } from '../../types/apiDataTypes';
 import { ApiErrorMessage } from '../Error/ApiErrorMessage';
 import { CardsContainer } from '../Card/CardsContainer';
-import { useOutletContext, Outlet, useSearchParams } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 import { Pagination } from '../pagination/Pagination';
 import { Limit } from '../Limit/Limit';
 import { getApiData } from '../../utils/API';
 import { paginationTemplate } from '../../test/paginationTemplate';
+import { SearchValueContext } from '../SearchPageLayout';
 
 export interface IApiError {
   hasApiError: boolean;
   errorMessage?: string;
 }
-interface IResultsContainerProps {
-  searchValue: string;
-  page: number;
-}
+
 const ResultsContainer = () => {
+  const { searchValue } = useContext(SearchValueContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isNewQuery, setIsNewQuery] = useState(false);
   const [limit, setLimit] = useState(
     +(localStorage.getItem('mracoon-items-limit') ?? 1)
   );
-
   const [cardsData, setCardsData] = useState<RequestItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<IApiError>({ hasApiError: false });
   const [paginationInfo, setPaginationInfo] =
     useState<RequestPagination>(paginationTemplate);
-  const { searchValue } = useOutletContext<IResultsContainerProps>();
+
   const [detailCardId, setDetailCardId] = useState<Nullable<number>>(null);
   const [page, setPage] = useState(
     +(localStorage.getItem('mracoon-pag-page') ?? '1')
