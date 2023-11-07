@@ -3,6 +3,7 @@ import dataTemplate from './dataTemplate';
 
 const data: Partial<RequestItem>[] = [
   {
+    mal_id: 1,
     title: 'Naruto',
     title_english: 'Naruto',
     synopsis: 'Naruto description',
@@ -10,6 +11,7 @@ const data: Partial<RequestItem>[] = [
     score: 8,
   },
   {
+    mal_id: 2,
     title: 'Totoro',
     title_english: 'My Neighbour Totoro',
     synopsis: 'Totoro description',
@@ -17,6 +19,7 @@ const data: Partial<RequestItem>[] = [
     score: 8.25,
   },
   {
+    mal_id: 3,
     title: 'Sen to Chihiro no Kamikakushi',
     title_english: 'Spirited away',
     synopsis: 'Spirited away description',
