@@ -3,6 +3,7 @@ import ErrorBoundary from './components/Error/ErrorBoundary';
 import { Routes, Route } from 'react-router-dom';
 import { SearchPageLayout } from './components/SearchPageLayout';
 import ResultsContainer from './components/ResultsContainer/ResultsContainer';
+import { Page404 } from './components/Error/Page404';
 
 const App = () => {
   return (
@@ -12,7 +13,7 @@ const App = () => {
           <Route path="/" element={<SearchPageLayout />}>
             <Route path="/" element={<ResultsContainer />} />
           </Route>
-          <Route path="/*" element={<h1>Page not found</h1>} />
+          <Route path="/*" element={<Page404 />} />
         </Routes>
       </ErrorBoundary>
     </>
