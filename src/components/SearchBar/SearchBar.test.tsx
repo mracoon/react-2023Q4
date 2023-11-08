@@ -1,17 +1,14 @@
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SearchBar from './SearchBar';
+import { SearchValueContext } from '../SearchPageLayout';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('SearchBar', () => {
-  const changeStub = vi.fn();
+  userEvent.setup();
   const storage: Record<string, string> = {};
 
   beforeAll(() => {
-    vi.spyOn(window, 'fetch').mockImplementation(() => {
-      return Promise.resolve({
-        json: () => Promise.resolve({ data: '111' }),
-      } as Response);
-    });
     Object.defineProperty(window, 'localStorage', {
       value: {
         setItem: vi.fn((key: string, value: string) => {
@@ -25,24 +22,38 @@ describe('SearchBar', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
-
-  it('should render search bar', () => {
-    act(() => {
-      render(<SearchBar valChange={changeStub} />);
-    });
-    expect(screen.getByRole('searchbox')).toBeInTheDocument();
+  let searchValue = '';
+  const setSearchValue = vi.fn().mockImplementation((newVal: string) => {
+    searchValue = newVal;
   });
 
-  it('should call the submitHandler when press Enter and save query in ls', async () => {
-    userEvent.setup();
+  it('clicking the Search button should save the entered value to the local storage', async () => {
     act(() => {
-      render(<SearchBar valChange={changeStub} />);
+      render(
+        <SearchValueContext.Provider value={{ searchValue, setSearchValue }}>
+          <SearchBar />
+        </SearchValueContext.Provider>,
+        { wrapper: MemoryRouter }
+      );
     });
     const searchInput = screen.getByRole<HTMLInputElement>('searchbox');
     await act(async () => {
-      await userEvent.type(searchInput, 'test query string{enter}');
+      await userEvent.type(searchInput, 'test query string');
+      await userEvent.click(screen.getByText('Search'));
     });
-    await waitFor(() => expect(changeStub).toHaveBeenCalled());
     expect(storage['mracoon-search-query']).toBe('test query string');
+  });
+
+  it('should retrieve the value from the local storage upon mounting', () => {
+    act(() => {
+      render(
+        <SearchValueContext.Provider value={{ searchValue, setSearchValue }}>
+          <SearchBar />
+        </SearchValueContext.Provider>,
+        { wrapper: MemoryRouter }
+      );
+    });
+    const searchInput = screen.getByRole<HTMLInputElement>('searchbox');
+    expect(searchInput.value).toBe(storage['mracoon-search-query']);
   });
 });
