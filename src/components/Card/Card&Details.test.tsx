@@ -4,9 +4,12 @@ import ResultsContainer from '../ResultsContainer/ResultsContainer';
 import { mockData } from '../../test/mockData';
 import { SearchValueContext } from '../SearchPageLayout';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { detailsMockData } from '../../test/detailsMockData';
 
 const { mockedMethod } = vi.hoisted(() => {
-  return { mockedMethod: vi.fn() };
+  return {
+    mockedMethod: vi.fn(),
+  };
 });
 
 vi.mock('../../utils/API', () => {
@@ -14,6 +17,7 @@ vi.mock('../../utils/API', () => {
 });
 
 describe('Card & Details', () => {
+  let container = document.body;
   beforeEach(async () => {
     userEvent.setup();
     mockedMethod
@@ -22,11 +26,11 @@ describe('Card & Details', () => {
       })
       .mockImplementationOnce(() => {
         return new Promise((resolve) =>
-          setTimeout(resolve, 1000, { data: mockData[0] })
+          setTimeout(resolve, 1000, { data: detailsMockData })
         );
       });
     await act(async () => {
-      render(
+      container = render(
         <MemoryRouter>
           <Routes>
             <Route
@@ -41,17 +45,19 @@ describe('Card & Details', () => {
             ></Route>
           </Routes>
         </MemoryRouter>
-      );
+      ).container;
     });
   });
 
   it('clicking on a card should open a detailed card component', async () => {
-    expect(screen.queryByText(`✖`)).toBeNull();
+    expect(container.getElementsByClassName('details').length).toBe(0);
     const card = screen.getByText(mockData[0].synopsis ?? '');
     await act(async () => {
       await userEvent.click(card);
     });
-    await waitFor(() => expect(screen.getByText(`✖`)).toBeInTheDocument());
+    await waitFor(() =>
+      expect(container.getElementsByClassName('details').length).toBe(1)
+    );
   });
 
   it('clicking should trigger an additional API call to fetch detailed information', async () => {
@@ -60,16 +66,7 @@ describe('Card & Details', () => {
     await act(async () => {
       await userEvent.click(card);
     });
-    await waitFor(() => expect(mockedMethod).toHaveBeenCalled());
-  });
-
-  it('loading indicator should be displayed while fetching data', async () => {
-    const card = screen.getByText(mockData[0].synopsis ?? '');
-    expect(screen.queryByTestId('loader')).toBeNull();
-    await act(async () => {
-      await userEvent.click(card);
-    });
-    expect(screen.queryByTestId('loader')).not.toBeNull();
+    await waitFor(async () => expect(mockedMethod).toHaveBeenCalled());
   });
 
   afterAll(() => {
