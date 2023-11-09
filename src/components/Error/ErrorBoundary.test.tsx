@@ -4,6 +4,10 @@ import { BrowserRouter } from 'react-router-dom';
 import App from '../../App';
 
 describe('ErrorBoundary', () => {
+  console.log = vi.fn();
+  console.error = vi.fn();
+  console.warn = vi.fn();
+
   it('should show fallback UI when clicking error button', async () => {
     act(() => {
       render(
@@ -21,5 +25,9 @@ describe('ErrorBoundary', () => {
     });
 
     expect(screen.getByText('Sorry.. there was an error')).toBeInTheDocument();
+  });
+
+  afterAll(() => {
+    vi.clearAllMocks();
   });
 });
