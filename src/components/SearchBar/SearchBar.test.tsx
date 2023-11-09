@@ -1,6 +1,8 @@
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SearchBar from './SearchBar';
+import { StorageKeyName } from '../../utils/constants';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('SearchBar', () => {
   const changeStub = vi.fn();
@@ -28,7 +30,7 @@ describe('SearchBar', () => {
 
   it('should render search bar', () => {
     act(() => {
-      render(<SearchBar valChange={changeStub} />);
+      render(<SearchBar valueChange={changeStub} />, { wrapper: MemoryRouter });
     });
     expect(screen.getByRole('searchbox')).toBeInTheDocument();
   });
@@ -36,13 +38,13 @@ describe('SearchBar', () => {
   it('should call the submitHandler when press Enter and save query in ls', async () => {
     userEvent.setup();
     act(() => {
-      render(<SearchBar valChange={changeStub} />);
+      render(<SearchBar valueChange={changeStub} />, { wrapper: MemoryRouter });
     });
     const searchInput = screen.getByRole<HTMLInputElement>('searchbox');
     await act(async () => {
       await userEvent.type(searchInput, 'test query string{enter}');
     });
     await waitFor(() => expect(changeStub).toHaveBeenCalled());
-    expect(storage['mracoon-search-query']).toBe('test query string');
+    expect(storage[StorageKeyName.search]).toBe('test query string');
   });
 });
