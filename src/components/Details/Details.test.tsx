@@ -24,6 +24,7 @@ mockedMethod.mockImplementationOnce(() => {
 });
 
 describe('Details', () => {
+  userEvent.setup();
   let detailedCardId: Nullable<number> = 1;
   const cardClickHandlerStub = vi.fn();
   beforeEach(() => {
