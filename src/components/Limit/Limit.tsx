@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './limit.css';
-import { MAX_LIMIT } from '../../utils/constants';
+import { MAX_LIMIT, StorageKeyName } from '../../utils/constants';
 
 interface ILimitProps {
   applyLimit: (limit: number) => void;
@@ -8,7 +8,7 @@ interface ILimitProps {
 
 export const Limit = ({ applyLimit }: ILimitProps) => {
   const [currentLimitVal, setCurrentLimitVal] = useState(
-    +(localStorage.getItem('mracoon-items-limit') ?? 1)
+    +(localStorage.getItem(StorageKeyName.limit) ?? 1)
   );
   const changeLumitValHandler = (
     event: React.ChangeEvent<HTMLInputElement>

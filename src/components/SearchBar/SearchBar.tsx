@@ -2,6 +2,7 @@ import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import ResponsiveBtn from '../buttons/ResponsiveButton';
 import { useSearchParams } from 'react-router-dom';
+import { StorageKeyName } from '../../utils/constants';
 
 interface ISearchProps {
   valueChange: (value: string) => void;
@@ -9,7 +10,7 @@ interface ISearchProps {
 
 const SearchBar = ({ valueChange }: ISearchProps) => {
   const [value, setValue] = useState(
-    localStorage.getItem('mracoon-search-query') ?? ''
+    localStorage.getItem(StorageKeyName.search) ?? ''
   );
   const [, setSearchParams] = useSearchParams();
   const handlerChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -18,8 +19,8 @@ const SearchBar = ({ valueChange }: ISearchProps) => {
 
   const submitHandler = () => {
     const searchValue = value.trim();
-    localStorage.setItem('mracoon-search-query', searchValue);
-    localStorage.setItem('mracoon-pag-page', '1');
+    localStorage.setItem(StorageKeyName.search, searchValue);
+    localStorage.setItem(StorageKeyName.pagination, '1');
     valueChange(searchValue);
     setSearchParams({ page: '1' });
   };

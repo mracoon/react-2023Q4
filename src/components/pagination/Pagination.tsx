@@ -1,5 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import { RequestPagination } from '../../types/apiDataTypes';
+import { StorageKeyName } from '../../utils/constants';
 
 interface IPaginationInfoProps {
   paginationInfo: RequestPagination;
@@ -16,7 +17,7 @@ export const Pagination = ({ paginationInfo }: IPaginationInfoProps) => {
 
   const updatePage = (newPage: number) => {
     setSearchParams({ page: `${newPage}` });
-    localStorage.setItem('mracoon-pag-page', `${newPage}`);
+    localStorage.setItem(StorageKeyName.pagination, `${newPage}`);
   };
 
   const increment = () => {
