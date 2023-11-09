@@ -15,6 +15,7 @@ import { getApiData } from '../../utils/API';
 import { paginationTemplate } from '../../test/paginationTemplate';
 import { SearchValueContext } from '../SearchPageLayout';
 import { Details } from '../Details/Details';
+import { StorageKeyName } from '../../utils/constants';
 
 export interface IApiError {
   hasApiError: boolean;
@@ -27,7 +28,7 @@ const ResultsContainer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isNewQuery, setIsNewQuery] = useState(false);
   const [limit, setLimit] = useState(
-    +(localStorage.getItem('mracoon-items-limit') ?? 1)
+    +(localStorage.getItem(StorageKeyName.limit) ?? 1)
   );
   const [cardsData, setCardsData] = useState<RequestItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +38,7 @@ const ResultsContainer = () => {
 
   const [detailCardId, setDetailCardId] = useState<Nullable<number>>(null);
   const [page, setPage] = useState(
-    +(localStorage.getItem('mracoon-pag-page') ?? '1')
+    +(localStorage.getItem(StorageKeyName.pagination) ?? '1')
   );
 
   useEffect(() => {
@@ -88,7 +89,7 @@ const ResultsContainer = () => {
       setLimit(newlimit);
       setIsNewQuery(true);
       setSearchParams({ page: '1' });
-      localStorage.setItem('mracoon-items-limit', `${newlimit}`);
+      localStorage.setItem(StorageKeyName.limit, `${newlimit}`);
     }
   };
 

@@ -2,6 +2,7 @@ import { useState, createContext } from 'react';
 import SearchBar from './SearchBar/SearchBar';
 import { ErrorButton } from './buttons/ErrorButton';
 import { Outlet } from 'react-router-dom';
+import { StorageKeyName } from '../utils/constants';
 
 interface ContextType {
   searchValue: string;
@@ -15,7 +16,7 @@ export const SearchValueContext = createContext<ContextType>({
 
 export const SearchPageLayout = () => {
   const [searchValue, setSearchValue] = useState(
-    localStorage.getItem('mracoon-search-query') ?? ''
+    localStorage.getItem(StorageKeyName.search) ?? ''
   );
 
   return (

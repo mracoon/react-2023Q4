@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import SearchBar from './SearchBar';
 import { SearchValueContext } from '../SearchPageLayout';
 import { MemoryRouter } from 'react-router-dom';
+import { StorageKeyName } from '../../utils/constants';
 
 describe('SearchBar', () => {
   userEvent.setup();
@@ -41,7 +42,7 @@ describe('SearchBar', () => {
       await userEvent.type(searchInput, 'test query string');
       await userEvent.click(screen.getByText('Search'));
     });
-    expect(storage['mracoon-search-query']).toBe('test query string');
+    expect(storage[StorageKeyName.search]).toBe('test query string');
   });
 
   it('should retrieve the value from the local storage upon mounting', () => {
@@ -54,6 +55,6 @@ describe('SearchBar', () => {
       );
     });
     const searchInput = screen.getByRole<HTMLInputElement>('searchbox');
-    expect(searchInput.value).toBe(storage['mracoon-search-query']);
+    expect(searchInput.value).toBe(storage[StorageKeyName.search]);
   });
 });
