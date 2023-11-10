@@ -48,8 +48,4 @@ describe('Pagination', () => {
       expect(location.search).toBe(`?page=${startPage - 1}`);
     });
   });
-
-  afterAll(() => {
-    vi.clearAllMocks();
-  });
 });

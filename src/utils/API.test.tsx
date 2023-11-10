@@ -43,8 +43,4 @@ describe('getApiData', () => {
   it('should return data when fetch resolved', async () => {
     expect(data?.data).toBe('test');
   });
-
-  afterAll(() => {
-    vi.clearAllMocks();
-  });
 });

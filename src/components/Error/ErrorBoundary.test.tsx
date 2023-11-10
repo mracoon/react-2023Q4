@@ -26,8 +26,4 @@ describe('ErrorBoundary', () => {
 
     expect(screen.getByText('Sorry.. there was an error')).toBeInTheDocument();
   });
-
-  afterAll(() => {
-    vi.clearAllMocks();
-  });
 });
