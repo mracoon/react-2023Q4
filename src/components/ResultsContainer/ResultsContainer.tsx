@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, createContext } from 'react';
+import { useEffect, useState, createContext } from 'react';
 import './resultsContainer.css';
 import {
   DataType,
@@ -13,9 +13,9 @@ import { Pagination } from '../pagination/Pagination';
 import { Limit } from '../Limit/Limit';
 import { getApiData } from '../../utils/API';
 import { paginationTemplate } from '../../test/paginationTemplate';
-import { SearchValueContext } from '../SearchPageLayout';
 import { Details } from '../Details/Details';
 import { StorageKeyName } from '../../utils/constants';
+import { useAppSelector } from '../../hooks/redux';
 
 export interface IApiError {
   hasApiError: boolean;
@@ -24,7 +24,7 @@ export interface IApiError {
 export const CardsDataContext = createContext<RequestItem[]>([]);
 
 const ResultsContainer = () => {
-  const { searchValue } = useContext(SearchValueContext);
+  const { searchValue } = useAppSelector((state) => state.searchReducer);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isNewQuery, setIsNewQuery] = useState(false);
   const [limit, setLimit] = useState(
