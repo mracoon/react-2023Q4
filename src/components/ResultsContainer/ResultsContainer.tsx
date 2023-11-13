@@ -24,12 +24,12 @@ export interface IApiError {
 export const CardsDataContext = createContext<RequestItem[]>([]);
 
 const ResultsContainer = () => {
+  const { limitValue } = useAppSelector((state) => state.limitReducer);
+
   const { searchValue } = useAppSelector((state) => state.searchReducer);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isNewQuery, setIsNewQuery] = useState(false);
-  const [limit, setLimit] = useState(
-    +(localStorage.getItem(StorageKeyName.limit) ?? 1)
-  );
+
   const [cardsData, setCardsData] = useState<RequestItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<IApiError>({ hasApiError: false });
@@ -55,7 +55,7 @@ const ResultsContainer = () => {
     const controller = new AbortController();
     getApiData<DataType>(
       controller,
-      `?page=${page}&sfw&limit=${limit}${'&q=' + searchValue}`,
+      `?page=${page}&sfw&limit=${limitValue}${'&q=' + searchValue}`,
       setIsLoading,
       setApiError
     )
@@ -73,7 +73,7 @@ const ResultsContainer = () => {
     return () => {
       controller.abort();
     };
-  }, [searchValue, page, limit]);
+  }, [searchValue, page, limitValue]);
 
   const cardClickHandler = (id: Nullable<number>) => {
     setDetailCardId(id);
@@ -83,15 +83,6 @@ const ResultsContainer = () => {
     setDetailCardId(null);
     setIsNewQuery(true);
   }, [searchValue]);
-
-  const applyLimit = (newlimit: number) => {
-    if (limit !== newlimit) {
-      setLimit(newlimit);
-      setIsNewQuery(true);
-      setSearchParams({ page: '1' });
-      localStorage.setItem(StorageKeyName.limit, `${newlimit}`);
-    }
-  };
 
   return (
     <div className="results-container flex gap-2 items-start w-full flex-grow overflow-y-auto h-responsive pr-4">
@@ -120,7 +111,7 @@ const ResultsContainer = () => {
         {!isNewQuery && !apiError.hasApiError && (
           <>
             <Pagination paginationInfo={paginationInfo}></Pagination>
-            <Limit applyLimit={applyLimit}></Limit>
+            <Limit />
           </>
         )}
       </div>

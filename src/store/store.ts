@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import searchReducer from './reducers/SearchSlice';
+import limitReducer from './reducers/LimitSlice';
 
 const rootReducer = combineReducers({
   searchReducer,
+  limitReducer,
 });
 
 export const store = configureStore({

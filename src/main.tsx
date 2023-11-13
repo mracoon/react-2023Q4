@@ -3,7 +3,6 @@ import App from './App';
 import './index.css';
 import './components/buttons/buttons.css';
 import { BrowserRouter } from 'react-router-dom';
-//import { setupStore } from './store/store';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 

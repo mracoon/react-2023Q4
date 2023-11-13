@@ -1,38 +1,38 @@
-import { useState } from 'react';
 import './limit.css';
-import { MAX_LIMIT, StorageKeyName } from '../../utils/constants';
+import { limitSlice } from '../../store/reducers/LimitSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useSearchParams } from 'react-router-dom';
 
-interface ILimitProps {
-  applyLimit: (limit: number) => void;
-}
+export const Limit = () => {
+  const [, setSearchParams] = useSearchParams();
+  const { setLimitValue } = limitSlice.actions;
+  const { limitValue } = useAppSelector((state) => state.limitReducer);
+  const dispatch = useAppDispatch();
 
-export const Limit = ({ applyLimit }: ILimitProps) => {
-  const [currentLimitVal, setCurrentLimitVal] = useState(
-    +(localStorage.getItem(StorageKeyName.limit) ?? 1)
-  );
   const changeLumitValHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setCurrentLimitVal(Math.max(Math.min(+event.target.value, MAX_LIMIT), 1));
+    dispatch(setLimitValue(+event.target.value));
+    setSearchParams({ page: '1' });
   };
+
   return (
     <div className="limit-container flex-center gap-4">
-      <label>Limit: </label>
-      <input
-        className="limit-input w-12 px-2"
-        type="number"
-        name="limit"
-        value={currentLimitVal}
-        onChange={changeLumitValHandler}
-      />{' '}
-      <span> / 25</span>
-      <button
-        onClick={() => {
-          applyLimit(currentLimitVal);
-        }}
-      >
-        Apply
-      </button>
+      <label>
+        Limit:{' '}
+        <select
+          name="limit"
+          onChange={changeLumitValHandler}
+          value={limitValue ?? 1}
+        >
+          <option value="1">1</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25</option>
+        </select>
+      </label>
     </div>
   );
 };
