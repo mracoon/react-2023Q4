@@ -1,38 +1,49 @@
+import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import dataTemplate from '../../test/dataTemplate';
 import { CardImg } from '../Card/CardImg';
 import { ApiErrorMessage } from '../Error/ApiErrorMessage';
 import { DetailsInfo } from './DetailsInfo';
-import { IDetailsProps } from './DetailsTypes';
-import { useAppSelector } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { animeApi } from '../../services/AnimeService';
 import { skipToken } from '@reduxjs/toolkit/query/react';
+import { viewModeSlice } from '../../store/reducers/ViewModeSlice';
+import { StorageKeyName } from '../../utils/constants';
 
-export const Details = ({ detailCardId, cardClickHandler }: IDetailsProps) => {
+export const Details = () => {
+  const { changeDetails } = viewModeSlice.actions;
+  const { detailsId } = useAppSelector((state) => state.viewModeReducer);
+  const dispatch = useAppDispatch();
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    if (detailCardId) {
-      searchParams.set('detail', `${detailCardId}`);
+    if (!searchParams.get('page')) {
+      searchParams.set(
+        'page',
+        localStorage.getItem(StorageKeyName.pagination) ?? '1'
+      );
+    }
+    if (detailsId) {
+      searchParams.set('detail', `${detailsId}`);
     } else {
       searchParams.delete('detail');
     }
+
     setSearchParams(searchParams);
-  }, [detailCardId, searchParams, setSearchParams]);
+  }, [detailsId, searchParams, setSearchParams]);
 
   const { isDetailsLoading } = useAppSelector((state) => state.loadingReducer);
 
-  const { data, isError } = animeApi.useGetDetailsQuery(
-    detailCardId ?? skipToken
-  );
+  const { data, isError } = animeApi.useGetDetailsQuery(detailsId ?? skipToken);
 
   const detailData = data?.data ?? dataTemplate;
 
   const title = detailData.title_english || detailData.title;
   return (
     <>
-      {detailCardId && (
+      {detailsId && (
         <div className="w-2/4 self-start details card p-4 h-r sticky-0 items-center gap-4 overflow-y-auto">
           {isDetailsLoading && <p className="loader" data-testid="loader"></p>}
           {isError && <ApiErrorMessage />}
@@ -41,7 +52,8 @@ export const Details = ({ detailCardId, cardClickHandler }: IDetailsProps) => {
               <button
                 className="bg-red-800 w-8 h-8 self-end p-1"
                 onClick={() => {
-                  cardClickHandler(null);
+                  dispatch(changeDetails(null));
+                  localStorage.removeItem(StorageKeyName.details);
                 }}
               >
                 ✖

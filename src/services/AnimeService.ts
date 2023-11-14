@@ -28,7 +28,7 @@ export const animeApi = createApi({
         }
       },
     }),
-    getDetails: builder.query<{ data: RequestItem }, Nullable<number>>({
+    getDetails: builder.query<{ data: RequestItem }, Nullable<string>>({
       query: (detailsId) => ({
         url: `/${detailsId}`,
       }),

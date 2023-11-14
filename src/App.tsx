@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.css';
 import ErrorBoundary from './components/Error/ErrorBoundary';
 import { Routes, Route } from 'react-router-dom';

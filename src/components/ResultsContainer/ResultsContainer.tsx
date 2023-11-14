@@ -1,4 +1,5 @@
-import { useEffect, useState, createContext } from 'react';
+import React from 'react';
+import { useEffect, createContext } from 'react';
 import './resultsContainer.css';
 import { Nullable, RequestItem } from '../../types/apiDataTypes';
 import { ApiErrorMessage } from '../Error/ApiErrorMessage';
@@ -9,44 +10,44 @@ import { Limit } from '../Limit/Limit';
 import { paginationTemplate } from '../../test/paginationTemplate';
 import { Details } from '../Details/Details';
 import { StorageKeyName } from '../../utils/constants';
-import { useAppSelector } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { animeApi } from '../../services/AnimeService';
+import { viewModeSlice } from '../../store/reducers/ViewModeSlice';
 
 export const CardsDataContext = createContext<RequestItem[]>([]);
 
 const ResultsContainer = () => {
+  const { changeDetails, changePage } = viewModeSlice.actions;
+  const { page } = useAppSelector((state) => state.viewModeReducer);
+  const dispatch = useAppDispatch();
+
   const { limitValue } = useAppSelector((state) => state.limitReducer);
   const { isCardListLoading } = useAppSelector((state) => state.loadingReducer);
   const { searchValue } = useAppSelector((state) => state.searchReducer);
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const [detailCardId, setDetailCardId] = useState<Nullable<number>>(null);
-  const [page, setPage] = useState(
-    +(localStorage.getItem(StorageKeyName.pagination) ?? '1')
-  );
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const newPage = searchParams.get('page');
     if (`${page}` !== newPage) {
-      setPage(+(newPage ?? page ?? 1));
-      setSearchParams({ page: `${newPage ?? page ?? 1}` });
+      dispatch(changePage(+(newPage ?? page ?? 1)));
+      localStorage.setItem(
+        StorageKeyName.pagination,
+        `${newPage ?? page ?? 1}`
+      );
     }
-  }, [searchParams, page, setSearchParams]);
-
+  }, [searchParams, page, changePage, dispatch]);
   const { data, isError } = animeApi.useGetCardListQuery({
     page,
     limit: limitValue,
     searchValue,
   });
 
-  const cardClickHandler = (id: Nullable<number>) => {
-    setDetailCardId(id);
+  const cardClickHandler = (id: Nullable<string>) => {
+    dispatch(changeDetails(id));
+    id
+      ? localStorage.setItem(StorageKeyName.details, id)
+      : localStorage.removeItem(StorageKeyName.details);
   };
-
-  useEffect(() => {
-    setDetailCardId(null);
-    setPage(1);
-  }, [searchValue]);
 
   return (
     <div className="results-container flex gap-2 items-start w-full flex-grow overflow-y-auto h-responsive pr-4">
@@ -79,10 +80,7 @@ const ResultsContainer = () => {
           </>
         )}
       </div>
-      <Details
-        detailCardId={detailCardId}
-        cardClickHandler={cardClickHandler}
-      ></Details>
+      <Details></Details>
     </div>
   );
 };

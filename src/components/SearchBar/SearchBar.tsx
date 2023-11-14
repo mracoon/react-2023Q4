@@ -1,3 +1,4 @@
+import React from 'react';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import ResponsiveBtn from '../buttons/ResponsiveButton';
@@ -5,10 +6,12 @@ import { useSearchParams } from 'react-router-dom';
 import { StorageKeyName } from '../../utils/constants';
 import { useAppDispatch } from '../../hooks/redux';
 import { searchSlice } from '../../store/reducers/SearchSlice';
+import { viewModeSlice } from '../../store/reducers/ViewModeSlice';
 
 const SearchBar = () => {
   const { setSearchValue } = searchSlice.actions;
   const dispatch = useAppDispatch();
+  const { changeDetails, changePage } = viewModeSlice.actions;
 
   const [value, setValue] = useState(
     localStorage.getItem(StorageKeyName.search) ?? ''
@@ -22,7 +25,9 @@ const SearchBar = () => {
     const searchValue = value.trim();
     localStorage.setItem(StorageKeyName.search, searchValue);
     localStorage.setItem(StorageKeyName.pagination, '1');
+    dispatch(changePage(1));
     dispatch(setSearchValue(searchValue));
+    dispatch(changeDetails(null));
     setSearchParams({ page: '1' });
   };
 

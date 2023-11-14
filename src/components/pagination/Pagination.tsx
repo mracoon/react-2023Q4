@@ -1,21 +1,31 @@
+import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { RequestPagination } from '../../types/apiDataTypes';
 import { StorageKeyName } from '../../utils/constants';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { viewModeSlice } from '../../store/reducers/ViewModeSlice';
 
 interface IPaginationInfoProps {
   paginationInfo: RequestPagination;
 }
 
 export const Pagination = ({ paginationInfo }: IPaginationInfoProps) => {
-  const page = paginationInfo.current_page;
+  const { changePage } = viewModeSlice.actions;
+  const { page } = useAppSelector((state) => state.viewModeReducer);
+  const dispatch = useAppDispatch();
+
   const [, setSearchParams] = useSearchParams({
     page: `${paginationInfo.current_page}`,
   });
 
-  const { last_visible_page: lastPage, has_next_page: hasNextPage } =
-    paginationInfo;
+  const {
+    last_visible_page: lastPage,
+    has_next_page: hasNextPage,
+    current_page: currentPage,
+  } = paginationInfo;
 
   const updatePage = (newPage: number) => {
+    dispatch(changePage(newPage));
     setSearchParams({ page: `${newPage}` });
     localStorage.setItem(StorageKeyName.pagination, `${newPage}`);
   };
@@ -32,7 +42,7 @@ export const Pagination = ({ paginationInfo }: IPaginationInfoProps) => {
 
   return (
     <div className="flex-center gap-4">
-      <button onClick={decrement} disabled={page === 1 || undefined}>
+      <button onClick={decrement} disabled={currentPage === 1 || undefined}>
         prev
       </button>
       <p style={{ background: 'white' }}>{page}</p>

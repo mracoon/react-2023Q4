@@ -1,3 +1,4 @@
+import React from 'react';
 import SearchBar from './SearchBar/SearchBar';
 import { ErrorButton } from './buttons/ErrorButton';
 import { Outlet } from 'react-router-dom';

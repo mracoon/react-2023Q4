@@ -10,5 +10,5 @@ export interface ICardImgProps {
 }
 
 export interface ICardsContainerProps {
-  cardClickHandler: (id: Nullable<number>) => void;
+  cardClickHandler: (id: Nullable<string>) => void;
 }

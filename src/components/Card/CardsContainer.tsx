@@ -1,3 +1,4 @@
+import React from 'react';
 import { CardsDataContext } from '../ResultsContainer/ResultsContainer';
 import Card from './Card';
 import { ICardsContainerProps } from './CardTypes';
@@ -14,7 +15,7 @@ export const CardsContainer = ({ cardClickHandler }: ICardsContainerProps) => {
             key={data.mal_id}
             onClick={(event: React.MouseEvent) => {
               event.stopPropagation();
-              cardClickHandler(data.mal_id);
+              cardClickHandler(`${data.mal_id}`);
             }}
           >
             <Card data={data}></Card>
