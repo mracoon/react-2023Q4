@@ -1,21 +1,16 @@
 import { useEffect, useState, createContext } from 'react';
 import './resultsContainer.css';
-import {
-  DataType,
-  Nullable,
-  RequestPagination,
-  RequestItem,
-} from '../../types/apiDataTypes';
+import { Nullable, RequestItem } from '../../types/apiDataTypes';
 import { ApiErrorMessage } from '../Error/ApiErrorMessage';
 import { CardsContainer } from '../Card/CardsContainer';
 import { useSearchParams } from 'react-router-dom';
 import { Pagination } from '../pagination/Pagination';
 import { Limit } from '../Limit/Limit';
-import { getApiData } from '../../utils/API';
 import { paginationTemplate } from '../../test/paginationTemplate';
 import { Details } from '../Details/Details';
 import { StorageKeyName } from '../../utils/constants';
 import { useAppSelector } from '../../hooks/redux';
+import { cardListApi } from '../../services/CardListService';
 
 export interface IApiError {
   hasApiError: boolean;
@@ -25,16 +20,9 @@ export const CardsDataContext = createContext<RequestItem[]>([]);
 
 const ResultsContainer = () => {
   const { limitValue } = useAppSelector((state) => state.limitReducer);
-
+  const { isCardListLoading } = useAppSelector((state) => state.loadingReducer);
   const { searchValue } = useAppSelector((state) => state.searchReducer);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isNewQuery, setIsNewQuery] = useState(false);
-
-  const [cardsData, setCardsData] = useState<RequestItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [apiError, setApiError] = useState<IApiError>({ hasApiError: false });
-  const [paginationInfo, setPaginationInfo] =
-    useState<RequestPagination>(paginationTemplate);
 
   const [detailCardId, setDetailCardId] = useState<Nullable<number>>(null);
   const [page, setPage] = useState(
@@ -49,31 +37,11 @@ const ResultsContainer = () => {
     }
   }, [searchParams, page, setSearchParams]);
 
-  useEffect(() => {
-    setIsLoading(true);
-    setApiError({ hasApiError: false });
-    const controller = new AbortController();
-    getApiData<DataType>(
-      controller,
-      `?page=${page}&sfw&limit=${limitValue}${'&q=' + searchValue}`,
-      setIsLoading,
-      setApiError
-    )
-      .then((data) => {
-        setCardsData(data?.data ?? []);
-        setIsLoading(false);
-        setPaginationInfo(data?.pagination ?? paginationTemplate);
-        setIsNewQuery(false);
-      })
-      .catch(() => {
-        setCardsData([]);
-        setIsNewQuery(true);
-      });
-
-    return () => {
-      controller.abort();
-    };
-  }, [searchValue, page, limitValue]);
+  const { data, isError } = cardListApi.useGetCardListQuery({
+    page,
+    limit: limitValue,
+    searchValue,
+  });
 
   const cardClickHandler = (id: Nullable<number>) => {
     setDetailCardId(id);
@@ -81,7 +49,6 @@ const ResultsContainer = () => {
 
   useEffect(() => {
     setDetailCardId(null);
-    setIsNewQuery(true);
   }, [searchValue]);
 
   return (
@@ -92,25 +59,25 @@ const ResultsContainer = () => {
           cardClickHandler(null);
         }}
       >
-        {isLoading && (
+        {isCardListLoading && (
           <div className="flex-grow">
             <p className="loader"></p>
           </div>
         )}
-        {apiError.hasApiError && (
-          <ApiErrorMessage message={apiError.errorMessage ?? ''} />
-        )}
+        {isError && <ApiErrorMessage />}
 
-        {!isLoading && !apiError.hasApiError && (
-          <CardsDataContext.Provider value={cardsData}>
+        {!isCardListLoading && !isError && (
+          <CardsDataContext.Provider value={data?.data ?? []}>
             <CardsContainer
               cardClickHandler={cardClickHandler}
             ></CardsContainer>
           </CardsDataContext.Provider>
         )}
-        {!isNewQuery && !apiError.hasApiError && (
+        {!isError && (
           <>
-            <Pagination paginationInfo={paginationInfo}></Pagination>
+            <Pagination
+              paginationInfo={data?.pagination ?? paginationTemplate}
+            ></Pagination>
             <Limit />
           </>
         )}
