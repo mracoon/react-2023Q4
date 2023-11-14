@@ -2,6 +2,7 @@ import './limit.css';
 import { limitSlice } from '../../store/reducers/LimitSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useSearchParams } from 'react-router-dom';
+import { StorageKeyName } from '../../utils/constants';
 
 export const Limit = () => {
   const [, setSearchParams] = useSearchParams();
@@ -14,6 +15,7 @@ export const Limit = () => {
   ) => {
     dispatch(setLimitValue(+event.target.value));
     setSearchParams({ page: '1' });
+    localStorage.setItem(StorageKeyName.limit, event.target.value);
   };
 
   return (
@@ -26,6 +28,7 @@ export const Limit = () => {
           value={limitValue ?? 1}
         >
           <option value="1">1</option>
+          <option value="3">3</option>
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="15">15</option>
