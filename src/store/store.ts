@@ -2,19 +2,19 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import searchReducer from './reducers/SearchSlice';
 import limitReducer from './reducers/LimitSlice';
 import loadingReducer from './reducers/LoadingSlice';
-import { cardListApi } from '../services/CardListService';
+import { animeApi } from '../services/AnimeService';
 
 const rootReducer = combineReducers({
   searchReducer,
   limitReducer,
   loadingReducer,
-  [cardListApi.reducerPath]: cardListApi.reducer,
+  [animeApi.reducerPath]: animeApi.reducer,
 });
 
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(cardListApi.middleware),
+    getDefaultMiddleware().concat(animeApi.middleware),
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

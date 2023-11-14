@@ -10,12 +10,8 @@ import { paginationTemplate } from '../../test/paginationTemplate';
 import { Details } from '../Details/Details';
 import { StorageKeyName } from '../../utils/constants';
 import { useAppSelector } from '../../hooks/redux';
-import { cardListApi } from '../../services/CardListService';
+import { animeApi } from '../../services/AnimeService';
 
-export interface IApiError {
-  hasApiError: boolean;
-  errorMessage?: string;
-}
 export const CardsDataContext = createContext<RequestItem[]>([]);
 
 const ResultsContainer = () => {
@@ -37,7 +33,7 @@ const ResultsContainer = () => {
     }
   }, [searchParams, page, setSearchParams]);
 
-  const { data, isError } = cardListApi.useGetCardListQuery({
+  const { data, isError } = animeApi.useGetCardListQuery({
     page,
     limit: limitValue,
     searchValue,
@@ -49,6 +45,7 @@ const ResultsContainer = () => {
 
   useEffect(() => {
     setDetailCardId(null);
+    setPage(1);
   }, [searchValue]);
 
   return (
