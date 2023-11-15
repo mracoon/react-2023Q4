@@ -1,4 +1,8 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import {
+  PreloadedState,
+  combineReducers,
+  configureStore,
+} from '@reduxjs/toolkit';
 import searchReducer from './reducers/SearchSlice';
 import limitReducer from './reducers/LimitSlice';
 import loadingReducer from './reducers/LoadingSlice';
@@ -13,12 +17,14 @@ const rootReducer = combineReducers({
   [animeApi.reducerPath]: animeApi.reducer,
 });
 
-export const store = configureStore({
-  reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(animeApi.middleware),
-});
-
+export function setupStore(preloadedState?: PreloadedState<RootState>) {
+  return configureStore({
+    reducer: rootReducer,
+    preloadedState,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(animeApi.middleware),
+  });
+}
 export type RootState = ReturnType<typeof rootReducer>;
-export type AppStore = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type AppStore = ReturnType<typeof setupStore>;
+export type AppDispatch = AppStore['dispatch'];
