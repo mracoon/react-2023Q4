@@ -1,13 +1,16 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SearchBar from './SearchBar';
-import { SearchValueContext } from '../SearchPageLayout';
+
 import { MemoryRouter } from 'react-router-dom';
 import { StorageKeyName } from '../../utils/constants';
+import { Provider } from 'react-redux';
+import { setupStore } from '../../store/store';
 
 describe('SearchBar', () => {
   userEvent.setup();
   const storage: Record<string, string> = {};
+  const store = setupStore();
 
   beforeAll(() => {
     Object.defineProperty(window, 'localStorage', {
@@ -23,17 +26,13 @@ describe('SearchBar', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
-  let searchValue = '';
-  const setSearchValue = vi.fn().mockImplementation((newVal: string) => {
-    searchValue = newVal;
-  });
 
   it('clicking the Search button should save the entered value to the local storage', async () => {
     act(() => {
       render(
-        <SearchValueContext.Provider value={{ searchValue, setSearchValue }}>
+        <Provider store={store}>
           <SearchBar />
-        </SearchValueContext.Provider>,
+        </Provider>,
         { wrapper: MemoryRouter }
       );
     });
@@ -48,9 +47,9 @@ describe('SearchBar', () => {
   it('should retrieve the value from the local storage upon mounting', () => {
     act(() => {
       render(
-        <SearchValueContext.Provider value={{ searchValue, setSearchValue }}>
+        <Provider store={store}>
           <SearchBar />
-        </SearchValueContext.Provider>,
+        </Provider>,
         { wrapper: MemoryRouter }
       );
     });
