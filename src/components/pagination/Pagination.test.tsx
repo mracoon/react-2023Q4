@@ -1,8 +1,9 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import { Pagination } from './Pagination';
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { paginationTemplate } from '../../test/paginationTemplate';
+import { renderWithProviders } from '../../utils/test-utils';
 
 describe('Pagination', () => {
   userEvent.setup();
@@ -14,16 +15,22 @@ describe('Pagination', () => {
     const startPage = 5;
     beforeEach(() => {
       act(() => {
-        render(
-          <Pagination
-            paginationInfo={{
-              ...paginationTemplate,
-              last_visible_page: startPage + 2,
-              has_next_page: true,
-              current_page: startPage,
-            }}
-          />,
-          { wrapper: BrowserRouter }
+        renderWithProviders(
+          <BrowserRouter>
+            <Pagination
+              paginationInfo={{
+                ...paginationTemplate,
+                last_visible_page: startPage + 2,
+                has_next_page: true,
+                current_page: startPage,
+              }}
+            />
+          </BrowserRouter>,
+          {
+            preloadedState: {
+              viewModeReducer: { page: startPage, detailsId: null },
+            },
+          }
         );
       });
     });
