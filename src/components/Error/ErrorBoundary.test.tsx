@@ -1,7 +1,8 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import App from '../../App';
+import { renderWithProviders } from '../../utils/test-utils';
 
 describe('ErrorBoundary', () => {
   console.log = vi.fn();
@@ -10,7 +11,7 @@ describe('ErrorBoundary', () => {
 
   it('should show fallback UI when clicking error button', async () => {
     act(() => {
-      render(
+      renderWithProviders(
         <BrowserRouter>
           <App></App>
         </BrowserRouter>
