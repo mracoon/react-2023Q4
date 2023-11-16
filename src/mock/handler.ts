@@ -9,10 +9,8 @@ export const handlers = [
   }),
 
   http.get(`${BASE_URL}`, () => {
-    return new Response(
-      JSON.stringify({
-        data: mockData,
-      })
-    );
+    return HttpResponse.json({
+      data: mockData,
+    });
   }),
 ];

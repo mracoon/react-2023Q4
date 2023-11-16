@@ -1,16 +1,14 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SearchBar from './SearchBar';
 
 import { MemoryRouter } from 'react-router-dom';
 import { StorageKeyName } from '../../utils/constants';
-import { Provider } from 'react-redux';
-import { setupStore } from '../../store/store';
+import { renderWithProviders } from '../../utils/test-utils';
 
 describe('SearchBar', () => {
   userEvent.setup();
   const storage: Record<string, string> = {};
-  const store = setupStore();
 
   beforeAll(() => {
     Object.defineProperty(window, 'localStorage', {
@@ -29,11 +27,10 @@ describe('SearchBar', () => {
 
   it('clicking the Search button should save the entered value to the local storage', async () => {
     act(() => {
-      render(
-        <Provider store={store}>
+      renderWithProviders(
+        <MemoryRouter>
           <SearchBar />
-        </Provider>,
-        { wrapper: MemoryRouter }
+        </MemoryRouter>
       );
     });
     const searchInput = screen.getByRole<HTMLInputElement>('searchbox');
@@ -46,11 +43,10 @@ describe('SearchBar', () => {
 
   it('should retrieve the value from the local storage upon mounting', () => {
     act(() => {
-      render(
-        <Provider store={store}>
+      renderWithProviders(
+        <MemoryRouter>
           <SearchBar />
-        </Provider>,
-        { wrapper: MemoryRouter }
+        </MemoryRouter>
       );
     });
     const searchInput = screen.getByRole<HTMLInputElement>('searchbox');
