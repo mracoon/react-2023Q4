@@ -1,11 +1,11 @@
 import React from 'react';
-import { CardsDataContext } from '../ResultsContainer/ResultsContainer';
 import Card from './Card';
 import { ICardsContainerProps } from './CardTypes';
-import { useContext } from 'react';
+import { useAppSelector } from '../../hooks/redux';
 
 export const CardsContainer = ({ cardClickHandler }: ICardsContainerProps) => {
-  const cardsData = useContext(CardsDataContext);
+  const { cardsData } = useAppSelector((state) => state.cardsDataReducer);
+
   return (
     <div className="flex flex-wrap gap-2 justify-center w-full flex-grow">
       {cardsData.length ? (

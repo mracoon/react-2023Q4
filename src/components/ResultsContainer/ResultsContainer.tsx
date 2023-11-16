@@ -1,7 +1,7 @@
 import React from 'react';
-import { useEffect, createContext } from 'react';
+import { useEffect } from 'react';
 import './resultsContainer.css';
-import { Nullable, RequestItem } from '../../types/apiDataTypes';
+import { Nullable } from '../../types/apiDataTypes';
 import { ApiErrorMessage } from '../Error/ApiErrorMessage';
 import { CardsContainer } from '../Card/CardsContainer';
 import { useSearchParams } from 'react-router-dom';
@@ -13,8 +13,6 @@ import { StorageKeyName } from '../../utils/constants';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { animeApi } from '../../services/AnimeService';
 import { viewModeSlice } from '../../store/reducers/ViewModeSlice';
-
-export const CardsDataContext = createContext<RequestItem[]>([]);
 
 const ResultsContainer = () => {
   const { changeDetails, changePage } = viewModeSlice.actions;
@@ -65,11 +63,7 @@ const ResultsContainer = () => {
         {isError && <ApiErrorMessage />}
 
         {!isCardListLoading && !isError && (
-          <CardsDataContext.Provider value={data?.data ?? []}>
-            <CardsContainer
-              cardClickHandler={cardClickHandler}
-            ></CardsContainer>
-          </CardsDataContext.Provider>
+          <CardsContainer cardClickHandler={cardClickHandler}></CardsContainer>
         )}
         {!isError && (
           <>
