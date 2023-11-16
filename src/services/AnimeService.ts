@@ -2,7 +2,6 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from '../utils/constants';
 import { DataType, Nullable, RequestItem } from '../types/apiDataTypes';
 import { loadingSlice } from '../store/reducers/LoadingSlice';
-import { cardsDataSlice } from '../store/reducers/CardsDataSlice';
 
 interface IQueryParameters {
   limit: number;
@@ -21,11 +20,9 @@ export const animeApi = createApi({
       }),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { setIsCardListLoading } = loadingSlice.actions;
-        const { updateCardsData } = cardsDataSlice.actions;
         dispatch(setIsCardListLoading(true));
         try {
-          const data = await queryFulfilled;
-          dispatch(updateCardsData(data.data.data));
+          await queryFulfilled;
         } finally {
           dispatch(setIsCardListLoading(false));
         }

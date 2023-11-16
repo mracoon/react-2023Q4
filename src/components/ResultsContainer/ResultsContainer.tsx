@@ -13,6 +13,7 @@ import { StorageKeyName } from '../../utils/constants';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { animeApi } from '../../services/AnimeService';
 import { viewModeSlice } from '../../store/reducers/ViewModeSlice';
+import { cardsDataSlice } from '../../store/reducers/CardsDataSlice';
 
 const ResultsContainer = () => {
   const { changeDetails, changePage } = viewModeSlice.actions;
@@ -39,7 +40,9 @@ const ResultsContainer = () => {
     limit: limitValue,
     searchValue,
   });
+  const { updateCardsData } = cardsDataSlice.actions;
 
+  dispatch(updateCardsData(data?.data ?? []));
   const cardClickHandler = (id: Nullable<string>) => {
     dispatch(changeDetails(id));
     id
