@@ -7,7 +7,6 @@ import searchReducer from './reducers/SearchSlice';
 import limitReducer from './reducers/LimitSlice';
 import loadingReducer from './reducers/LoadingSlice';
 import viewModeReducer from './reducers/ViewModeSlice';
-import cardsDataReducer from './reducers/CardsDataSlice';
 import { animeApi } from '../services/AnimeService';
 
 const rootReducer = combineReducers({
@@ -15,7 +14,6 @@ const rootReducer = combineReducers({
   limitReducer,
   loadingReducer,
   viewModeReducer,
-  cardsDataReducer,
   [animeApi.reducerPath]: animeApi.reducer,
 });
 

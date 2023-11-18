@@ -12,12 +12,10 @@ describe('CardsContainer', () => {
   it('component should render the specified number of cards', async () => {
     const container = await act(async () => {
       return renderWithProviders(
-        <CardsContainer cardClickHandler={cardClickHandlerStub} />,
-        {
-          preloadedState: {
-            cardsDataReducer: { cardsData: mockData },
-          },
-        }
+        <CardsContainer
+          cardsData={mockData}
+          cardClickHandler={cardClickHandlerStub}
+        />
       ).container;
     });
     expect(container.getElementsByClassName('card').length).toBe(
@@ -27,12 +25,10 @@ describe('CardsContainer', () => {
   it('should display a message if there are no cards.', () => {
     act(() => {
       renderWithProviders(
-        <CardsContainer cardClickHandler={cardClickHandlerStub} />,
-        {
-          preloadedState: {
-            cardsDataReducer: { cardsData: [] },
-          },
-        }
+        <CardsContainer
+          cardsData={[]}
+          cardClickHandler={cardClickHandlerStub}
+        />
       ).container;
     });
     expect(screen.getByText('no results')).toBeInTheDocument();

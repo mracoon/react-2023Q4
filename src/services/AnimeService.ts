@@ -23,6 +23,10 @@ export const animeApi = createApi({
         dispatch(setIsCardListLoading(true));
         try {
           await queryFulfilled;
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.log(error.message);
+          }
         } finally {
           dispatch(setIsCardListLoading(false));
         }
