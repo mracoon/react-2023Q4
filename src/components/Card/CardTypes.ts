@@ -1,0 +1,15 @@
+import { Nullable, RequestItem } from '../../types/apiDataTypes';
+
+export interface ICardProps {
+  data: RequestItem;
+}
+
+export interface ICardImgProps {
+  src: Nullable<string>;
+  title: string;
+}
+
+export interface ICardsContainerProps {
+  cardClickHandler: (id: Nullable<string>) => void;
+  cardsData: RequestItem[];
+}
