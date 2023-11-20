@@ -2,6 +2,7 @@ import React from 'react';
 import SearchBar from './SearchBar/SearchBar';
 import { ErrorButton } from './buttons/ErrorButton';
 import ResultsContainer from './ResultsContainer/ResultsContainer';
+import { Limit } from './Limit/Limit';
 //import { Outlet } from 'react-router-dom';
 
 export const SearchPageLayout = () => {
@@ -10,7 +11,9 @@ export const SearchPageLayout = () => {
       <div className="w-full flex justify-between items-center gap-2 relative">
         <SearchBar></SearchBar>
         <ErrorButton />
+        <Limit />
       </div>
+
       {/*  <Outlet></Outlet> */}
       <ResultsContainer />
     </>

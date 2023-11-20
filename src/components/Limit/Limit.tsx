@@ -1,24 +1,21 @@
-import React from 'react';
-//import './limit.css';
-import { limitSlice } from '../../store/reducers/LimitSlice';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-//import { useSearchParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { StorageKeyName } from '../../utils/constants';
-import { viewModeSlice } from '../../store/reducers/ViewModeSlice';
+import { useRouter } from 'next/router';
 
 export const Limit = () => {
-  const { changePage } = viewModeSlice.actions;
-  // const [, setSearchParams] = useSearchParams();
-  const { setLimitValue } = limitSlice.actions;
-  const { limitValue } = useAppSelector((state) => state.limitReducer);
-  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { query } = router;
+  const [limitValue, setLimitValue] = useState(+(query.limit || 1));
 
+  useEffect(() => {
+    setLimitValue(+(router.query.limit || 1));
+  }, [router]);
   const changeLumitValHandler = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    dispatch(setLimitValue(+event.target.value));
-    dispatch(changePage(1));
-    //  setSearchParams({ page: '1' });
+    setLimitValue(+event.target.value);
+    router.push({ query: { ...query, limit: +event.target.value, page: 1 } });
+
     localStorage.setItem(StorageKeyName.limit, event.target.value);
     localStorage.setItem(StorageKeyName.pagination, '1');
   };

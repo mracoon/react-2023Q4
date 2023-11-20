@@ -1,23 +1,16 @@
 import React from 'react';
-//import { useSearchParams } from 'react-router-dom';
 import { RequestPagination } from '../../types/apiDataTypes';
 import { StorageKeyName } from '../../utils/constants';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { viewModeSlice } from '../../store/reducers/ViewModeSlice';
+import { useRouter } from 'next/router';
 
 interface IPaginationInfoProps {
   paginationInfo: RequestPagination;
 }
 
 export const Pagination = ({ paginationInfo }: IPaginationInfoProps) => {
-  const { changePage } = viewModeSlice.actions;
-  const { page } = useAppSelector((state) => state.viewModeReducer);
-  const dispatch = useAppDispatch();
-
-  /*  const [, setSearchParams] = useSearchParams({
-    page: `${paginationInfo.current_page}`,
-  }); */
-
+  const router = useRouter();
+  const { query } = router;
+  const page = +(query?.page || 1);
   const {
     last_visible_page: lastPage,
     has_next_page: hasNextPage,
@@ -25,9 +18,9 @@ export const Pagination = ({ paginationInfo }: IPaginationInfoProps) => {
   } = paginationInfo;
 
   const updatePage = (newPage: number) => {
-    dispatch(changePage(newPage));
-    //   setSearchParams({ page: `${newPage}` });
     localStorage.setItem(StorageKeyName.pagination, `${newPage}`);
+    console.log(query, newPage);
+    router.push({ query: { ...query, page: newPage } });
   };
 
   const increment = () => {

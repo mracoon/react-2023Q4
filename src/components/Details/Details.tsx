@@ -36,7 +36,7 @@ export const Details = () => {
   const { isDetailsLoading } = useAppSelector((state) => state.loadingReducer);
 
   const { data, isError } = animeApi.useGetDetailsQuery(detailsId ?? skipToken);
-
+  console.log(data);
   const detailData = data?.data ?? dataTemplate;
 
   const title = detailData.title_english || detailData.title;

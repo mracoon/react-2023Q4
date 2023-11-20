@@ -1,46 +1,28 @@
 import React from 'react';
-//import './resultsContainer.css';
 import { Nullable } from '../../types/apiDataTypes';
 import { ApiErrorMessage } from '../Error/ApiErrorMessage';
 import { CardsContainer } from '../Card/CardsContainer';
-//import { useSearchParams } from 'react-router-dom';
 import { Pagination } from '../pagination/Pagination';
-import { Limit } from '../Limit/Limit';
 import { paginationTemplate } from '../../test/paginationTemplate';
 import { Details } from '../Details/Details';
 import { StorageKeyName } from '../../utils/constants';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useAppSelector } from '../../hooks/redux';
 import { animeApi } from '../../services/AnimeService';
-import { viewModeSlice } from '../../store/reducers/ViewModeSlice';
+import { useRouter } from 'next/router';
 
 const ResultsContainer = () => {
-  const { changeDetails } = viewModeSlice.actions;
-  const { page } = useAppSelector((state) => state.viewModeReducer);
-  const dispatch = useAppDispatch();
-
-  const { limitValue } = useAppSelector((state) => state.limitReducer);
   const { isCardListLoading } = useAppSelector((state) => state.loadingReducer);
-  const { searchValue } = useAppSelector((state) => state.searchReducer);
-  //const [searchParams] = useSearchParams();
 
-  /* useEffect(() => {
-    const newPage = searchParams.get('page');
-    if (`${page}` !== newPage) {
-      dispatch(changePage(+(newPage ?? page ?? 1)));
-      localStorage.setItem(
-        StorageKeyName.pagination,
-        `${newPage ?? page ?? 1}`
-      );
-    }
-  }, [searchParams, page, changePage, dispatch]); */
+  const router = useRouter();
+  const { query } = router;
+  const { page, limit, searchValue } = query;
   const { data, isError } = animeApi.useGetCardListQuery({
-    page,
-    limit: limitValue,
-    searchValue,
+    page: +(page || 1),
+    limit: +(limit || 1),
+    searchValue: (searchValue || '').toString(),
   });
 
   const cardClickHandler = (id: Nullable<string>) => {
-    dispatch(changeDetails(id));
     id
       ? localStorage.setItem(StorageKeyName.details, id)
       : localStorage.removeItem(StorageKeyName.details);
@@ -70,7 +52,6 @@ const ResultsContainer = () => {
             <Pagination
               paginationInfo={data?.pagination ?? paginationTemplate}
             ></Pagination>
-            <Limit />
           </>
         )}
       </div>
