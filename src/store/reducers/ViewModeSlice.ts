@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { StorageKeyName } from '../../utils/constants';
 import { Nullable } from '../../types/apiDataTypes';
 
 interface IViewModeState {
@@ -8,8 +7,8 @@ interface IViewModeState {
 }
 
 const initialState: IViewModeState = {
-  page: +(localStorage.getItem(StorageKeyName.pagination) ?? 1),
-  detailsId: localStorage.getItem(StorageKeyName.details),
+  page: 1, // +(localStorage.getItem(StorageKeyName.pagination) ?? 1),
+  detailsId: null, // localStorage.getItem(StorageKeyName.details),
 };
 
 export const viewModeSlice = createSlice({

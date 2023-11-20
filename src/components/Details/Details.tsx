@@ -1,6 +1,5 @@
 import React from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
+//import { useSearchParams } from 'react-router-dom';
 import dataTemplate from '../../test/dataTemplate';
 import { CardImg } from '../Card/CardImg';
 import { ApiErrorMessage } from '../Error/ApiErrorMessage';
@@ -16,9 +15,9 @@ export const Details = () => {
   const { detailsId } = useAppSelector((state) => state.viewModeReducer);
   const dispatch = useAppDispatch();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  //const [searchParams, setSearchParams] = useSearchParams();
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (!searchParams.get('page')) {
       searchParams.set(
         'page',
@@ -32,7 +31,7 @@ export const Details = () => {
     }
 
     setSearchParams(searchParams);
-  }, [detailsId, searchParams, setSearchParams]);
+  }, [detailsId, searchParams, setSearchParams]); */
 
   const { isDetailsLoading } = useAppSelector((state) => state.loadingReducer);
 

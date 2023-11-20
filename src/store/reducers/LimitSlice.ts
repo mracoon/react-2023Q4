@@ -1,12 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { MAX_LIMIT, StorageKeyName } from '../../utils/constants';
+import { MAX_LIMIT } from '../../utils/constants';
 
 interface ILimitState {
   limitValue: number;
 }
 
 const initialState: ILimitState = {
-  limitValue: +(localStorage.getItem(StorageKeyName.limit) ?? 1),
+  limitValue: 1, //+(localStorage.getItem(StorageKeyName.limit) ?? 1),
 };
 
 export const limitSlice = createSlice({

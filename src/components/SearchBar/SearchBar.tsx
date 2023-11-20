@@ -2,7 +2,7 @@ import React from 'react';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import ResponsiveBtn from '../buttons/ResponsiveButton';
-import { useSearchParams } from 'react-router-dom';
+//import { useSearchParams } from 'react-router-dom';
 import { StorageKeyName } from '../../utils/constants';
 import { useAppDispatch } from '../../hooks/redux';
 import { searchSlice } from '../../store/reducers/SearchSlice';
@@ -14,9 +14,9 @@ const SearchBar = () => {
   const { changeDetails, changePage } = viewModeSlice.actions;
 
   const [value, setValue] = useState(
-    localStorage.getItem(StorageKeyName.search) ?? ''
+    /*  localStorage.getItem(StorageKeyName.search) ??  */ ''
   );
-  const [, setSearchParams] = useSearchParams();
+  // const [, setSearchParams] = useSearchParams();
   const handlerChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
@@ -28,7 +28,7 @@ const SearchBar = () => {
     dispatch(changePage(1));
     dispatch(setSearchValue(searchValue));
     dispatch(changeDetails(null));
-    setSearchParams({ page: '1' });
+    //  setSearchParams({ page: '1' });
   };
 
   const handlerEnter = (event: KeyboardEvent<HTMLInputElement>) => {
