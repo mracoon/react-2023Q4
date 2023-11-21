@@ -2,7 +2,6 @@ import React, { PropsWithChildren } from 'react';
 import SearchBar from './SearchBar/SearchBar';
 import { ErrorButton } from './buttons/ErrorButton';
 import { Limit } from './Limit/Limit';
-//import { Outlet } from 'react-router-dom';
 
 export const SearchPageLayout = ({ children }: PropsWithChildren) => {
   return (
@@ -13,7 +12,6 @@ export const SearchPageLayout = ({ children }: PropsWithChildren) => {
         <Limit />
       </div>
 
-      {/*  <Outlet></Outlet> */}
       {children}
     </>
   );

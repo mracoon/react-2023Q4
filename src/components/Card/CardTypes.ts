@@ -10,6 +10,5 @@ export interface ICardImgProps {
 }
 
 export interface ICardsContainerProps {
-  cardClickHandler: (id: Nullable<string>) => void;
   cardsData: RequestItem[];
 }

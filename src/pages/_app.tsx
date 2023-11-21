@@ -5,13 +5,7 @@ import '../components/Card/Card.css';
 import '../components/Limit/limit.css';
 import '../components/Error/error.css';
 import type { AppProps } from 'next/app';
-import { Provider } from 'react-redux';
-import { makeStore } from '../store/store';
 
 export default function App({ Component, pageProps }: AppProps) {
-  return (
-    <Provider store={makeStore()}>
-      <Component {...pageProps} />
-    </Provider>
-  );
+  return <Component {...pageProps} />;
 }

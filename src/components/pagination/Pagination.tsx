@@ -1,6 +1,5 @@
 import React from 'react';
 import { RequestPagination } from '../../types/apiDataTypes';
-import { StorageKeyName } from '../../utils/constants';
 import { useRouter } from 'next/router';
 
 interface IPaginationInfoProps {
@@ -18,8 +17,6 @@ export const Pagination = ({ paginationInfo }: IPaginationInfoProps) => {
   } = paginationInfo;
 
   const updatePage = (newPage: number) => {
-    localStorage.setItem(StorageKeyName.pagination, `${newPage}`);
-    console.log(query, newPage);
     delete query.details;
     router.push({ query: { ...query, page: newPage } });
   };
