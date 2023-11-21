@@ -6,15 +6,15 @@ import { Pagination } from '../pagination/Pagination';
 import { paginationTemplate } from '../../test/paginationTemplate';
 import { Details } from '../Details/Details';
 import { StorageKeyName } from '../../utils/constants';
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
 const ResultsContainer = ({ data }: { data: IData }) => {
   // const { isCardListLoading } = useAppSelector((state) => state.loadingReducer);
-  const [isCardListLoading, setIsLoading] = useState(false);
+  const [isCardListLoading] = useState(false);
   const router = useRouter();
   const { query, pathname } = router;
   const { details: detailsId } = query;
-  React.useEffect(() => {
+  /*  React.useEffect(() => {
     const start = () => {
       console.log('start');
       setIsLoading(true);
@@ -31,7 +31,7 @@ const ResultsContainer = ({ data }: { data: IData }) => {
       Router.events.off('routeChangeComplete', end);
       Router.events.off('routeChangeError', end);
     };
-  }, []);
+  }, []); */
   /*  const {
     data,
     isError,

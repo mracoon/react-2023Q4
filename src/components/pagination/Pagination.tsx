@@ -20,6 +20,7 @@ export const Pagination = ({ paginationInfo }: IPaginationInfoProps) => {
   const updatePage = (newPage: number) => {
     localStorage.setItem(StorageKeyName.pagination, `${newPage}`);
     console.log(query, newPage);
+    delete query.details;
     router.push({ query: { ...query, page: newPage } });
   };
 

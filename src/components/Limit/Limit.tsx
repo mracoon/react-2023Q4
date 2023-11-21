@@ -14,6 +14,7 @@ export const Limit = () => {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setLimitValue(+event.target.value);
+    delete query.details;
     router.push({ query: { ...query, limit: +event.target.value, page: 1 } });
 
     localStorage.setItem(StorageKeyName.limit, event.target.value);

@@ -39,6 +39,12 @@ export const Details = ({ data }: { data: IData }) => {
   const detailData = data.detailsData ?? dataTemplate;
   const isError = false;
   const title = detailData.title_english || detailData.title;
+
+  const { query, pathname } = router;
+
+  const { details, ...queryWithoutDetails } = query;
+  console.log(details);
+
   return (
     <>
       {detailsId && (
@@ -52,6 +58,10 @@ export const Details = ({ data }: { data: IData }) => {
                   className="bg-red-800 w-8 h-8 self-end p-1"
                   onClick={() => {
                     localStorage.removeItem(StorageKeyName.details);
+                    router.push({
+                      pathname,
+                      query: { ...queryWithoutDetails },
+                    });
                   }}
                 >
                   ✖
