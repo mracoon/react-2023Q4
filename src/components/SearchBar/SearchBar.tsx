@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 const SearchBar = () => {
   const router = useRouter();
   const { query } = router;
-
+  const { limit } = query;
   const [value, setValue] = useState((query.searchValue || '').toString());
   useEffect(() => {
     setValue((router.query.searchValue || '').toString());
@@ -23,7 +23,7 @@ const SearchBar = () => {
     localStorage.setItem(StorageKeyName.search, searchValue);
     localStorage.setItem(StorageKeyName.pagination, '1');
 
-    router.push({ query: { ...query, page: 1, searchValue } });
+    router.push({ query: { page: 1, searchValue, limit: limit || 1 } });
   };
 
   const handlerEnter = (event: KeyboardEvent<HTMLInputElement>) => {

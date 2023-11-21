@@ -4,39 +4,20 @@ import dataTemplate from '../../test/dataTemplate';
 import { CardImg } from '../Card/CardImg';
 import { ApiErrorMessage } from '../Error/ApiErrorMessage';
 import { DetailsInfo } from './DetailsInfo';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useAppSelector } from '../../hooks/redux';
 import { animeApi } from '../../services/AnimeService';
 import { skipToken } from '@reduxjs/toolkit/query/react';
-import { viewModeSlice } from '../../store/reducers/ViewModeSlice';
 import { StorageKeyName } from '../../utils/constants';
+import { useRouter } from 'next/router';
 
 export const Details = () => {
-  const { changeDetails } = viewModeSlice.actions;
-  const { detailsId } = useAppSelector((state) => state.viewModeReducer);
-  const dispatch = useAppDispatch();
-
-  //const [searchParams, setSearchParams] = useSearchParams();
-
-  /* useEffect(() => {
-    if (!searchParams.get('page')) {
-      searchParams.set(
-        'page',
-        localStorage.getItem(StorageKeyName.pagination) ?? '1'
-      );
-    }
-    if (detailsId) {
-      searchParams.set('detail', `${detailsId}`);
-    } else {
-      searchParams.delete('detail');
-    }
-
-    setSearchParams(searchParams);
-  }, [detailsId, searchParams, setSearchParams]); */
+  const router = useRouter();
+  const id = router.query.details;
+  const detailsId = id ? id.toString() : null;
 
   const { isDetailsLoading } = useAppSelector((state) => state.loadingReducer);
 
   const { data, isError } = animeApi.useGetDetailsQuery(detailsId ?? skipToken);
-  console.log(data);
   const detailData = data?.data ?? dataTemplate;
 
   const title = detailData.title_english || detailData.title;
@@ -51,7 +32,6 @@ export const Details = () => {
               <button
                 className="bg-red-800 w-8 h-8 self-end p-1"
                 onClick={() => {
-                  dispatch(changeDetails(null));
                   localStorage.removeItem(StorageKeyName.details);
                 }}
               >
@@ -60,7 +40,7 @@ export const Details = () => {
               <h3 className="card-title">{title}</h3>
               <CardImg
                 title={title}
-                src={detailData?.images.webp.image_url}
+                src={detailData?.images.webp.image_url ?? '/'}
               ></CardImg>
               <DetailsInfo detailData={detailData} />
               <div className="flex-center flex-wrap gap-1 w-full">

@@ -14,8 +14,9 @@ const ResultsContainer = () => {
   const { isCardListLoading } = useAppSelector((state) => state.loadingReducer);
 
   const router = useRouter();
-  const { query } = router;
-  const { page, limit, searchValue } = query;
+  const { query, pathname } = router;
+  const { page, limit, searchValue, details: detailsId } = query;
+
   const { data, isError } = animeApi.useGetCardListQuery({
     page: +(page || 1),
     limit: +(limit || 1),
@@ -27,13 +28,18 @@ const ResultsContainer = () => {
       ? localStorage.setItem(StorageKeyName.details, id)
       : localStorage.removeItem(StorageKeyName.details);
   };
-
+  const { details, ...queryWithoutDetails } = query;
   return (
     <div className="results-container flex gap-2 items-start w-full flex-grow overflow-y-auto h-responsive pr-4">
       <div
         className="flex  flex-col gap-2 items-center w-full flex-grow justify-between sticky top-0 h-r"
         onClick={() => {
-          cardClickHandler(null);
+          if (details) {
+            router.push({
+              pathname,
+              query: { ...queryWithoutDetails },
+            });
+          }
         }}
       >
         {isCardListLoading && (
@@ -55,7 +61,8 @@ const ResultsContainer = () => {
           </>
         )}
       </div>
-      <Details></Details>
+
+      {detailsId && <Details></Details>}
     </div>
   );
 };
