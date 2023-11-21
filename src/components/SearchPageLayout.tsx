@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import SearchBar from './SearchBar/SearchBar';
 import { ErrorButton } from './buttons/ErrorButton';
-import ResultsContainer from './ResultsContainer/ResultsContainer';
 import { Limit } from './Limit/Limit';
-import { IData } from '@/types/apiDataTypes';
 //import { Outlet } from 'react-router-dom';
 
-export const SearchPageLayout = ({ data }: { data: IData }) => {
+export const SearchPageLayout = ({ children }: PropsWithChildren) => {
   return (
     <>
       <div className="w-full flex justify-between items-center gap-2 relative">
@@ -16,7 +14,7 @@ export const SearchPageLayout = ({ data }: { data: IData }) => {
       </div>
 
       {/*  <Outlet></Outlet> */}
-      <ResultsContainer data={data} />
+      {children}
     </>
   );
 };

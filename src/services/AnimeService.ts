@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from '../utils/constants';
 import { DataType, Nullable, RequestItem } from '../types/apiDataTypes';
-import { HYDRATE } from 'next-redux-wrapper';
+//import { HYDRATE } from 'next-redux-wrapper';
 import { dataSlice } from '@/store/reducers/DataSlice';
 export interface IQueryParameters {
   limit: string;
@@ -13,11 +13,11 @@ export const animeApi = createApi({
   // reducerPath: 'AnimeApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
 
-  extractRehydrationInfo(action, { reducerPath }) {
+  /*  extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {
       return action.payload[reducerPath];
-    }
-  },
+    } 
+  },*/
   endpoints: (builder) => ({
     getCardList: builder.query<DataType, IQueryParameters>({
       query: ({ limit, page, searchValue }) => ({

@@ -1,3 +1,4 @@
+import ResultsContainer from '@/components/ResultsContainer/ResultsContainer';
 import { SearchPageLayout } from '@/components/SearchPageLayout';
 import { useAppDispatch } from '@/hooks/redux';
 import { dataSlice } from '@/store/reducers/DataSlice';
@@ -65,5 +66,9 @@ export default function Home({
   console.log(data);
   dispatch(setData(data));
 
-  return <SearchPageLayout data={data} />;
+  return (
+    <SearchPageLayout>
+      <ResultsContainer data={data} />
+    </SearchPageLayout>
+  );
 }
