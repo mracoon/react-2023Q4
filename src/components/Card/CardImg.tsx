@@ -5,7 +5,7 @@ export const CardImg = ({ src, title }: ICardImgProps) => {
   return (
     <div className="img-container flex-center h-52 overflow-hidden">
       <Image
-        src={src ?? 'https//'}
+        src={src ?? '/ghost.png'}
         alt={title}
         width={225}
         height={300}

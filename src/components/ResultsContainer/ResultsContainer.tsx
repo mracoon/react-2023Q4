@@ -1,28 +1,50 @@
-import React from 'react';
-import { Nullable } from '../../types/apiDataTypes';
+import React, { useState } from 'react';
+import { IData, Nullable } from '../../types/apiDataTypes';
 import { ApiErrorMessage } from '../Error/ApiErrorMessage';
 import { CardsContainer } from '../Card/CardsContainer';
 import { Pagination } from '../pagination/Pagination';
 import { paginationTemplate } from '../../test/paginationTemplate';
 import { Details } from '../Details/Details';
 import { StorageKeyName } from '../../utils/constants';
-import { useAppSelector } from '../../hooks/redux';
-import { animeApi } from '../../services/AnimeService';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 
-const ResultsContainer = () => {
-  const { isCardListLoading } = useAppSelector((state) => state.loadingReducer);
-
+const ResultsContainer = ({ data }: { data: IData }) => {
+  // const { isCardListLoading } = useAppSelector((state) => state.loadingReducer);
+  const [isCardListLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { query, pathname } = router;
-  const { page, limit, searchValue, details: detailsId } = query;
-
-  const { data, isError } = animeApi.useGetCardListQuery({
-    page: +(page || 1),
-    limit: +(limit || 1),
+  const { details: detailsId } = query;
+  React.useEffect(() => {
+    const start = () => {
+      console.log('start');
+      setIsLoading(true);
+    };
+    const end = () => {
+      console.log('finished');
+      setIsLoading(false);
+    };
+    Router.events.on('routeChangeStart', start);
+    Router.events.on('routeChangeComplete', end);
+    Router.events.on('routeChangeError', end);
+    return () => {
+      Router.events.off('routeChangeStart', start);
+      Router.events.off('routeChangeComplete', end);
+      Router.events.off('routeChangeError', end);
+    };
+  }, []);
+  /*  const {
+    data,
+    isError,
+    isFetching: isCardListLoading,
+  } = animeApi.useGetCardListQuery({
+    page: `${page || 1}`,
+    limit: `${limit || 1}`,
     searchValue: (searchValue || '').toString(),
   });
-
+ */
+  // const isCardListLoading = false;
+  const isError = false;
+  // const data = useAppSelector((state) => state.dataReducer);
   const cardClickHandler = (id: Nullable<string>) => {
     id
       ? localStorage.setItem(StorageKeyName.details, id)
@@ -52,17 +74,17 @@ const ResultsContainer = () => {
         {!isCardListLoading && !isError && (
           <>
             <CardsContainer
-              cardsData={data?.data ?? []}
+              cardsData={data.cardsData.data ?? []}
               cardClickHandler={cardClickHandler}
             ></CardsContainer>
             <Pagination
-              paginationInfo={data?.pagination ?? paginationTemplate}
+              paginationInfo={data.cardsData.pagination ?? paginationTemplate}
             ></Pagination>
           </>
         )}
       </div>
 
-      {detailsId && <Details></Details>}
+      {detailsId && <Details data={data}></Details>}
     </div>
   );
 };

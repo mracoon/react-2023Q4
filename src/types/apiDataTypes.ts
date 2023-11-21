@@ -2,7 +2,10 @@ export type DataType = {
   pagination: RequestPagination;
   data: RequestItem[];
 };
-
+export interface IData {
+  cardsData: DataType;
+  detailsData: Nullable<RequestItem>;
+}
 export type RequestItem = {
   mal_id: number;
   url: string;
