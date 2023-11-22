@@ -17,7 +17,7 @@ export const CardsContainer = ({ cardsData }: ICardsContainerProps) => {
             onClick={() => {
               router.push({
                 pathname,
-                query: { ...query, details: data.mal_id },
+                query: { ...query, details: `${data.mal_id}` },
               });
             }}
           >
