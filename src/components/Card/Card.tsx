@@ -1,4 +1,3 @@
-//import './Card.css';
 import { BiTimeFive } from 'react-icons/bi';
 import { BsFillStarFill } from 'react-icons/bs';
 import { CardImg } from './CardImg';
