@@ -13,6 +13,10 @@ const SearchBar = () => {
   const [value, setValue] = useState((query.searchValue || '').toString());
   useEffect(() => {
     setValue((router.query.searchValue || '').toString());
+    const pageParam = router.query?.page;
+    if (!pageParam) {
+      router.push({ query: { ...router.query, page: 1 } });
+    }
   }, [router]);
   const handlerChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);

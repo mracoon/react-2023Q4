@@ -1,3 +1,4 @@
+import ErrorBoundary from '@/components/Error/ErrorBoundary';
 import ResultsContainer from '@/components/ResultsContainer/ResultsContainer';
 import { SearchPageLayout } from '@/components/SearchPageLayout';
 import {
@@ -45,8 +46,12 @@ export default function Home({
   errors,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <SearchPageLayout>
-      <ResultsContainer data={data} errors={errors} />
-    </SearchPageLayout>
+    <>
+      <ErrorBoundary>
+        <SearchPageLayout>
+          <ResultsContainer data={data} errors={errors} />
+        </SearchPageLayout>
+      </ErrorBoundary>
+    </>
   );
 }
