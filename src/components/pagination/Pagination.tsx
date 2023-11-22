@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RequestPagination } from '../../types/apiDataTypes';
 import { useRouter } from 'next/router';
 
@@ -10,6 +10,13 @@ export const Pagination = ({ paginationInfo }: IPaginationInfoProps) => {
   const router = useRouter();
   const { query } = router;
   const page = +(query?.page || 1);
+  useEffect(() => {
+    const pageParam = router.query?.page;
+    if (!pageParam) {
+      router.push({ query: { ...router.query, page: 1 } });
+    }
+  }, [router]);
+
   const {
     last_visible_page: lastPage,
     has_next_page: hasNextPage,
