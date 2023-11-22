@@ -25,13 +25,15 @@ export const animeApi = createApi({
         params: { page, limit, q: searchValue || '' },
       }),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        const { setCardsData } = dataSlice.actions;
+        const { setCardsData, setCardsDataError } = dataSlice.actions;
 
         try {
           const data = await queryFulfilled;
           dispatch(setCardsData(data.data));
           console.log(data);
+          dispatch(setCardsDataError(false));
         } catch (error: unknown) {
+          dispatch(setCardsDataError(true));
           if (error instanceof Error) {
             console.log(error.message);
           }
@@ -43,12 +45,14 @@ export const animeApi = createApi({
         url: `/${detailsId}`,
       }),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        const { setDetailsData } = dataSlice.actions;
+        const { setDetailsData, setDetailsError } = dataSlice.actions;
 
         try {
           const data = await queryFulfilled;
           dispatch(setDetailsData(data.data));
+          dispatch(setDetailsError(false));
         } catch (error: unknown) {
+          dispatch(setDetailsError(true));
           if (error instanceof Error) {
             console.log(error.message);
           }

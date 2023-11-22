@@ -7,11 +7,15 @@ import dataTemplate from '@/test/dataTemplate';
 export interface IDataState {
   cardsData: DataType;
   details: { data: RequestItem };
+  cardsDataError: { hasError: boolean };
+  detailsError: { hasError: boolean };
 }
 
 const initialState: IDataState = {
   cardsData: { pagination: paginationTemplate, data: mockData },
   details: { data: dataTemplate },
+  cardsDataError: { hasError: false },
+  detailsError: { hasError: false },
 };
 
 export const dataSlice = createSlice({
@@ -33,6 +37,12 @@ export const dataSlice = createSlice({
     },
     setDetailsData(state, action: PayloadAction<{ data: RequestItem }>) {
       state.details = action.payload;
+    },
+    setCardsDataError(state, action: PayloadAction<boolean>) {
+      state.cardsDataError.hasError = action.payload;
+    },
+    setDetailsError(state, action: PayloadAction<boolean>) {
+      state.detailsError.hasError = action.payload;
     },
   },
 });

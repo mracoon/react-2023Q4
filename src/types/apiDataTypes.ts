@@ -2,6 +2,11 @@ export type DataType = {
   pagination: RequestPagination;
   data: RequestItem[];
 };
+export interface IDataErrors {
+  cardsDataError: boolean;
+  detailsError: boolean;
+}
+
 export interface IData {
   cardsData: DataType;
   detailsData: { data: RequestItem };
