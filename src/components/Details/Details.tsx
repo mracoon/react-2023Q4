@@ -1,7 +1,6 @@
 import dataTemplate from '../../test/dataTemplate';
 import { CardImg } from '../Card/CardImg';
 import { DetailsInfo } from './DetailsInfo';
-import { StorageKeyName } from '../../utils/constants';
 import { useRouter } from 'next/router';
 import { IData } from '@/types/apiDataTypes';
 
@@ -25,7 +24,6 @@ export const Details = ({ data }: { data: IData }) => {
               <button
                 className="bg-red-800 w-8 h-8 self-end p-1"
                 onClick={() => {
-                  localStorage.removeItem(StorageKeyName.details);
                   router.push({
                     pathname,
                     query: { ...queryWithoutDetails },
