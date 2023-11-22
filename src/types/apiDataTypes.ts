@@ -4,7 +4,7 @@ export type DataType = {
 };
 export interface IData {
   cardsData: DataType;
-  detailsData: Nullable<RequestItem>;
+  detailsData: { data: RequestItem };
 }
 export type RequestItem = {
   mal_id: number;

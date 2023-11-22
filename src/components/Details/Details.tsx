@@ -7,16 +7,14 @@ import { IData } from '@/types/apiDataTypes';
 
 export const Details = ({ data }: { data: IData }) => {
   const router = useRouter();
-  const id = router.query.details;
+  const { query, pathname } = router;
+  const { details: id, ...queryWithoutDetails } = query;
+
   const detailsId = id ? id.toString() : null;
 
-  const detailData = data.detailsData ?? dataTemplate;
+  const detailData = data.detailsData.data ?? dataTemplate;
+
   const title = detailData.title_english || detailData.title;
-
-  const { query, pathname } = router;
-
-  const { details, ...queryWithoutDetails } = query;
-  console.log(details);
 
   return (
     <>
