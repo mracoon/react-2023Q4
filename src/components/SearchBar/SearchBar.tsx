@@ -2,7 +2,6 @@ import React from 'react';
 import { ChangeEvent, KeyboardEvent, useState, useEffect } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import ResponsiveBtn from '../buttons/ResponsiveButton';
-import { StorageKeyName } from '../../utils/constants';
 
 import { useRouter } from 'next/router';
 
@@ -24,9 +23,6 @@ const SearchBar = () => {
 
   const submitHandler = () => {
     const searchValue = value.trim();
-    localStorage.setItem(StorageKeyName.search, searchValue);
-    localStorage.setItem(StorageKeyName.pagination, '1');
-
     router.push({ query: { page: 1, searchValue, limit: limit || 1 } });
   };
 
