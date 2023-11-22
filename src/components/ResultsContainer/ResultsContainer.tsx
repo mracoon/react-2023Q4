@@ -1,14 +1,23 @@
-import { IData } from '../../types/apiDataTypes';
+import { IData, IDataErrors } from '../../types/apiDataTypes';
 import { CardsContainer } from '../Card/CardsContainer';
 import { Pagination } from '../pagination/Pagination';
 import { paginationTemplate } from '../../test/paginationTemplate';
 import { Details } from '../Details/Details';
 import { useRouter } from 'next/router';
 
-const ResultsContainer = ({ data }: { data: IData }) => {
+const ResultsContainer = ({
+  data,
+  errors,
+}: {
+  data: IData;
+  errors: IDataErrors;
+}) => {
   const router = useRouter();
   const { query, pathname } = router;
   const { details, ...queryWithoutDetails } = query;
+  if (errors.cardsDataError || errors.detailsError) {
+    return <h2>Something went wrong. Try again</h2>;
+  }
   return (
     <div className="results-container flex gap-2 items-start w-full flex-grow overflow-y-auto h-responsive pr-4">
       <div
