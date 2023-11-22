@@ -13,11 +13,6 @@ const data: Partial<RequestItem> = {
   synopsis: 'Naruto description',
   duration: '23 min',
   score: 8,
-  images: {
-    webp: { image_url: 'test', small_image_url: '', large_image_url: '' },
-    jpg: { image_url: 'test', small_image_url: '', large_image_url: '' },
-  },
-
   rating: AnimeRating.Rp,
   status: AiringStatus.currently,
   type: AnimeType.movie,
