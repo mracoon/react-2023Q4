@@ -18,7 +18,7 @@ export const Pagination = ({ paginationInfo }: IPaginationInfoProps) => {
 
   const updatePage = (newPage: number) => {
     delete query.details;
-    router.push({ query: { ...query, page: newPage } });
+    router.push({ query: { ...query, page: `${newPage}` } });
   };
 
   const increment = () => {
