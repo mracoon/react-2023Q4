@@ -1,81 +1,47 @@
-import React from 'react';
-import { useEffect } from 'react';
-import './resultsContainer.css';
-import { Nullable } from '../../types/apiDataTypes';
-import { ApiErrorMessage } from '../Error/ApiErrorMessage';
+import { IData, IDataErrors } from '../../types/apiDataTypes';
 import { CardsContainer } from '../Card/CardsContainer';
-import { useSearchParams } from 'react-router-dom';
 import { Pagination } from '../pagination/Pagination';
-import { Limit } from '../Limit/Limit';
 import { paginationTemplate } from '../../test/paginationTemplate';
 import { Details } from '../Details/Details';
-import { StorageKeyName } from '../../utils/constants';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { animeApi } from '../../services/AnimeService';
-import { viewModeSlice } from '../../store/reducers/ViewModeSlice';
+import { useRouter } from 'next/router';
 
-const ResultsContainer = () => {
-  const { changeDetails, changePage } = viewModeSlice.actions;
-  const { page } = useAppSelector((state) => state.viewModeReducer);
-  const dispatch = useAppDispatch();
-
-  const { limitValue } = useAppSelector((state) => state.limitReducer);
-  const { isCardListLoading } = useAppSelector((state) => state.loadingReducer);
-  const { searchValue } = useAppSelector((state) => state.searchReducer);
-  const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    const newPage = searchParams.get('page');
-    if (`${page}` !== newPage) {
-      dispatch(changePage(+(newPage ?? page ?? 1)));
-      localStorage.setItem(
-        StorageKeyName.pagination,
-        `${newPage ?? page ?? 1}`
-      );
-    }
-  }, [searchParams, page, changePage, dispatch]);
-  const { data, isError } = animeApi.useGetCardListQuery({
-    page,
-    limit: limitValue,
-    searchValue,
-  });
-
-  const cardClickHandler = (id: Nullable<string>) => {
-    dispatch(changeDetails(id));
-    id
-      ? localStorage.setItem(StorageKeyName.details, id)
-      : localStorage.removeItem(StorageKeyName.details);
-  };
-
+const ResultsContainer = ({
+  data,
+  errors,
+}: {
+  data: IData;
+  errors: IDataErrors;
+}) => {
+  const router = useRouter();
+  const { query, pathname } = router;
+  const { details, ...queryWithoutDetails } = query;
+  if (errors.cardsDataError || errors.detailsError) {
+    return <h2>Something went wrong. Try again</h2>;
+  }
   return (
     <div className="results-container flex gap-2 items-start w-full flex-grow overflow-y-auto h-responsive pr-4">
       <div
         className="flex  flex-col gap-2 items-center w-full flex-grow justify-between sticky top-0 h-r"
         onClick={() => {
-          cardClickHandler(null);
+          if (details) {
+            router.push({
+              pathname,
+              query: { ...queryWithoutDetails },
+            });
+          }
         }}
       >
-        {isCardListLoading && (
-          <div className="flex-grow">
-            <p className="loader"></p>
-          </div>
-        )}
-        {isError && <ApiErrorMessage />}
-
-        {!isCardListLoading && !isError && (
-          <>
-            <CardsContainer
-              cardsData={data?.data ?? []}
-              cardClickHandler={cardClickHandler}
-            ></CardsContainer>
-            <Pagination
-              paginationInfo={data?.pagination ?? paginationTemplate}
-            ></Pagination>
-            <Limit />
-          </>
-        )}
+        <>
+          <CardsContainer
+            cardsData={data.cardsData.data ?? []}
+          ></CardsContainer>
+          <Pagination
+            paginationInfo={data.cardsData.pagination ?? paginationTemplate}
+          ></Pagination>
+        </>
       </div>
-      <Details></Details>
+
+      {details && <Details data={data}></Details>}
     </div>
   );
 };

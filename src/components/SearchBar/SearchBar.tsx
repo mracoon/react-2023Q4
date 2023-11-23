@@ -1,39 +1,24 @@
-import React from 'react';
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import React, { useRef } from 'react';
+import { KeyboardEvent } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import ResponsiveBtn from '../buttons/ResponsiveButton';
-import { useSearchParams } from 'react-router-dom';
-import { StorageKeyName } from '../../utils/constants';
-import { useAppDispatch } from '../../hooks/redux';
-import { searchSlice } from '../../store/reducers/SearchSlice';
-import { viewModeSlice } from '../../store/reducers/ViewModeSlice';
+
+import { useRouter } from 'next/router';
 
 const SearchBar = () => {
-  const { setSearchValue } = searchSlice.actions;
-  const dispatch = useAppDispatch();
-  const { changeDetails, changePage } = viewModeSlice.actions;
-
-  const [value, setValue] = useState(
-    localStorage.getItem(StorageKeyName.search) ?? ''
-  );
-  const [, setSearchParams] = useSearchParams();
-  const handlerChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-  };
+  const router = useRouter();
+  const { query } = router;
+  const { limit } = query;
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const submitHandler = () => {
-    const searchValue = value.trim();
-    localStorage.setItem(StorageKeyName.search, searchValue);
-    localStorage.setItem(StorageKeyName.pagination, '1');
-    dispatch(changePage(1));
-    dispatch(setSearchValue(searchValue));
-    dispatch(changeDetails(null));
-    setSearchParams({ page: '1' });
+    const searchValue = searchInputRef.current?.value.trim() ?? '';
+    console.log(searchValue);
+    router.push({ query: { page: 1, searchValue, limit: limit || 1 } });
   };
 
   const handlerEnter = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && event.target instanceof HTMLInputElement) {
-      setValue(event.target.value);
       submitHandler();
     }
   };
@@ -45,9 +30,9 @@ const SearchBar = () => {
           className="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
           type="search"
           placeholder="Search anime"
-          onChange={handlerChange}
           onKeyUp={handlerEnter}
-          value={value}
+          ref={searchInputRef}
+          defaultValue={(router.query.searchValue || '').toString()}
         />
         <ResponsiveBtn
           classes="bg-indigo-600"

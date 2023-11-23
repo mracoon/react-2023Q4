@@ -1,9 +1,10 @@
-import { act, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { Pagination } from './Pagination';
-import { BrowserRouter } from 'react-router-dom';
+
 import userEvent from '@testing-library/user-event';
 import { paginationTemplate } from '../../test/paginationTemplate';
-import { renderWithProviders } from '../../utils/test-utils';
+import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
+import createMockRouter from '@/test/createMockRouter';
 
 describe('Pagination', () => {
   userEvent.setup();
@@ -13,10 +14,13 @@ describe('Pagination', () => {
   });
   describe('should update URL query parameter when page changes', async () => {
     const startPage = 5;
+    const query = { page: `${startPage}`, limit: '1', details: '1' };
+    const mockRouter = createMockRouter({ query });
+
     beforeEach(() => {
       act(() => {
-        renderWithProviders(
-          <BrowserRouter>
+        render(
+          <RouterContext.Provider value={mockRouter}>
             <Pagination
               paginationInfo={{
                 ...paginationTemplate,
@@ -25,12 +29,7 @@ describe('Pagination', () => {
                 current_page: startPage,
               }}
             />
-          </BrowserRouter>,
-          {
-            preloadedState: {
-              viewModeReducer: { page: startPage, detailsId: null },
-            },
-          }
+          </RouterContext.Provider>
         );
       });
     });
@@ -43,7 +42,9 @@ describe('Pagination', () => {
       await act(async () => {
         await userEvent.click(nextButton);
       });
-      expect(location.search).toBe(`?page=${startPage + 1}`);
+      expect(mockRouter.push).toBeCalledWith({
+        query: { ...query, page: `${startPage + 1}` },
+      });
     });
 
     it('prev button', async () => {
@@ -52,7 +53,9 @@ describe('Pagination', () => {
       await act(async () => {
         await userEvent.click(screen.getByText('prev'));
       });
-      expect(location.search).toBe(`?page=${startPage - 1}`);
+      expect(mockRouter.push).toBeCalledWith({
+        query: { ...query, page: `${startPage - 1}` },
+      });
     });
   });
 });

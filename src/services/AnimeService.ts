@@ -1,17 +1,23 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from '../utils/constants';
 import { DataType, Nullable, RequestItem } from '../types/apiDataTypes';
-import { loadingSlice } from '../store/reducers/LoadingSlice';
+import { HYDRATE } from 'next-redux-wrapper';
+import { dataSlice } from '@/store/reducers/DataSlice';
 
-interface IQueryParameters {
-  limit: number;
-  page: number;
+export interface IQueryParameters {
+  limit: string;
+  page: string;
   searchValue?: string;
 }
 
 export const animeApi = createApi({
-  reducerPath: 'AnimeApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath];
+    }
+  },
   endpoints: (builder) => ({
     getCardList: builder.query<DataType, IQueryParameters>({
       query: ({ limit, page, searchValue }) => ({
@@ -19,16 +25,17 @@ export const animeApi = createApi({
         params: { page, limit, q: searchValue || '' },
       }),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        const { setIsCardListLoading } = loadingSlice.actions;
-        dispatch(setIsCardListLoading(true));
+        const { setCardsData, setCardsDataError } = dataSlice.actions;
+
         try {
-          await queryFulfilled;
+          const data = await queryFulfilled;
+          dispatch(setCardsData(data.data));
+          dispatch(setCardsDataError(false));
         } catch (error: unknown) {
+          dispatch(setCardsDataError(true));
           if (error instanceof Error) {
             console.log(error.message);
           }
-        } finally {
-          dispatch(setIsCardListLoading(false));
         }
       },
     }),
@@ -37,16 +44,26 @@ export const animeApi = createApi({
         url: `/${detailsId}`,
       }),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        const { setIsDetailsLoading } = loadingSlice.actions;
-        dispatch(setIsDetailsLoading(true));
+        const { setDetailsData, setDetailsError } = dataSlice.actions;
+
         try {
-          await queryFulfilled;
-        } finally {
-          dispatch(setIsDetailsLoading(false));
+          const data = await queryFulfilled;
+          dispatch(setDetailsData(data.data));
+          dispatch(setDetailsError(false));
+        } catch (error: unknown) {
+          dispatch(setDetailsError(true));
+          if (error instanceof Error) {
+            console.log(error.message);
+          }
         }
       },
     }),
   }),
 });
 
-export const { useGetCardListQuery, useGetDetailsQuery } = animeApi;
+export const {
+  useGetCardListQuery,
+  useGetDetailsQuery,
+  util: { getRunningQueriesThunk },
+} = animeApi;
+export const { getCardList, getDetails } = animeApi.endpoints;
