@@ -12,7 +12,6 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <link rel="icon" type="image/svg+xml" href="/ghost.png" />
-
         <title>Anime Search</title>
       </Head>
       <Component {...pageProps} />
