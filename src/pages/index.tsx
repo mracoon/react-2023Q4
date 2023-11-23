@@ -11,10 +11,23 @@ import { IData, IDataErrors } from '@/types/apiDataTypes';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
 export const getServerSideProps: GetServerSideProps<{
-  data: IData;
-  errors: IDataErrors;
+  data?: IData;
+  errors?: IDataErrors;
 }> = wrapper.getServerSideProps((store) => async (context) => {
-  const { limit, page, details: datailsId, searchValue } = context.query;
+  const { limit, page, details, searchValue } = context.query;
+
+  if (!page) {
+    const detailsQueryString = details ? `&details=${details} ` : '';
+    return {
+      redirect: {
+        destination: `/?page=1&searchValue=${searchValue || ''}&limit=${
+          limit || 1
+        }${detailsQueryString}`,
+        permanent: false,
+      },
+    };
+  }
+
   store.dispatch(
     getCardList.initiate({
       limit: limit?.toString() || '1',
@@ -22,11 +35,12 @@ export const getServerSideProps: GetServerSideProps<{
       searchValue: searchValue?.toString() || '',
     })
   );
-  if (datailsId) {
-    store.dispatch(getDetails.initiate(datailsId.toString()));
+  if (details) {
+    store.dispatch(getDetails.initiate(details.toString()));
   }
 
   await Promise.all(store.dispatch(getRunningQueriesThunk()));
+
   return {
     props: {
       data: {
@@ -35,16 +49,18 @@ export const getServerSideProps: GetServerSideProps<{
       },
       errors: {
         cardsDataError: store.getState().dataReducer.cardsDataError.hasError,
-
         detailsError: store.getState().dataReducer.detailsError.hasError,
       },
     },
   };
 });
-export default function Home({
-  data,
-  errors,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Home(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
+  if (!props?.data || !props?.errors) {
+    return <></>;
+  }
+  const { data, errors } = props;
   return (
     <>
       <ErrorBoundary>

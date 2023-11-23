@@ -30,7 +30,6 @@ export const animeApi = createApi({
         try {
           const data = await queryFulfilled;
           dispatch(setCardsData(data.data));
-          console.log(data);
           dispatch(setCardsDataError(false));
         } catch (error: unknown) {
           dispatch(setCardsDataError(true));

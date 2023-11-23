@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { KeyboardEvent, useEffect } from 'react';
+import { KeyboardEvent } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import ResponsiveBtn from '../buttons/ResponsiveButton';
 
@@ -10,12 +10,6 @@ const SearchBar = () => {
   const { query } = router;
   const { limit } = query;
   const searchInputRef = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    const pageParam = router.query?.page;
-    if (!pageParam) {
-      router.push({ query: { ...router.query, page: 1 } });
-    }
-  }, [router]);
 
   const submitHandler = () => {
     const searchValue = searchInputRef.current?.value.trim() ?? '';
