@@ -31,3 +31,12 @@ body::before {
   position: sticky;
   top: 0;
 }
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  background-color: blanchedalmond;
+  width: 100%;
+}
