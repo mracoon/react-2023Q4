@@ -51,8 +51,8 @@ export const createInputsProps = (refs: iRefs): ICustomInputProps[] => [
   {
     lableText: 'Upload image',
     inputType: 'file',
-    name: 'image',
-    inputId: 'image',
+    name: 'fileUpload',
+    inputId: 'fileUpload',
     inputRef: refs.imageRef,
   },
   {

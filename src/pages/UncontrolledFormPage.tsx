@@ -1,10 +1,12 @@
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import * as yup from 'yup';
 import { ValidationError } from 'yup';
 import { CustomInput } from '../components/Form/CustomInput';
 import { GenderSelect } from '../components/Form/GenderSelect';
 import { CountriesSelect } from '../components/Form/CountriesSelect';
 import { createInputsProps } from '../components/Form/inputsProps';
+import '../components/Form/form.css';
+
 const pass = 'password1A!';
 const formSchema = yup.object({
   name: yup
@@ -45,7 +47,7 @@ const formSchema = yup.object({
       /[^A-ZА-Яa-zа-я0-9Ёё\s]/,
       'Password must contain at least one special character (e.g., !@#$%^&*)'
     ),
-
+  tc: yup.boolean().test('tsChaecked', 'You should accept T&C', (tc) => tc),
   fileUpload: yup
     .mixed<FileList>()
     .test('fileRequired', 'Image required', (file) => !!file)
@@ -77,9 +79,18 @@ const UncontrolledFormPage = () => {
   const tcRef = useRef<HTMLInputElement>(null);
   const genderRef = useRef<HTMLSelectElement>(null);
   const countriesRef = useRef<HTMLSelectElement>(null);
+  const [formErrors, updatevalidateErrors] = useState<Record<string, string>>(
+    {}
+  );
+  /*   if (!formRef.current) {
+    throw new Error("form doesn't exist");
+  } */
 
   const submitFormHandler = (event: FormEvent) => {
     event.preventDefault();
+    /*  if (!formRef.current) {
+      return;
+    } */
 
     try {
       formSchema.validateSync(
@@ -90,17 +101,31 @@ const UncontrolledFormPage = () => {
           password: passwordInputRef.current?.value,
           confirmPassword: confirmPasswordRef.current?.value,
           fileUpload: imageRef.current?.value,
+          tc: tcRef.current?.checked,
         },
         { abortEarly: false }
       );
       console.log('ok!');
-    } catch (error) {
-      if (error instanceof ValidationError) {
-        console.log(
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        /* console.log(
           error.inner.map((inner) => {
+            const x = inner.path || 'name';
+            console.log(validateErrors[`${x}`]);
+
             return `${inner.path}: ${inner.message}`;
-          })
-        );
+          }) 
+        );*/
+        //console.log(error.inner);
+        // if (err instanceof yup.ValidationError) {
+        const errors: Record<string, string> = {};
+        err.inner.forEach((error) => {
+          if (error.path) {
+            errors[error.path] = error.message;
+          }
+        });
+        updatevalidateErrors(errors);
+        // }
       }
     }
   };
@@ -126,15 +151,22 @@ const UncontrolledFormPage = () => {
       >
         {inputsProps.map((props) => {
           return (
-            <CustomInput
-              key={`input-${props.name}`}
-              lableText={props.lableText}
-              inputType={props.inputType}
-              name={props.name}
-              inputId={props.inputId}
-              autocomplete={props.autocomplete}
-              inputRef={props.inputRef}
-            />
+            <div
+              key={`uctrl-input-${props.name}`}
+              className="flex flex-col items-start justify-start"
+            >
+              <CustomInput
+                lableText={props.lableText}
+                inputType={props.inputType}
+                name={props.name}
+                inputId={props.inputId}
+                autocomplete={props.autocomplete}
+                inputRef={props.inputRef}
+              />
+              {formErrors[props.name] && (
+                <p className="error-message">{formErrors[props.name]}</p>
+              )}
+            </div>
           );
         })}
 
