@@ -5,6 +5,7 @@ export interface ICustomInputProps {
   inputId: string;
   inputRef: React.RefObject<HTMLInputElement>;
   autocomplete?: string;
+  errorMessage?: string;
 }
 
 export const CustomInput = ({
@@ -14,17 +15,21 @@ export const CustomInput = ({
   inputId,
   autocomplete,
   inputRef,
+  errorMessage,
 }: ICustomInputProps) => {
   return (
-    <div>
-      <label htmlFor={inputId}>{lableText}:</label>
-      <input
-        type={inputType}
-        name={name}
-        autoComplete={autocomplete || 'on'}
-        id={inputId}
-        ref={inputRef}
-      />
-    </div>
+    <>
+      <div>
+        <label htmlFor={inputId}>{lableText}:</label>
+        <input
+          type={inputType}
+          name={name}
+          autoComplete={autocomplete || 'on'}
+          id={inputId}
+          ref={inputRef}
+        />
+      </div>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+    </>
   );
 };
