@@ -94,7 +94,7 @@ const UncontrolledFormPage = () => {
         })}
         <div className="flex flex-col items-start justify-start">
           <CountriesSelect
-            countriesRef={countriesRef}
+            inputRef={countriesRef}
             errorMessage={formErrors['country']}
           />
         </div>
