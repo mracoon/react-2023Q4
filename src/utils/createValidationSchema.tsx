@@ -54,7 +54,7 @@ export const createValidationSchema = (password: string) => {
         'Password must contain at least one special character (e.g., !@#$%^&*)'
       ),
     tc: yup.boolean().test('tsChaecked', 'You should accept T&C', (tc) => tc),
-    fileUpload: yup
+    image: yup
       .mixed<FileList>()
       .test('fileRequired', 'Image required', (file) => !!file)
       .test('fileSize', 'Only image up to 2MB are permitted.', (fileList) => {
