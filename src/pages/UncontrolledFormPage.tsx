@@ -5,7 +5,7 @@ import { GenderSelect } from '../components/Form/GenderSelect';
 import { createInputsProps } from '../components/Form/inputsProps';
 import '../components/Form/form.css';
 import CountriesSelect from '../components/Form/CountriesSelect';
-import { createValidationSchema } from '../utils/createValidationSchema';
+import { formValidationSchema } from '../utils/createValidationSchema';
 import { useNavigate } from 'react-router-dom';
 import { uncontrolledFormSlice } from '../store/reducers/UncontrolledFormSlice';
 import { useAppDispatch } from '../hooks/redux';
@@ -51,9 +51,7 @@ const UncontrolledFormPage = () => {
     const image = imageRef.current?.files;
     const country = countriesRef.current?.value;
     try {
-      createValidationSchema(
-        passwordInputRef.current?.value || ''
-      ).validateSync(
+      formValidationSchema.validateSync(
         {
           name,
           age,
@@ -63,6 +61,7 @@ const UncontrolledFormPage = () => {
           image,
           tc,
           country,
+          gender,
         },
         { abortEarly: false }
       );
