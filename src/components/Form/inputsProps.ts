@@ -26,7 +26,7 @@ export const createInputsProps = (refs: iRefs): ICustomInputProps[] => [
   },
   {
     lableText: 'Email',
-    inputType: 'email',
+    inputType: 'text',
     name: 'email',
     inputId: 'email',
     inputRef: refs.emailInputRef,
@@ -51,15 +51,8 @@ export const createInputsProps = (refs: iRefs): ICustomInputProps[] => [
   {
     lableText: 'Upload image',
     inputType: 'file',
-    name: 'fileUpload',
-    inputId: 'fileUpload',
+    name: 'image',
+    inputId: 'image',
     inputRef: refs.imageRef,
-  },
-  {
-    lableText: 'Accept T&C',
-    inputType: 'checkbox',
-    name: 'tc',
-    inputId: 'tc',
-    inputRef: refs.tcRef,
   },
 ];

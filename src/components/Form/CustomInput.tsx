@@ -25,11 +25,17 @@ export const CustomInput = ({
         : (input.type = 'password');
     }
   };
+  const passwordFieldsClass = ['password', 'confirmPassword'].includes(name)
+    ? 'password-field'
+    : '';
   return (
     <>
-      <div>
+      <div
+        className={`flex flex-col w-full items-start input-container ${passwordFieldsClass}`}
+      >
         <label htmlFor={inputId}>{lableText}:</label>
         <input
+          className="w-full"
           type={inputType}
           name={name}
           autoComplete={autocomplete || 'on'}

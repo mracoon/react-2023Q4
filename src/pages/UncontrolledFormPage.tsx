@@ -9,6 +9,7 @@ import { formValidationSchema } from '../utils/createValidationSchema';
 import { useNavigate } from 'react-router-dom';
 import { uncontrolledFormSlice } from '../store/reducers/UncontrolledFormSlice';
 import { useAppDispatch } from '../hooks/redux';
+import AcceptTC from '../components/Form/AcceptTC';
 
 const UncontrolledFormPage = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -127,17 +128,12 @@ const UncontrolledFormPage = () => {
   return (
     <>
       <h1>Uncontrolled Form Page</h1>
-      <form
-        onSubmit={submitFormHandler}
-        ref={formRef}
-        className="flex flex-col gap-4 items-start"
-        autoComplete="on"
-      >
+      <form onSubmit={submitFormHandler} ref={formRef} autoComplete="on">
         {inputsProps.map((props) => {
           return (
             <div
               key={`uctrl-input-${props.name}`}
-              className="flex flex-col items-start justify-start"
+              className="flex flex-col items-start justify-start w-full form-item"
             >
               <CustomInput
                 lableText={props.lableText}
@@ -151,13 +147,14 @@ const UncontrolledFormPage = () => {
             </div>
           );
         })}
-        <div className="flex flex-col items-start justify-start">
+        <div className="flex flex-col items-start justify-start w-full form-item">
           <CountriesSelect
             inputRef={countriesRef}
             errorMessage={formErrors['country']}
           />
         </div>
         <GenderSelect inputRef={genderRef} />
+        <AcceptTC inputRef={tcRef} errorMessage={formErrors['tc']} />
 
         <button type="submit">Submit</button>
       </form>

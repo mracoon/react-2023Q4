@@ -5,7 +5,6 @@ interface ISelectOptions {
 
 interface ICustomSelectProps {
   lableText: string;
-  //inputType: string;
   name: string;
   inputId: string;
   inputRef: React.RefObject<HTMLSelectElement>;
@@ -15,7 +14,6 @@ interface ICustomSelectProps {
 
 export const CustomSelect = ({
   lableText,
-  // inputType,
   name,
   inputId,
   autocomplete,
@@ -23,7 +21,7 @@ export const CustomSelect = ({
   options,
 }: ICustomSelectProps) => {
   return (
-    <div>
+    <div className="flex flex-col w-full items-start input-container form-item">
       <label htmlFor={inputId}>{lableText}:</label>
       <select
         name={name}

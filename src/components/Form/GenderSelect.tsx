@@ -18,11 +18,3 @@ export const GenderSelect = ({
     ></CustomSelect>
   );
 };
-
-/*        <label htmlFor="gender">Gender:</label>
-          <select name="gender" autoComplete="sex" id="gender">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-          
-          */

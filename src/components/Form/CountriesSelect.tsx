@@ -8,13 +8,14 @@ const CountriesSelect = ({
   errorMessage?: string;
 }) => {
   return (
-    <div className="flex flex-col items-start justify-start">
-      <div className="relative">
+    <div className="flex flex-col items-start justify-start w-full ">
+      <div className="relative flex flex-col w-full items-start input-container">
         <label htmlFor="countries">Countries:</label>
         <input
           id="countries"
           type="text"
           name="country"
+          className="w-full"
           placeholder="Choose country..."
           ref={inputRef}
           list="countries-list"
