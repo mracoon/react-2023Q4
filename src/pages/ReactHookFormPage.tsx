@@ -5,6 +5,7 @@ import { countries } from '../utils/countriesList';
 import { useAppDispatch } from '../hooks/redux';
 import { RHFSlice } from '../store/reducers/RHFSlice';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 //import RHFSlice from '../store/reducers/RHFSlice';
 type FormData = {
   name: string;
@@ -32,6 +33,8 @@ const ReactHookFormPage = () => {
   } = RHFSlice.actions;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [passwordType, setPasswordType] = useState('password');
+  const [confirmPasswordType, setConfirmPasswordType] = useState('password');
   const {
     register,
     handleSubmit,
@@ -70,6 +73,14 @@ const ReactHookFormPage = () => {
     };
   };
 
+  const showPasswordHandler = (isPassword: boolean) => {
+    isPassword
+      ? setPasswordType(passwordType === 'password' ? 'text' : 'password')
+      : setConfirmPasswordType(
+          confirmPasswordType === 'password' ? 'text' : 'password'
+        );
+  };
+
   return (
     <>
       <h1>React Hook Form Page</h1>
@@ -103,7 +114,15 @@ const ReactHookFormPage = () => {
         <div className="flex flex-col items-start justify-start">
           <div>
             <label htmlFor="password">Password:</label>
-            <input {...register('password')} id={'password'} type="password" />
+            <input
+              {...register('password')}
+              id={'password'}
+              type={passwordType}
+            />
+            <div
+              className="show-password"
+              onClick={() => showPasswordHandler(true)}
+            />
           </div>
           <p className="error-message">{errors.password?.message}</p>
         </div>
@@ -114,7 +133,13 @@ const ReactHookFormPage = () => {
             <input
               {...register('confirmPassword')}
               id={'confirmPassword'}
-              type="password"
+              type={confirmPasswordType}
+            />
+            <div
+              className="show-password"
+              onClick={() => {
+                showPasswordHandler(false);
+              }}
             />
           </div>
           <p className="error-message">{errors.confirmPassword?.message}</p>

@@ -17,6 +17,14 @@ export const CustomInput = ({
   inputRef,
   errorMessage,
 }: ICustomInputProps) => {
+  const showPasswordHandler = () => {
+    const input = inputRef.current;
+    if (input) {
+      input.type === 'password'
+        ? (input.type = 'text')
+        : (input.type = 'password');
+    }
+  };
   return (
     <>
       <div>
@@ -28,6 +36,14 @@ export const CustomInput = ({
           id={inputId}
           ref={inputRef}
         />
+        {['password', 'confirmPassword'].includes(name) && (
+          <div
+            className="show-password"
+            onClick={() => {
+              showPasswordHandler();
+            }}
+          />
+        )}
       </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
     </>

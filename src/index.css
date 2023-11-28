@@ -83,3 +83,41 @@ h1 {
     padding: 0.8rem;
   }
 }
+
+input {
+  border: 1px solid;
+}
+
+button,
+button[type='submit'] {
+  border-radius: 8px;
+  border: 1px solid #f2f2f2;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: 0.25s;
+  height: 2.8rem;
+  background-color: #4f46e5;
+  color: #fff;
+  line-height: 1.25rem;
+}
+
+.show-password {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  height: 2.8rem;
+  background-color: #4f46e5;
+  color: #fff;
+  line-height: 1.25rem;
+}
+
+input[type='password'] + .show-password {
+  background: url('../view.png') no-repeat;
+  background-size: contain;
+}
+input[type='text'] + .show-password {
+  background: url('../hide.png') no-repeat;
+  background-size: contain;
+}
