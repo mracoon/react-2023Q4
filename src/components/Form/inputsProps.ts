@@ -1,58 +1,60 @@
-import { ICustomInputProps } from './CustomInput';
-interface iRefs {
-  nameInputRef: React.RefObject<HTMLInputElement>;
-  ageInputRef: React.RefObject<HTMLInputElement>;
-  emailInputRef: React.RefObject<HTMLInputElement>;
-  passwordInputRef: React.RefObject<HTMLInputElement>;
-  confirmPasswordRef: React.RefObject<HTMLInputElement>;
-  imageRef: React.RefObject<HTMLInputElement>;
-  tcRef: React.RefObject<HTMLInputElement>;
-}
+import {
+  FormDataKeys,
+  ICustomInputProps,
+  InputPropsItemType,
+  inputNames,
+} from '../../types/types';
 
-export const createInputsProps = (refs: iRefs): ICustomInputProps[] => [
+export const createInputsProps = (
+  refs: Record<inputNames, React.RefObject<HTMLInputElement>>
+): ICustomInputProps[] => {
+  return inputProps.map((item) => ({
+    ...item,
+    inputRef: refs[item.name],
+  }));
+};
+
+export const inputProps: InputPropsItemType[] = [
   {
     lableText: 'Name',
     inputType: 'text',
-    name: 'name',
+    name: FormDataKeys.name,
     inputId: 'name',
-    inputRef: refs.nameInputRef,
   },
   {
     lableText: 'Age',
     inputType: 'number',
-    name: 'age',
+    name: FormDataKeys.age,
     inputId: 'age',
-    inputRef: refs.ageInputRef,
   },
   {
     lableText: 'Email',
     inputType: 'text',
-    name: 'email',
+    name: FormDataKeys.email,
     inputId: 'email',
-    inputRef: refs.emailInputRef,
-    autocomplete: 'email',
   },
   {
     lableText: 'Password',
     inputType: 'password',
-    name: 'password',
+    name: FormDataKeys.password,
     inputId: 'password',
-    inputRef: refs.passwordInputRef,
-    autocomplete: 'new-password',
   },
   {
     lableText: 'Confirm password',
     inputType: 'password',
-    name: 'confirmPassword',
+    name: FormDataKeys.confirmPassword,
     inputId: 'confirmPassword',
-    inputRef: refs.confirmPasswordRef,
-    autocomplete: 'new-password',
   },
   {
     lableText: 'Upload image',
     inputType: 'file',
-    name: 'image',
+    name: FormDataKeys.image,
     inputId: 'image',
-    inputRef: refs.imageRef,
+  },
+  {
+    lableText: 'Accept T&C',
+    inputType: 'checkbox',
+    name: FormDataKeys.tc,
+    inputId: 'tc',
   },
 ];

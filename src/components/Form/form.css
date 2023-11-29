@@ -57,4 +57,9 @@ input[type='file'] {
 }
 .form-item:has(input[type='checkbox']) {
   min-height: 55px;
+  order: 1;
+}
+button[type='submit'] {
+  width: 100%;
+  order: 2;
 }

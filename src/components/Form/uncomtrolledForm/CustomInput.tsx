@@ -1,12 +1,4 @@
-export interface ICustomInputProps {
-  lableText: string;
-  inputType: string;
-  name: string;
-  inputId: string;
-  inputRef: React.RefObject<HTMLInputElement>;
-  autocomplete?: string;
-  errorMessage?: string;
-}
+import { FormDataKeys, ICustomInputProps } from '../../../types/types';
 
 export const CustomInput = ({
   lableText,
@@ -17,6 +9,11 @@ export const CustomInput = ({
   inputRef,
   errorMessage,
 }: ICustomInputProps) => {
+  const isPasswordField = name === FormDataKeys.password;
+  const isConfirmPasswordField = name === FormDataKeys.confirmPassword;
+  const isPasswordType = isPasswordField || isConfirmPasswordField;
+  const passwordFieldsClass = isPasswordType ? 'password-field' : '';
+
   const showPasswordHandler = () => {
     const input = inputRef.current;
     if (input) {
@@ -25,9 +22,7 @@ export const CustomInput = ({
         : (input.type = 'password');
     }
   };
-  const passwordFieldsClass = ['password', 'confirmPassword'].includes(name)
-    ? 'password-field'
-    : '';
+
   return (
     <>
       <div

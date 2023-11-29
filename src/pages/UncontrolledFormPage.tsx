@@ -1,15 +1,14 @@
 import { FormEvent, useRef, useState } from 'react';
 import { ValidationError } from 'yup';
-import { CustomInput } from '../components/Form/CustomInput';
+import { CustomInput } from '../components/Form/uncomtrolledForm/CustomInput';
 import { GenderSelect } from '../components/Form/GenderSelect';
 import { createInputsProps } from '../components/Form/inputsProps';
 import '../components/Form/form.css';
-import CountriesSelect from '../components/Form/CountriesSelect';
+import CountriesSelect from '../components/Form/uncomtrolledForm/CountriesSelect';
 import { formValidationSchema } from '../utils/createValidationSchema';
 import { useNavigate } from 'react-router-dom';
 import { uncontrolledFormSlice } from '../store/reducers/UncontrolledFormSlice';
 import { useAppDispatch } from '../hooks/redux';
-import AcceptTC from '../components/Form/AcceptTC';
 
 const UncontrolledFormPage = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -117,13 +116,13 @@ const UncontrolledFormPage = () => {
   };
 
   const inputsProps = createInputsProps({
-    nameInputRef,
-    ageInputRef,
-    emailInputRef,
-    passwordInputRef,
-    confirmPasswordRef,
-    imageRef,
-    tcRef,
+    name: nameInputRef,
+    age: ageInputRef,
+    email: emailInputRef,
+    password: passwordInputRef,
+    confirmPassword: confirmPasswordRef,
+    image: imageRef,
+    tc: tcRef,
   });
   return (
     <>
@@ -147,14 +146,14 @@ const UncontrolledFormPage = () => {
             </div>
           );
         })}
-        <div className="flex flex-col items-start justify-start w-full form-item">
-          <CountriesSelect
-            inputRef={countriesRef}
-            errorMessage={formErrors['country']}
-          />
-        </div>
+
+        <CountriesSelect
+          inputRef={countriesRef}
+          errorMessage={formErrors['country']}
+        />
+
         <GenderSelect inputRef={genderRef} />
-        <AcceptTC inputRef={tcRef} errorMessage={formErrors['tc']} />
+        {/*  <AcceptTC inputRef={tcRef} errorMessage={formErrors['tc']} /> */}
 
         <button type="submit">Submit</button>
       </form>
