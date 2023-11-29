@@ -18,7 +18,18 @@ type FormData = {
   image: FileList;
   country: string;
 };
-
+//export type FormDataKeys = keyof FormData
+export enum FormDataKeys {
+  name = 'name',
+  age = 'age',
+  email = 'email',
+  password = 'password',
+  confirmPassword = 'confirmPassword',
+  gender = 'gender',
+  tc = 'tc',
+  image = 'image',
+  country = 'country',
+}
 const ReactHookFormPage = () => {
   const {
     setRHFAge,
@@ -48,7 +59,6 @@ const ReactHookFormPage = () => {
     dispatch(setRHFAge(`${data.age}`));
     dispatch(setRHFConfirmPassword(data.confirmPassword));
     dispatch(setRHFCountry(data.country));
-
     dispatch(setRHFEmail(data.email));
     dispatch(setRHFCountry(data.country));
     dispatch(setRHFGender(data.gender));
@@ -56,7 +66,6 @@ const ReactHookFormPage = () => {
     dispatch(setRHFTC(!!data.tc));
     dispatch(setRHFpassword(data.password));
     dispatch(setRHFName(data.name));
-
     imageToBase64(data.image[0]);
   });
 
@@ -80,39 +89,52 @@ const ReactHookFormPage = () => {
           confirmPasswordType === 'password' ? 'text' : 'password'
         );
   };
-
+  console.log();
   return (
     <>
       <h1>React Hook Form Page</h1>
       <form onSubmit={onSubmit}>
         {/*-------------------------------------------------------------------*/}
-
-        <div className="flex flex-col items-start justify-start">
-          <div>
+        {/*  {customInputProps.map((props) => {
+          return (
+            <div
+              key={`uctrl-input-${props.name}`}
+              className="flex flex-col items-start justify-start w-full form-item"
+            >
+             <div className="flex flex-col w-full items-start input-container">
+            <label htmlFor={props.inputId}>{props.lableText}:</label>
+            <input {...register({props.name})} id={'name'} />
+          </div>
+          <p className="error-message">{errors.name?.message}</p>
+            </div>
+          );
+        })} */}
+        <div className="flex flex-col items-start justify-start w-full form-item">
+          <div className="flex flex-col w-full items-start input-container">
             <label htmlFor="name">Name:</label>
             <input {...register('name')} id={'name'} />
           </div>
           <p className="error-message">{errors.name?.message}</p>
         </div>
 
-        <div className="flex flex-col items-start justify-start">
-          <div>
+        <div className="flex flex-col items-start justify-start w-full form-item">
+          <div className="flex flex-col w-full items-start input-container">
             <label htmlFor="age">Age:</label>
             <input {...register('age')} id={'age'} type="number" />
           </div>
           <p className="error-message">{errors.age?.message}</p>
         </div>
 
-        <div className="flex flex-col items-start justify-start">
-          <div>
+        <div className="flex flex-col items-start justify-start w-full form-item">
+          <div className="flex flex-col w-full items-start input-container">
             <label htmlFor="email">Email:</label>
             <input {...register('email')} id={'email'} />
           </div>
           <p className="error-message">{errors.email?.message}</p>
         </div>
 
-        <div className="flex flex-col items-start justify-start">
-          <div>
+        <div className="flex flex-col items-start justify-start w-full form-item">
+          <div className="flex flex-col w-full items-start input-container password-field">
             <label htmlFor="password">Password:</label>
             <input
               {...register('password')}
@@ -127,8 +149,8 @@ const ReactHookFormPage = () => {
           <p className="error-message">{errors.password?.message}</p>
         </div>
 
-        <div className="flex flex-col items-start justify-start">
-          <div>
+        <div className="flex flex-col items-start justify-start w-full form-item">
+          <div className="flex flex-col w-full items-start input-container password-field">
             <label htmlFor="confirmPassword">Confirm password:</label>
             <input
               {...register('confirmPassword')}
@@ -145,25 +167,18 @@ const ReactHookFormPage = () => {
           <p className="error-message">{errors.confirmPassword?.message}</p>
         </div>
 
-        <div className="flex flex-col items-start justify-start">
-          <div>
+        <div className="flex flex-col items-start justify-start w-full form-item">
+          <div className="flex flex-col w-full items-start input-container">
             <label htmlFor="image">Upload image:</label>
             <input {...register('image')} id={'image'} type="file" />
           </div>
           <p className="error-message">{errors.image?.message}</p>
         </div>
 
-        <div className="flex flex-col items-start justify-start">
-          <div>
-            <label htmlFor="tc">Accept T&C:</label>
-            <input {...register('tc')} id={'tc'} type="checkbox" />
-          </div>
-          <p className="error-message">{errors.tc?.message}</p>
-        </div>
         {/*-------------------------------------------------------------------*/}
 
-        <div className="flex flex-col items-start justify-start">
-          <div className="relative">
+        <div className="flex flex-col items-start justify-start w-full form-item">
+          <div className="flex flex-col w-full items-start input-container">
             <label htmlFor="countries">Countries:</label>
             <input
               {...register('country')}
@@ -184,14 +199,23 @@ const ReactHookFormPage = () => {
         </div>
 
         {/*-------------------------------------------------------------------*/}
-        <div>
-          <label htmlFor="gender">Gender:</label>
-          <select {...register('gender')} id="gender">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
+        <div className="flex flex-col items-start justify-start w-full form-item">
+          <div className="flex flex-col w-full items-start input-container">
+            <label htmlFor="gender">Gender:</label>
+            <select {...register('gender')} id="gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
         </div>
 
+        <div className="flex flex-col items-start justify-start w-full form-item">
+          <div className="flex flex-col w-full items-start input-container">
+            <label htmlFor="tc">Accept T&C:</label>
+            <input {...register('tc')} id={'tc'} type="checkbox" />
+          </div>
+          <p className="error-message">{errors.tc?.message}</p>
+        </div>
         <button type="submit" disabled={!isValid}>
           Submit
         </button>
