@@ -7,8 +7,8 @@ import '../components/Form/form.css';
 import CountriesSelect from '../components/Form/uncomtrolledForm/CountriesSelect';
 import { formValidationSchema } from '../utils/createValidationSchema';
 import { useNavigate } from 'react-router-dom';
-import { uncontrolledFormSlice } from '../store/reducers/UncontrolledFormSlice';
 import { useAppDispatch } from '../hooks/redux';
+import { dataListSlice } from '../store/reducers/DataListSlice';
 
 const UncontrolledFormPage = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -25,19 +25,21 @@ const UncontrolledFormPage = () => {
   const [formErrors, updatevalidateErrors] = useState<Record<string, string>>(
     {}
   );
-  const {
-    setUncontrolledImage,
-    setUncontrolledAge,
-    setUncontrolledConfirmPassword,
-    setUncontrolledCountry,
-    setUncontrolledEmail,
-    setUncontrolledGender,
-    setUncontrolledName,
-    setUncontrolledTC,
-    setUncontrolledPassword,
-  } = uncontrolledFormSlice.actions;
-  // const { image } = useAppSelector((state) => state.uncontrolledFormReducer);
+
   const dispatch = useAppDispatch();
+  const {
+    addNewSubmit,
+    setLastAge,
+    setLastConfirmPassword,
+    setLastEmail,
+    setLastGender,
+    setLastImage,
+    setLastName,
+    setLastPassword,
+    setLastTC,
+    setLastCountry,
+  } = dataListSlice.actions;
+
   const submitFormHandler = (event: FormEvent) => {
     event.preventDefault();
 
@@ -50,6 +52,7 @@ const UncontrolledFormPage = () => {
     const tc = tcRef.current?.checked;
     const image = imageRef.current?.files;
     const country = countriesRef.current?.value;
+
     try {
       formValidationSchema.validateSync(
         {
@@ -65,7 +68,7 @@ const UncontrolledFormPage = () => {
         },
         { abortEarly: false }
       );
-      console.log('ok!');
+
       if (
         name &&
         age &&
@@ -77,15 +80,14 @@ const UncontrolledFormPage = () => {
         image &&
         country
       ) {
-        dispatch(setUncontrolledName(name));
-        dispatch(setUncontrolledAge(age));
-        dispatch(setUncontrolledEmail(email));
-        dispatch(setUncontrolledPassword(password));
-        dispatch(setUncontrolledConfirmPassword(confirmPassword));
-        dispatch(setUncontrolledGender(gender));
-        dispatch(setUncontrolledTC(tc));
-        dispatch(setUncontrolledCountry(country));
-
+        dispatch(setLastName(name));
+        dispatch(setLastAge(age));
+        dispatch(setLastEmail(email));
+        dispatch(setLastPassword(password));
+        dispatch(setLastConfirmPassword(confirmPassword));
+        dispatch(setLastGender(gender));
+        dispatch(setLastTC(tc));
+        dispatch(setLastCountry(country));
         imageToBase64(image[0]);
       }
     } catch (err) {
@@ -96,7 +98,6 @@ const UncontrolledFormPage = () => {
             errors[error.path] = error.message;
           }
         });
-
         updatevalidateErrors(errors);
       }
     }
@@ -109,7 +110,8 @@ const UncontrolledFormPage = () => {
       const result = reader.result;
 
       if (typeof result === 'string') {
-        dispatch(setUncontrolledImage(result));
+        dispatch(setLastImage(result));
+        dispatch(addNewSubmit());
       }
       navigate('/', { state: { from: 'uncontrolled from' } });
     };
@@ -126,7 +128,7 @@ const UncontrolledFormPage = () => {
   });
   return (
     <>
-      <h1>Uncontrolled Form Page</h1>
+      <h1>Uncontrolled Form</h1>
       <form onSubmit={submitFormHandler} ref={formRef} autoComplete="on">
         {inputsProps.map((props) => {
           return (
@@ -146,15 +148,11 @@ const UncontrolledFormPage = () => {
             </div>
           );
         })}
-
         <CountriesSelect
           inputRef={countriesRef}
           errorMessage={formErrors['country']}
         />
-
         <GenderSelect inputRef={genderRef} />
-        {/*  <AcceptTC inputRef={tcRef} errorMessage={formErrors['tc']} /> */}
-
         <button type="submit">Submit</button>
       </form>
     </>

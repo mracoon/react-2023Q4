@@ -20,7 +20,6 @@ export const formValidationSchema = yup.object({
   password: yup
     .string()
     .required('Field is mandatory')
-    // .oneOf([yup.ref('confirmPassword')], 'should match the password field')
     .matches(/[A-ZА-ЯЁ]/, 'Password must contain at least one uppercase letter')
     .matches(/[a-zа-яё]/, 'Password must contain at least one lowercase letter')
     .matches(/[0-9]/, 'Password must contain at least one digit')

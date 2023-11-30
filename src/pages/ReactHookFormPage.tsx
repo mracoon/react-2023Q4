@@ -2,27 +2,28 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { formValidationSchema } from '../utils/createValidationSchema';
 import { useAppDispatch } from '../hooks/redux';
-import { RHFSlice } from '../store/reducers/RHFSlice';
 import { useNavigate } from 'react-router-dom';
 import { inputProps } from '../components/Form/inputsProps';
 import RHFCountriesSelect from '../components/Form/RHF/RHFCountriesSelect';
 import { MyFormData } from '../types/types';
 import { RHFCustomInput } from '../components/Form/RHF/RHFCustomInput';
+import { dataListSlice } from '../store/reducers/DataListSlice';
 
 const ReactHookFormPage = () => {
-  const {
-    setRHFAge,
-    setRHFConfirmPassword,
-    setRHFCountry,
-    setRHFEmail,
-    setRHFGender,
-    setRHFImage,
-    setRHFTC,
-    setRHFName,
-    setRHFpassword,
-  } = RHFSlice.actions;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const {
+    addNewSubmit,
+    setLastAge,
+    setLastConfirmPassword,
+    setLastEmail,
+    setLastGender,
+    setLastImage,
+    setLastName,
+    setLastPassword,
+    setLastTC,
+    setLastCountry,
+  } = dataListSlice.actions;
 
   const {
     register,
@@ -34,16 +35,14 @@ const ReactHookFormPage = () => {
     resolver: yupResolver(formValidationSchema),
   });
   const onSubmit = handleSubmit((data) => {
-    dispatch(setRHFAge(`${data.age}`));
-    dispatch(setRHFConfirmPassword(data.confirmPassword));
-    dispatch(setRHFCountry(data.country));
-    dispatch(setRHFEmail(data.email));
-    dispatch(setRHFCountry(data.country));
-    dispatch(setRHFGender(data.gender));
-    dispatch(setRHFCountry(data.country));
-    dispatch(setRHFTC(!!data.tc));
-    dispatch(setRHFpassword(data.password));
-    dispatch(setRHFName(data.name));
+    dispatch(setLastName(data.name));
+    dispatch(setLastAge(`${data.age}`));
+    dispatch(setLastEmail(data.email));
+    dispatch(setLastPassword(data.password));
+    dispatch(setLastConfirmPassword(data.confirmPassword));
+    dispatch(setLastGender(data.gender));
+    dispatch(setLastTC(!!data.tc));
+    dispatch(setLastCountry(data.country));
     imageToBase64(data.image[0]);
   });
 
@@ -54,7 +53,8 @@ const ReactHookFormPage = () => {
       const result = reader.result;
 
       if (typeof result === 'string') {
-        dispatch(setRHFImage(result));
+        dispatch(setLastImage(result));
+        dispatch(addNewSubmit());
       }
       navigate('/', { state: { from: 'rhf' } });
     };
@@ -62,9 +62,8 @@ const ReactHookFormPage = () => {
 
   return (
     <>
-      <h1>React Hook Form Page</h1>
+      <h1>React Hook Form</h1>
       <form onSubmit={onSubmit}>
-        {/*-------------------------------------------------------------------*/}
         {inputProps.map((props) => {
           return (
             <div
@@ -84,7 +83,7 @@ const ReactHookFormPage = () => {
           register={register}
           errorMessage={errors.country?.message}
         />
-        {/*-------------------------------------------------------------------*/}
+
         <div className="flex flex-col items-start justify-start w-full form-item">
           <div className="flex flex-col w-full items-start input-container">
             <label htmlFor="gender">Gender:</label>
@@ -94,7 +93,7 @@ const ReactHookFormPage = () => {
             </select>
           </div>
         </div>
-        {/*------------------------------------------------------------------ */}
+
         <button type="submit" disabled={!isValid}>
           Submit
         </button>

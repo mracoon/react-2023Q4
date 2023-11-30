@@ -1,11 +1,10 @@
-import Tile from '../components/Tiles/Tile';
+import TilesList from '../components/Tiles/TilesList';
 
 const MainPage = () => {
   return (
     <div className="flex flex-col items-center justify-between gap-4">
       <h1>MainPage</h1>
-      <Tile isRHFTile={true}></Tile>
-      <Tile isRHFTile={false}></Tile>
+      <TilesList />
     </div>
   );
 };

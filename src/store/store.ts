@@ -3,14 +3,12 @@ import {
   combineReducers,
   configureStore,
 } from '@reduxjs/toolkit';
-
-import uncontrolledFormReducer from './reducers/UncontrolledFormSlice';
-import RHFReducer from './reducers/RHFSlice';
 import countriesReducer from './reducers/CountriesSlice';
+import dataListReducer from './reducers/DataListSlice';
+
 const rootReducer = combineReducers({
   countriesReducer,
-  RHFReducer,
-  uncontrolledFormReducer,
+  dataListReducer,
 });
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {
