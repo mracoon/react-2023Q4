@@ -6,12 +6,11 @@ import {
   createPasswordsInputsProps,
 } from '../components/Form/inputsProps';
 import '../components/Form/form.css';
-
 import { formValidationSchema } from '../utils/createValidationSchema';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/redux';
 import { dataListSlice } from '../store/reducers/DataListSlice';
-import { PasswordInput } from '../components/Form/uncomtrolledForm/PasswordInput';
+import { PasswordInput } from '../components/Form/uncontrolledForm/PasswordInput';
 import { GenderSelect } from '../components/Form/GenderSelect';
 import { CustomInput } from '../components/Form/CustomInput';
 import CountriesSelectUni from '../components/Form/CountriesSelect';
@@ -36,18 +35,7 @@ const UncontrolledFormPage = () => {
   );
 
   const dispatch = useAppDispatch();
-  const {
-    addNewSubmit,
-    setLastAge,
-    setLastConfirmPassword,
-    setLastEmail,
-    setLastGender,
-    setLastImage,
-    setLastName,
-    setLastPassword,
-    setLastTC,
-    setLastCountry,
-  } = dataListSlice.actions;
+  const actions = dataListSlice.actions;
 
   const submitFormHandler = (event: FormEvent) => {
     event.preventDefault();
@@ -89,14 +77,14 @@ const UncontrolledFormPage = () => {
         image &&
         country
       ) {
-        dispatch(setLastName(name));
-        dispatch(setLastAge(age));
-        dispatch(setLastEmail(email));
-        dispatch(setLastPassword(password));
-        dispatch(setLastConfirmPassword(confirmPassword));
-        dispatch(setLastGender(gender));
-        dispatch(setLastTC(tc));
-        dispatch(setLastCountry(country));
+        dispatch(actions.setLastName(name));
+        dispatch(actions.setLastAge(age));
+        dispatch(actions.setLastEmail(email));
+        dispatch(actions.setLastPassword(password));
+        dispatch(actions.setLastConfirmPassword(confirmPassword));
+        dispatch(actions.setLastGender(gender));
+        dispatch(actions.setLastTC(tc));
+        dispatch(actions.setLastCountry(country));
         imageToBase64(image[0]);
       }
     } catch (err) {
@@ -131,8 +119,8 @@ const UncontrolledFormPage = () => {
       const result = reader.result;
 
       if (typeof result === 'string') {
-        dispatch(setLastImage(result));
-        dispatch(addNewSubmit());
+        dispatch(actions.setLastImage(result));
+        dispatch(actions.addNewSubmit());
       }
       navigate('/', { state: { from: 'uncontrolled from' } });
     };

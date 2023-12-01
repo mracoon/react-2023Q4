@@ -27,11 +27,11 @@ form {
 }
 
 input[type='password'] + .show-password {
-  background: url('../view.png') no-repeat;
+  background: url(../../../public/view.png) no-repeat;
   background-size: contain;
 }
 input[type='text'] + .show-password {
-  background: url('../hide.png') no-repeat;
+  background: url(../../../public/hide.png) no-repeat;
   background-size: contain;
 }
 
