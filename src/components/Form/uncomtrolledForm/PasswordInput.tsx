@@ -39,7 +39,7 @@ export const PasswordInput = ({
             showPasswordHandler();
           }}
         />
-      </div>{' '}
+      </div>
       {progressRef && (
         <div className="strength-container">
           <label htmlFor="strenght">Password strenght </label>

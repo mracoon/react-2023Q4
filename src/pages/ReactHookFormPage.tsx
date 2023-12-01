@@ -3,46 +3,38 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { formValidationSchema } from '../utils/createValidationSchema';
 import { useAppDispatch } from '../hooks/redux';
 import { useNavigate } from 'react-router-dom';
-import { inputProps } from '../components/Form/inputsProps';
+import { inputProps, passwordsProps } from '../components/Form/inputsProps';
 import RHFCountriesSelect from '../components/Form/RHF/RHFCountriesSelect';
-import { MyFormData } from '../types/types';
+import { FormDataKeys, MyFormData } from '../types/types';
 import { RHFCustomInput } from '../components/Form/RHF/RHFCustomInput';
 import { dataListSlice } from '../store/reducers/DataListSlice';
+import { RHFPasswordInput } from '../components/Form/RHF/RHFPasswordInput';
 
 const ReactHookFormPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const {
-    addNewSubmit,
-    setLastAge,
-    setLastConfirmPassword,
-    setLastEmail,
-    setLastGender,
-    setLastImage,
-    setLastName,
-    setLastPassword,
-    setLastTC,
-    setLastCountry,
-  } = dataListSlice.actions;
+  const actions = dataListSlice.actions;
 
   const {
     register,
     handleSubmit,
 
     formState: { errors, isValid },
+    watch,
   } = useForm<MyFormData>({
     mode: 'onChange',
     resolver: yupResolver(formValidationSchema),
   });
+
   const onSubmit = handleSubmit((data) => {
-    dispatch(setLastName(data.name));
-    dispatch(setLastAge(`${data.age}`));
-    dispatch(setLastEmail(data.email));
-    dispatch(setLastPassword(data.password));
-    dispatch(setLastConfirmPassword(data.confirmPassword));
-    dispatch(setLastGender(data.gender));
-    dispatch(setLastTC(!!data.tc));
-    dispatch(setLastCountry(data.country));
+    dispatch(actions.setLastName(data.name));
+    dispatch(actions.setLastAge(`${data.age}`));
+    dispatch(actions.setLastEmail(data.email));
+    dispatch(actions.setLastPassword(data.password));
+    dispatch(actions.setLastConfirmPassword(data.confirmPassword));
+    dispatch(actions.setLastGender(data.gender));
+    dispatch(actions.setLastTC(!!data.tc));
+    dispatch(actions.setLastCountry(data.country));
     imageToBase64(data.image[0]);
   });
 
@@ -53,8 +45,8 @@ const ReactHookFormPage = () => {
       const result = reader.result;
 
       if (typeof result === 'string') {
-        dispatch(setLastImage(result));
-        dispatch(addNewSubmit());
+        dispatch(actions.setLastImage(result));
+        dispatch(actions.addNewSubmit());
       }
       navigate('/', { state: { from: 'rhf' } });
     };
@@ -75,6 +67,21 @@ const ReactHookFormPage = () => {
                 errorMessage={errors[props.name]?.message}
                 register={register}
               ></RHFCustomInput>
+            </div>
+          );
+        })}
+        {passwordsProps.map((props) => {
+          return (
+            <div
+              key={`rhf-input-${props.name}`}
+              className="flex flex-col items-start justify-start w-full form-item"
+            >
+              <RHFPasswordInput
+                props={props}
+                errorMessage={errors[props.name]?.message}
+                register={register}
+                watch={props.name === FormDataKeys.password ? watch : undefined}
+              ></RHFPasswordInput>
             </div>
           );
         })}

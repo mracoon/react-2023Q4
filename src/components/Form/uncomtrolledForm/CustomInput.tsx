@@ -1,4 +1,4 @@
-import { FormDataKeys, ICustomInputProps } from '../../../types/types';
+import { ICustomInputProps } from '../../../types/types';
 
 export const CustomInput = ({
   lableText,
@@ -9,25 +9,9 @@ export const CustomInput = ({
   inputRef,
   errorMessage,
 }: ICustomInputProps) => {
-  const isPasswordField = name === FormDataKeys.password;
-  const isConfirmPasswordField = name === FormDataKeys.confirmPassword;
-  const isPasswordType = isPasswordField || isConfirmPasswordField;
-  const passwordFieldsClass = isPasswordType ? 'password-field' : '';
-
-  const showPasswordHandler = () => {
-    const input = inputRef.current;
-    if (input) {
-      input.type === 'password'
-        ? (input.type = 'text')
-        : (input.type = 'password');
-    }
-  };
-
   return (
     <>
-      <div
-        className={`flex flex-col w-full items-start input-container ${passwordFieldsClass}`}
-      >
+      <div className={`flex flex-col w-full items-start input-container`}>
         <label htmlFor={inputId}>{lableText}:</label>
         <input
           className="w-full"
@@ -37,14 +21,6 @@ export const CustomInput = ({
           id={inputId}
           ref={inputRef}
         />
-        {['password', 'confirmPassword'].includes(name) && (
-          <div
-            className="show-password"
-            onClick={() => {
-              showPasswordHandler();
-            }}
-          />
-        )}
       </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
     </>

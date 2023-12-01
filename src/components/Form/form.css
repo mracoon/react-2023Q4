@@ -62,6 +62,10 @@ input[type='file'] {
 .form-item:has(input[name='password']) {
   min-height: 90px;
 }
+input[name='password'],
+input[name='confirmPassword'] {
+  padding-right: 40px;
+}
 button[type='submit'] {
   width: 100%;
   order: 2;
@@ -91,4 +95,8 @@ progress::-webkit-progress-bar {
 progress[value]::-webkit-progress-value {
   border-radius: 15px;
   background-color: rgb(9, 167, 35);
+}
+
+input:focus {
+  outline: none;
 }
