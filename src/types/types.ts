@@ -1,3 +1,5 @@
+import { RegisterOptions, UseFormRegisterReturn } from 'react-hook-form';
+
 export type MyFormData = {
   name: string;
   age: number;
@@ -57,3 +59,28 @@ export type inputNames = Exclude<
 export type passwordsInputNames =
   | FormDataKeys.password
   | FormDataKeys.confirmPassword;
+
+export interface IUniversalRef<T extends HTMLInputElement | HTMLSelectElement> {
+  inputRef?: React.RefObject<T>;
+  register?: (
+    name: FormDataKeys,
+    options?: RegisterOptions<MyFormData, FormDataKeys> | undefined
+  ) => UseFormRegisterReturn<FormDataKeys>;
+}
+
+export interface IBaseCustomInputProps {
+  lableText: string;
+  inputType?: string;
+  name: FormDataKeys;
+  inputId: string;
+  autocomplete?: string;
+  errorMessage?: string;
+}
+
+export interface ICountriesSelectProps extends IUniversalRef<HTMLInputElement> {
+  errorMessage?: string;
+}
+
+export interface IUniversalCusttomInputProps
+  extends IBaseCustomInputProps,
+    IUniversalRef<HTMLInputElement> {}

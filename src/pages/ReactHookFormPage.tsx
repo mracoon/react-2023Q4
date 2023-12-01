@@ -4,11 +4,12 @@ import { formValidationSchema } from '../utils/createValidationSchema';
 import { useAppDispatch } from '../hooks/redux';
 import { useNavigate } from 'react-router-dom';
 import { inputProps, passwordsProps } from '../components/Form/inputsProps';
-import RHFCountriesSelect from '../components/Form/RHF/RHFCountriesSelect';
 import { FormDataKeys, MyFormData } from '../types/types';
-import { RHFCustomInput } from '../components/Form/RHF/RHFCustomInput';
 import { dataListSlice } from '../store/reducers/DataListSlice';
 import { RHFPasswordInput } from '../components/Form/RHF/RHFPasswordInput';
+import { GenderSelect } from '../components/Form/GenderSelect';
+import { CustomInput } from '../components/Form/CustomInput';
+import CountriesSelect from '../components/Form/CountriesSelect';
 
 const ReactHookFormPage = () => {
   const navigate = useNavigate();
@@ -18,7 +19,6 @@ const ReactHookFormPage = () => {
   const {
     register,
     handleSubmit,
-
     formState: { errors, isValid },
     watch,
   } = useForm<MyFormData>({
@@ -43,7 +43,6 @@ const ReactHookFormPage = () => {
     reader.readAsDataURL(image);
     reader.onloadend = () => {
       const result = reader.result;
-
       if (typeof result === 'string') {
         dispatch(actions.setLastImage(result));
         dispatch(actions.addNewSubmit());
@@ -62,11 +61,14 @@ const ReactHookFormPage = () => {
               key={`rhf-input-${props.name}`}
               className="flex flex-col items-start justify-start w-full form-item"
             >
-              <RHFCustomInput
-                props={props}
+              <CustomInput
+                lableText={props.lableText}
+                name={props.name}
+                inputType={props.inputType}
+                inputId={props.inputId}
                 errorMessage={errors[props.name]?.message}
                 register={register}
-              ></RHFCustomInput>
+              ></CustomInput>
             </div>
           );
         })}
@@ -85,21 +87,12 @@ const ReactHookFormPage = () => {
             </div>
           );
         })}
-
-        <RHFCountriesSelect
+        <CountriesSelect
           register={register}
           errorMessage={errors.country?.message}
         />
 
-        <div className="flex flex-col items-start justify-start w-full form-item">
-          <div className="flex flex-col w-full items-start input-container">
-            <label htmlFor="gender">Gender:</label>
-            <select {...register('gender')} id="gender">
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </div>
-        </div>
+        <GenderSelect register={register} />
 
         <button type="submit" disabled={!isValid}>
           Submit

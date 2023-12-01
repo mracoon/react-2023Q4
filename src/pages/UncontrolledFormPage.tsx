@@ -1,18 +1,20 @@
 import { FormEvent, useRef, useState } from 'react';
 import { ValidationError } from 'yup';
-import { CustomInput } from '../components/Form/uncomtrolledForm/CustomInput';
-import { GenderSelect } from '../components/Form/GenderSelect';
+
 import {
   createInputsProps,
   createPasswordsInputsProps,
 } from '../components/Form/inputsProps';
 import '../components/Form/form.css';
-import CountriesSelect from '../components/Form/uncomtrolledForm/CountriesSelect';
+
 import { formValidationSchema } from '../utils/createValidationSchema';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/redux';
 import { dataListSlice } from '../store/reducers/DataListSlice';
 import { PasswordInput } from '../components/Form/uncomtrolledForm/PasswordInput';
+import { GenderSelect } from '../components/Form/GenderSelect';
+import { CustomInput } from '../components/Form/CustomInput';
+import CountriesSelectUni from '../components/Form/CountriesSelect';
 
 const UncontrolledFormPage = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -194,11 +196,10 @@ const UncontrolledFormPage = () => {
           );
         })}
 
-        <CountriesSelect
+        <CountriesSelectUni
           inputRef={countriesRef}
           errorMessage={formErrors['country']}
         />
-
         <GenderSelect inputRef={genderRef} />
         <button type="submit">Submit</button>
       </form>

@@ -4,7 +4,6 @@ import { useAppSelector } from '../../hooks/redux';
 
 const TilesList = () => {
   const { dataList } = useAppSelector((state) => state.dataListReducer);
-
   const [ufStyle, setUFStyle] = useState({ background: 'transparent' });
 
   useEffect(() => {

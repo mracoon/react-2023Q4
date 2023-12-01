@@ -1,12 +1,11 @@
-import CountriesDataList from '../CountriesDataList';
+import { FormDataKeys, ICountriesSelectProps } from '../../types/types';
+import CountriesDataList from './CountriesDataList';
 
 const CountriesSelect = ({
   inputRef,
   errorMessage,
-}: {
-  inputRef: React.RefObject<HTMLInputElement>;
-  errorMessage?: string;
-}) => {
+  register,
+}: ICountriesSelectProps) => {
   return (
     <div className="flex flex-col items-start justify-start w-full form-item">
       <div className="relative flex flex-col w-full items-start input-container">
@@ -14,10 +13,11 @@ const CountriesSelect = ({
         <input
           id="countries"
           type="text"
-          name="country"
+          name={FormDataKeys.country}
           className="w-full"
           placeholder="Choose country..."
           ref={inputRef}
+          {...(register && { ...register(FormDataKeys.country) })}
           list="countries-list"
         />
 

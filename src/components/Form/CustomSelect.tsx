@@ -1,3 +1,6 @@
+import { RegisterOptions, UseFormRegisterReturn } from 'react-hook-form';
+import { FormDataKeys, MyFormData } from '../../types/types';
+
 interface ISelectOptions {
   value: string;
   text: string;
@@ -5,32 +8,30 @@ interface ISelectOptions {
 
 interface ICustomSelectProps {
   lableText: string;
-  name: string;
+  name: FormDataKeys;
   inputId: string;
-  inputRef: React.RefObject<HTMLSelectElement>;
+  inputRef?: React.RefObject<HTMLSelectElement>;
   autocomplete?: string;
   options: ISelectOptions[];
+  register?: (
+    name: FormDataKeys,
+    options?: RegisterOptions<MyFormData, FormDataKeys> | undefined
+  ) => UseFormRegisterReturn<FormDataKeys>;
 }
 
-export const CustomSelect = ({
-  lableText,
-  name,
-  inputId,
-  autocomplete,
-  inputRef,
-  options,
-}: ICustomSelectProps) => {
+export const CustomSelect = (props: ICustomSelectProps) => {
   return (
     <div className="flex flex-col w-full items-start input-container form-item">
-      <label htmlFor={inputId}>{lableText}:</label>
+      <label htmlFor={props.inputId}>{props.lableText}:</label>
       <select
-        name={name}
-        autoComplete={autocomplete}
-        id={inputId}
-        ref={inputRef}
+        name={props.name}
+        autoComplete={props.autocomplete}
+        id={props.inputId}
+        ref={props.inputRef}
+        {...(props.register && { ...props.register(props.name) })}
       >
-        {options.map(({ value, text }) => (
-          <option value={value} key={`option-${name}-${value}`}>
+        {props.options.map(({ value, text }) => (
+          <option value={value} key={`option-${props.name}-${value}`}>
             {text}
           </option>
         ))}

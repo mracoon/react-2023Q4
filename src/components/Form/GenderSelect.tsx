@@ -1,19 +1,27 @@
+import { RegisterOptions, UseFormRegisterReturn } from 'react-hook-form';
+import { FormDataKeys, MyFormData } from '../../types/types';
 import { CustomSelect } from './CustomSelect';
 
 export const GenderSelect = ({
   inputRef,
+  register,
 }: {
-  inputRef: React.RefObject<HTMLSelectElement>;
+  inputRef?: React.RefObject<HTMLSelectElement>;
+  register?: (
+    name: FormDataKeys,
+    options?: RegisterOptions<MyFormData, FormDataKeys> | undefined
+  ) => UseFormRegisterReturn<FormDataKeys>;
 }) => {
   return (
     <CustomSelect
       lableText="Gender"
-      name="gender"
+      name={FormDataKeys.gender}
       inputId="gender"
       inputRef={inputRef}
+      register={register}
       options={[
-        { value: 'male', text: 'Male' },
-        { value: 'female', text: 'Female' },
+        { value: 'Male', text: 'Male' },
+        { value: 'Female', text: 'Female' },
       ]}
     ></CustomSelect>
   );

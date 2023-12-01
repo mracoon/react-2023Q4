@@ -1,17 +1,8 @@
 import { ICustomPasswordInputProps } from '../../../types/types';
 
-export const PasswordInput = ({
-  lableText,
-  inputType,
-  name,
-  inputId,
-  autocomplete,
-  inputRef,
-  errorMessage,
-  progressRef,
-}: ICustomPasswordInputProps) => {
+export const PasswordInput = (props: ICustomPasswordInputProps) => {
   const showPasswordHandler = () => {
-    const input = inputRef.current;
+    const input = props.inputRef.current;
     if (input) {
       input.type === 'password'
         ? (input.type = 'text')
@@ -24,14 +15,14 @@ export const PasswordInput = ({
       <div
         className={`flex flex-col w-full items-start input-container password-field`}
       >
-        <label htmlFor={inputId}>{lableText}:</label>{' '}
+        <label htmlFor={props.inputId}>{props.lableText}:</label>{' '}
         <input
           className="w-full"
-          type={inputType}
-          name={name}
-          autoComplete={autocomplete || 'on'}
-          id={inputId}
-          ref={inputRef}
+          type={props.inputType}
+          name={props.name}
+          autoComplete={props.autocomplete || 'on'}
+          id={props.inputId}
+          ref={props.inputRef}
         />
         <div
           className="show-password"
@@ -40,19 +31,21 @@ export const PasswordInput = ({
           }}
         />
       </div>
-      {progressRef && (
+      {props.progressRef && (
         <div className="strength-container">
           <label htmlFor="strenght">Password strenght </label>
           <progress
             id={'strenght'}
             max="4"
             defaultValue="0"
-            ref={progressRef}
+            ref={props.progressRef}
             className="strenght"
           />
         </div>
       )}
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {props.errorMessage && (
+        <p className="error-message">{props.errorMessage}</p>
+      )}
     </>
   );
 };

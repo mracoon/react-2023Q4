@@ -1,36 +1,23 @@
 import { useEffect, useState } from 'react';
-import {
-  FormDataKeys,
-  MyFormData,
-  PasswordInputPropsItemType,
-} from '../../../types/types';
-import { RegisterOptions, UseFormRegisterReturn } from 'react-hook-form';
+import { FormDataKeys } from '../../../types/types';
 import { formValidationSchema } from '../../../utils/createValidationSchema';
 import { ValidationError } from 'yup';
+import { IRHFPasswordInputProps } from './types';
 
 export const RHFPasswordInput = ({
   props,
   register,
   errorMessage,
   watch,
-}: {
-  errorMessage?: string;
-  props: PasswordInputPropsItemType;
-  register: (
-    name: FormDataKeys,
-    options?: RegisterOptions<MyFormData, FormDataKeys> | undefined
-  ) => UseFormRegisterReturn<FormDataKeys>;
-  watch?: (name: FormDataKeys, defaultValue?: string | undefined) => string;
-}) => {
+}: IRHFPasswordInputProps) => {
   const [passType, setPassType] = useState('password');
+  const [passwordStrength, setPasswordStrength] = useState(0);
+
+  const passwordValue = watch ? watch(FormDataKeys.password) : undefined;
 
   const showPasswordHandler = () => {
     setPassType(passType === 'password' ? 'text' : 'password');
   };
-
-  const passwordValue = watch ? watch(FormDataKeys.password) : undefined;
-
-  const [passwordStrength, setPasswordStrength] = useState(0);
 
   useEffect(() => {
     try {

@@ -1,22 +1,22 @@
 import {
   FormDataKeys,
-  ICustomInputProps,
   ICustomPasswordInputProps,
+  IUniversalCusttomInputProps,
   InputPropsItemType,
   PasswordInputPropsItemType,
-  //PasswordInputPropsItemType,
   inputNames,
   passwordsInputNames,
 } from '../../types/types';
 
 export const createInputsProps = (
   refs: Record<inputNames, React.RefObject<HTMLInputElement>>
-): ICustomInputProps[] => {
+): IUniversalCusttomInputProps[] => {
   return inputProps.map((item) => ({
     ...item,
     inputRef: refs[item.name],
   }));
 };
+
 export const createPasswordsInputsProps = (
   refs: Record<passwordsInputNames, React.RefObject<HTMLInputElement>>,
   passwordStrenghtRef: React.RefObject<HTMLProgressElement>
@@ -51,18 +51,7 @@ export const inputProps: InputPropsItemType[] = [
     name: FormDataKeys.email,
     inputId: 'email',
   },
-  /*  {
-    lableText: 'Password',
-    inputType: 'password',
-    name: FormDataKeys.password,
-    inputId: 'password',
-  },
-  {
-    lableText: 'Confirm password',
-    inputType: 'password',
-    name: FormDataKeys.confirmPassword,
-    inputId: 'confirmPassword',
-  }, */
+
   {
     lableText: 'Upload image',
     inputType: 'file',
