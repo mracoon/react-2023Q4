@@ -2,13 +2,17 @@ import { FormEvent, useRef, useState } from 'react';
 import { ValidationError } from 'yup';
 import { CustomInput } from '../components/Form/uncomtrolledForm/CustomInput';
 import { GenderSelect } from '../components/Form/GenderSelect';
-import { createInputsProps } from '../components/Form/inputsProps';
+import {
+  createInputsProps,
+  createPasswordsInputsProps,
+} from '../components/Form/inputsProps';
 import '../components/Form/form.css';
 import CountriesSelect from '../components/Form/uncomtrolledForm/CountriesSelect';
 import { formValidationSchema } from '../utils/createValidationSchema';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/redux';
 import { dataListSlice } from '../store/reducers/DataListSlice';
+import { PasswordInput } from '../components/Form/uncomtrolledForm/PasswordInput';
 
 const UncontrolledFormPage = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -22,6 +26,9 @@ const UncontrolledFormPage = () => {
   const genderRef = useRef<HTMLSelectElement>(null);
   const countriesRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+
+  const passwordProgressRef = useRef<HTMLProgressElement>(null);
+
   const [formErrors, updatevalidateErrors] = useState<Record<string, string>>(
     {}
   );
@@ -93,11 +100,23 @@ const UncontrolledFormPage = () => {
     } catch (err) {
       if (err instanceof ValidationError) {
         const errors: Record<string, string> = {};
+
+        let passwordStrength = 4;
         err.inner.forEach((error) => {
           if (error.path) {
             errors[error.path] = error.message;
+            if (
+              error.path === 'password' &&
+              error.message.includes('Password must contain at least')
+            ) {
+              passwordStrength -= 1;
+            }
           }
         });
+
+        if (passwordProgressRef.current) {
+          passwordProgressRef.current.value = passwordStrength;
+        }
         updatevalidateErrors(errors);
       }
     }
@@ -121,11 +140,17 @@ const UncontrolledFormPage = () => {
     name: nameInputRef,
     age: ageInputRef,
     email: emailInputRef,
-    password: passwordInputRef,
-    confirmPassword: confirmPasswordRef,
     image: imageRef,
     tc: tcRef,
   });
+
+  const passwordInputsProps = createPasswordsInputsProps(
+    {
+      password: passwordInputRef,
+      confirmPassword: confirmPasswordRef,
+    },
+    passwordProgressRef
+  );
   return (
     <>
       <h1>Uncontrolled Form</h1>
@@ -148,10 +173,32 @@ const UncontrolledFormPage = () => {
             </div>
           );
         })}
+
+        {passwordInputsProps.map((props) => {
+          return (
+            <div
+              key={`uctrl-input-${props.name}`}
+              className="flex flex-col items-start justify-start w-full form-item"
+            >
+              <PasswordInput
+                lableText={props.lableText}
+                inputType={props.inputType}
+                name={props.name}
+                inputId={props.inputId}
+                autocomplete={props.autocomplete}
+                inputRef={props.inputRef}
+                errorMessage={formErrors[props.name]}
+                progressRef={props.progressRef}
+              />
+            </div>
+          );
+        })}
+
         <CountriesSelect
           inputRef={countriesRef}
           errorMessage={formErrors['country']}
         />
+
         <GenderSelect inputRef={genderRef} />
         <button type="submit">Submit</button>
       </form>

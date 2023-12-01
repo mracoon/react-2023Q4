@@ -1,8 +1,12 @@
 import {
   FormDataKeys,
   ICustomInputProps,
+  ICustomPasswordInputProps,
   InputPropsItemType,
+  PasswordInputPropsItemType,
+  //PasswordInputPropsItemType,
   inputNames,
+  passwordsInputNames,
 } from '../../types/types';
 
 export const createInputsProps = (
@@ -12,6 +16,20 @@ export const createInputsProps = (
     ...item,
     inputRef: refs[item.name],
   }));
+};
+export const createPasswordsInputsProps = (
+  refs: Record<passwordsInputNames, React.RefObject<HTMLInputElement>>,
+  passwordStrenghtRef: React.RefObject<HTMLProgressElement>
+): ICustomPasswordInputProps[] => {
+  return passwordsProps.map((item) => {
+    const progressRef =
+      item.name === FormDataKeys.password ? passwordStrenghtRef : undefined;
+    return {
+      ...item,
+      inputRef: refs[item.name],
+      progressRef,
+    };
+  });
 };
 
 export const inputProps: InputPropsItemType[] = [
@@ -33,7 +51,7 @@ export const inputProps: InputPropsItemType[] = [
     name: FormDataKeys.email,
     inputId: 'email',
   },
-  {
+  /*  {
     lableText: 'Password',
     inputType: 'password',
     name: FormDataKeys.password,
@@ -44,7 +62,7 @@ export const inputProps: InputPropsItemType[] = [
     inputType: 'password',
     name: FormDataKeys.confirmPassword,
     inputId: 'confirmPassword',
-  },
+  }, */
   {
     lableText: 'Upload image',
     inputType: 'file',
@@ -56,5 +74,20 @@ export const inputProps: InputPropsItemType[] = [
     inputType: 'checkbox',
     name: FormDataKeys.tc,
     inputId: 'tc',
+  },
+];
+
+export const passwordsProps: PasswordInputPropsItemType[] = [
+  {
+    lableText: 'Password',
+    inputType: 'password',
+    name: FormDataKeys.password,
+    inputId: 'password',
+  },
+  {
+    lableText: 'Confirm password',
+    inputType: 'password',
+    name: FormDataKeys.confirmPassword,
+    inputId: 'confirmPassword',
   },
 ];

@@ -30,14 +30,21 @@ export const formValidationSchema = yup.object({
   confirmPassword: yup
     .string()
     .required('Field is mandatory')
-    .oneOf([yup.ref('password')], 'should match the password field')
-    .matches(/[A-ZА-ЯЁ]/, 'Password must contain at least one uppercase letter')
-    .matches(/[a-zа-яё]/, 'Password must contain at least one lowercase letter')
-    .matches(/[0-9]/, 'Password must contain at least one digit')
+
+    .matches(
+      /[A-ZА-ЯЁ]/,
+      'Confirm Password must contain at least one uppercase letter'
+    )
+    .matches(
+      /[a-zа-яё]/,
+      'Confirm Password must contain at least one lowercase letter'
+    )
+    .matches(/[0-9]/, 'Confirm Password must contain at least one digit')
     .matches(
       /[^A-ZА-Яa-zа-я0-9Ёё\s]/,
       'Password must contain at least one special character (e.g., !@#$%^&*)'
-    ),
+    )
+    .oneOf([yup.ref('password')], 'should match the password field'),
   tc: yup.boolean().test('tsChaecked', 'You should accept T&C', (tc) => !!tc),
   image: yup
     .mixed<FileList>()

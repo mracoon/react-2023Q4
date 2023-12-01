@@ -30,13 +30,30 @@ export interface ICustomInputProps {
   autocomplete?: string;
   errorMessage?: string;
 }
-export type InputPropsItemType = {
+
+export interface ICustomPasswordInputProps extends ICustomInputProps {
+  progressRef?: React.RefObject<HTMLProgressElement>;
+}
+
+interface InputBasePropsItemType {
   lableText: string;
   inputType: string;
-  name: inputNames;
   inputId: string;
-};
+}
+export interface InputPropsItemType extends InputBasePropsItemType {
+  name: inputNames;
+}
+
+export interface PasswordInputPropsItemType extends InputBasePropsItemType {
+  name: passwordsInputNames;
+}
 export type inputNames = Exclude<
   FormDataKeys,
-  FormDataKeys.country | FormDataKeys.gender
+  | FormDataKeys.country
+  | FormDataKeys.gender
+  | FormDataKeys.password
+  | FormDataKeys.confirmPassword
 >;
+export type passwordsInputNames =
+  | FormDataKeys.password
+  | FormDataKeys.confirmPassword;
