@@ -94,7 +94,19 @@ progress::-webkit-progress-bar {
 
 progress[value]::-webkit-progress-value {
   border-radius: 15px;
-  background-color: rgb(9, 167, 35);
+}
+
+progress[value='1']::-webkit-progress-value {
+  background-color: rgb(220, 20, 20);
+}
+progress[value='2']::-webkit-progress-value {
+  background-color: rgb(231, 159, 14);
+}
+progress[value='3']::-webkit-progress-value {
+  background-color: rgb(159, 231, 26);
+}
+progress[value='4']::-webkit-progress-value {
+  background-color: rgb(7, 159, 33);
 }
 
 input:focus {
