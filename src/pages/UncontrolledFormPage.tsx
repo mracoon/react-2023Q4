@@ -1,6 +1,5 @@
 import { FormEvent, useRef, useState } from 'react';
 import { ValidationError } from 'yup';
-
 import {
   createInputsProps,
   createPasswordsInputsProps,
@@ -13,7 +12,7 @@ import { dataListSlice } from '../store/reducers/DataListSlice';
 import { PasswordInput } from '../components/Form/uncontrolledForm/PasswordInput';
 import { GenderSelect } from '../components/Form/GenderSelect';
 import { CustomInput } from '../components/Form/CustomInput';
-import CountriesSelectUni from '../components/Form/CountriesSelect';
+import CountriesSelect from '../components/Form/CountriesSelect';
 
 const UncontrolledFormPage = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -30,7 +29,7 @@ const UncontrolledFormPage = () => {
 
   const passwordProgressRef = useRef<HTMLProgressElement>(null);
 
-  const [formErrors, updatevalidateErrors] = useState<Record<string, string>>(
+  const [formErrors, updateValidateErrors] = useState<Record<string, string>>(
     {}
   );
 
@@ -107,7 +106,7 @@ const UncontrolledFormPage = () => {
         if (passwordProgressRef.current) {
           passwordProgressRef.current.value = passwordStrength;
         }
-        updatevalidateErrors(errors);
+        updateValidateErrors(errors);
       }
     }
   };
@@ -184,7 +183,7 @@ const UncontrolledFormPage = () => {
           );
         })}
 
-        <CountriesSelectUni
+        <CountriesSelect
           inputRef={countriesRef}
           errorMessage={formErrors['country']}
         />

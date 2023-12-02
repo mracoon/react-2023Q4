@@ -9,7 +9,7 @@ export const GenderSelect = ({
   inputRef?: React.RefObject<HTMLSelectElement>;
   register?: (
     name: FormDataKeys,
-    options?: RegisterOptions<MyFormData, FormDataKeys> | undefined
+    options?: RegisterOptions<MyFormData, FormDataKeys>
   ) => UseFormRegisterReturn<FormDataKeys>;
 }) => {
   return (
