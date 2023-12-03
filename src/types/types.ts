@@ -43,20 +43,20 @@ interface InputBasePropsItemType {
   inputId: string;
 }
 export interface InputPropsItemType extends InputBasePropsItemType {
-  name: inputNames;
+  name: InputNamesType;
 }
 
 export interface PasswordInputPropsItemType extends InputBasePropsItemType {
-  name: passwordsInputNames;
+  name: PasswordsInputNamesType;
 }
-export type inputNames = Exclude<
+export type InputNamesType = Exclude<
   FormDataKeys,
   | FormDataKeys.country
   | FormDataKeys.gender
   | FormDataKeys.password
   | FormDataKeys.confirmPassword
 >;
-export type passwordsInputNames =
+export type PasswordsInputNamesType =
   | FormDataKeys.password
   | FormDataKeys.confirmPassword;
 
@@ -64,7 +64,7 @@ export interface IUniversalRef<T extends HTMLInputElement | HTMLSelectElement> {
   inputRef?: React.RefObject<T>;
   register?: (
     name: FormDataKeys,
-    options?: RegisterOptions<MyFormData, FormDataKeys> | undefined
+    options?: RegisterOptions<MyFormData, FormDataKeys>
   ) => UseFormRegisterReturn<FormDataKeys>;
 }
 

@@ -10,7 +10,7 @@ export interface IRHFBaseProps {
   errorMessage?: string;
   register: (
     name: FormDataKeys,
-    options?: RegisterOptions<MyFormData, FormDataKeys> | undefined
+    options?: RegisterOptions<MyFormData, FormDataKeys>
   ) => UseFormRegisterReturn<FormDataKeys>;
 }
 
@@ -20,5 +20,5 @@ export interface IRHFCustomInputProps extends IRHFBaseProps {
 
 export interface IRHFPasswordInputProps extends IRHFBaseProps {
   props: PasswordInputPropsItemType;
-  watch?: (name: FormDataKeys, defaultValue?: string | undefined) => string;
+  watch?: (name: FormDataKeys, defaultValue?: string) => string;
 }
